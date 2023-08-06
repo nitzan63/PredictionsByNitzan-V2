@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="ProjectModuleManager">
+    <modules>
+      <module fileurl="file://$PROJECT_DIR$/ConsoleUI/ConsoleUI.iml" filepath="$PROJECT_DIR$/ConsoleUI/ConsoleUI.iml" />
+      <module fileurl="file://$PROJECT_DIR$/PredictionsByNitzan.iml" filepath="$PROJECT_DIR$/PredictionsByNitzan.iml" />
+      <module fileurl="file://$PROJECT_DIR$/PredictionsEngine/PredictionsEngine.iml" filepath="$PROJECT_DIR$/PredictionsEngine/PredictionsEngine.iml" />
+    </modules>
+  </component>
+</project>
