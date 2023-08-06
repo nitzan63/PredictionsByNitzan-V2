@@ -1,28 +1,27 @@
 package world.entities;
 
-import world.entities.entity.Entity;
+import world.entities.entity.EntityInstance;
 
-import java.util.HashMap;
 import java.util.Map;
 import java.util.Objects;
 import java.util.TreeMap;
 
-public class Entities {
+public class EntitiesDefinition {
     private String entityName;
-    private Map<Integer, Entity> entities = new TreeMap<>();
+    private Map<Integer, EntityInstance> entities = new TreeMap<>();
     Integer population;
 
-    public Entities(String name, Integer population){
+    public EntitiesDefinition(String name, Integer population){
         this.entityName = name;
         this.population = population;
     }
 
-    public void addEntity (Entity entity, int number){
+    public void addEntity (EntityInstance entity, int number){
         entities.put(number, entity);
     }
 
 
-    public Entity getEntity (int serialNumber){
+    public EntityInstance getEntity (int serialNumber){
         return entities.get(serialNumber);
     }
 
@@ -34,7 +33,7 @@ public class Entities {
         return population;
     }
 
-    public Map<Integer, Entity> getEntities() {
+    public Map<Integer, EntityInstance> getEntities() {
         return entities;
     }
 
@@ -42,7 +41,7 @@ public class Entities {
         this.entityName = entityName;
     }
 
-    public void setEntities(Map<Integer, Entity> entities) {
+    public void setEntities(Map<Integer, EntityInstance> entities) {
         this.entities = entities;
     }
 
@@ -63,7 +62,7 @@ public class Entities {
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
-        Entities entities1 = (Entities) o;
+        EntitiesDefinition entities1 = (EntitiesDefinition) o;
         return Objects.equals(entityName, entities1.entityName) && Objects.equals(entities, entities1.entities) && Objects.equals(population, entities1.population);
     }
 

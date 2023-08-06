@@ -1,18 +1,23 @@
 package world.entities.entity;
 
 import world.entities.entity.properties.EntityProperties;
+import world.entities.entity.properties.property.api.EntityProperty;
 
-public class Entity {
+public class EntityInstance {
     private final Integer serialNumber;
     private final EntityProperties properties;
 
-    public Entity (Integer serialNumber, EntityProperties properties){
+    public EntityInstance(Integer serialNumber, EntityProperties properties){
         this.serialNumber = serialNumber;
         this.properties = properties;
     }
 
     public EntityProperties getProperties (){
         return properties;
+    }
+
+    public EntityProperty getProperty (String name){
+        return properties.getProperty(name);
     }
 
     public Integer getSerialNumber() {
@@ -26,5 +31,6 @@ public class Entity {
                 ", properties=" + properties +
                 '}';
     }
+
 
 }

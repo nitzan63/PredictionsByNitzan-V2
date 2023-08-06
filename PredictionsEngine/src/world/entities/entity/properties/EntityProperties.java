@@ -22,9 +22,10 @@ public class EntityProperties {
 
     public EntityProperty getProperty (String name){
         for (EntityProperty property : properties)
-            if (property.getName() == name)
+            if (property.getName().equals(name))
                 return property;
-        return null; //TODO handle if not found
+        return null;
+        //return null; //TODO handle if not found
     }
 
     @Override
