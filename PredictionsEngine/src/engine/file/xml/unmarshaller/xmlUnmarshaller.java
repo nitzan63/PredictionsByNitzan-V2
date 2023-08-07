@@ -8,7 +8,7 @@ import javax.xml.bind.Unmarshaller;
 import java.io.File;
 
 public class xmlUnmarshaller {
-    private final static String JAXB_XML_PACKAGE_NAME = "src.scheme.generated";
+    private final static String JAXB_XML_PACKAGE_NAME = "scheme.generated";
     public static PRDWorld unmarshallToJava(String filePath) {
         try {
             JAXBContext jc = JAXBContext.newInstance(JAXB_XML_PACKAGE_NAME);

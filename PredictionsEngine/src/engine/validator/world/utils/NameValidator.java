@@ -7,7 +7,7 @@ public class NameValidator {
         if (name.isEmpty())
             throw new ValidationException("Name can't be empty! -> ");
         if (hasInValidChar(name))
-            throw new ValidationException("Name has invalid characters! -> ");
+            throw new ValidationException("Name:" + name + " has invalid characters! -> ");
     }
 
     private static boolean hasInValidChar(String name){
