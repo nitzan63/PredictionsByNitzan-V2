@@ -1,4 +1,4 @@
-package engine.file.xml.unmarhaller;
+package engine.file.xml.unmarshaller;
 
 import scheme.generated.PRDWorld;
 
@@ -9,11 +9,11 @@ import java.io.File;
 
 public class xmlUnmarshaller {
     private final static String JAXB_XML_PACKAGE_NAME = "src.scheme.generated";
-    public static void unmarshallToJava(String filePath) {
+    public static PRDWorld unmarshallToJava(String filePath) {
         try {
             JAXBContext jc = JAXBContext.newInstance(JAXB_XML_PACKAGE_NAME);
             Unmarshaller u = jc.createUnmarshaller();
-            PRDWorld prdWorld = (PRDWorld) u.unmarshal(new File(filePath));
+            return (PRDWorld) u.unmarshal(new File(filePath));
         } catch (JAXBException e) {
             throw new RuntimeException(e);
             //TODO: Handle Exception
