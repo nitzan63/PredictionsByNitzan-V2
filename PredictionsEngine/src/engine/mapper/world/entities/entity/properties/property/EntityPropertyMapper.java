@@ -43,29 +43,30 @@ public class EntityPropertyMapper {
             case "decimal": {
                 Range<Integer> range = RangeMapper.decimalMapRange(jaxbProperty.getPRDRange());
                 try {
-                    Integer intInit = Integer.parseInt(init);
-                    if (isRandom){
+
+                    if (isRandom) {
                         property = new PropertyDecimal(name, range);
                     } else {
+                        Integer intInit = Integer.parseInt(init);
                         property = new PropertyDecimal(name, false, intInit, range);
                     }
                     //TODO make sure this works outside the try scope
-                } catch (NumberFormatException e){
+                } catch (NumberFormatException e) {
                     throw e; //TODO handle this exception
                 }
                 break;
             }
             case "float":
                 Range<Float> range = RangeMapper.floatMapRange(jaxbProperty.getPRDRange());
-                try{
-                    Float floatInit = Float.parseFloat(init);
+                try {
                     if (isRandom) {
                         property = new PropertyFloat(name, range);
                     } else {
+                        Float floatInit = Float.parseFloat(init);
                         property = new PropertyFloat(name, false, floatInit, range);
                     }
                     //TODO make sure this works outside the try scope
-                } catch (NumberFormatException e){
+                } catch (NumberFormatException e) {
                     throw e; //TODO handle this exception
                 }
                 break;

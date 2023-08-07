@@ -7,7 +7,7 @@ import world.World;
 public class Main {
     public static void main(String[] args) {
 
-        String xmlFilePath = "/Users/nitzanainemer/IdeaProjects/PredictionsByNitzan/PredictionsEngine/src/scheme/xml/master-ex1.xml";
+        String xmlFilePath = "/Users/nitzanainemer/IdeaProjects/PredictionsByNitzan/PredictionsEngine/src/scheme/xml/ex1-error-2.xml";
         PRDWorld prdWorld = xmlUnmarshaller.unmarshallToJava(xmlFilePath);
 
         if (XMLValidator.validateXML(prdWorld)){

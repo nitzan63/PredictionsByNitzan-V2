@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<PRD-world xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="predictions-v1.xsd">
+<PRD-world xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="../xsd/predictions-v1.xsd">
 	<PRD-evironment>
 		<PRD-env-property type="decimal">
 			<PRD-name>cigarets-critical</PRD-name>
@@ -30,7 +30,7 @@
 				</PRD-property>		
 				<PRD-property type="decimal">
 					<PRD-name>cigarets-per-month</PRD-name>
-					<PRD-range to="0" from="500"/>
+					<PRD-range to="500" from="0"/>
 					<PRD-value random-initialize="true"/>
 				</PRD-property>							
 			</PRD-properties>
