@@ -12,7 +12,7 @@ public class Main {
         PRDWorld prdWorld = xmlUnmarshaller.unmarshallToJava(xmlFilePath);
         World world;
 
-        if (XMLValidator.validateXML(prdWorld)){
+        if (XMLValidator.validateXML(prdWorld)) {
             System.out.println("XML validation Passed!");
         } else {
             System.out.println("XML validation Failed.");
@@ -20,12 +20,11 @@ public class Main {
 
         world = WorldMapper.mapWorld(prdWorld);
         System.out.println(world);
-
-//        int tickNumber = 0;
-//        long startTimeMillis = System.currentTimeMillis();
-//        while (world.getTermination().isNotTerminated(tickNumber, TimeUtils.getElapsedSeconds(startTimeMillis))){
-//            world.simulateThisTick(tickNumber);
-//            tickNumber++;
-//        }
+        int tickNumber = 0;
+        long startTimeMillis = System.currentTimeMillis();
+        while (world.getTermination().isNotTerminated(tickNumber, TimeUtils.getElapsedSeconds(startTimeMillis))) {
+            System.out.println(tickNumber + " " + TimeUtils.getElapsedSeconds(startTimeMillis));
+            tickNumber++;
+        }
     }
 }

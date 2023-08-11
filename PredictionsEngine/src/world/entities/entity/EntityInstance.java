@@ -29,7 +29,7 @@ public class EntityInstance {
         return "Entity{" +
                 "serialNumber=" + serialNumber +
                 ", properties=" + properties +
-                '}';
+                "}\n";
     }
 
 

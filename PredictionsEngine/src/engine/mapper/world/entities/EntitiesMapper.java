@@ -16,11 +16,14 @@ public class EntitiesMapper {
         EntitiesDefinition entities = new EntitiesDefinition(name, population);
         int serialNumber = 1;
 
-        for (PRDEntity jaxbEntity : jaxbEntityList) {
+        PRDEntity jaxbEntity = jaxbEntityList.get(0);
+        
+        while (serialNumber <= population){
             EntityInstance entity = EntityMapper.mapEntity(jaxbEntity, serialNumber);
             entities.addEntity(entity, serialNumber);
             serialNumber++;
         }
+
 
         return entities;
     }

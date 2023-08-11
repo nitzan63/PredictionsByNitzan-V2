@@ -15,7 +15,11 @@ public class MultiplyAction extends CalculationAction {
 
         Double num1 = evaluateExpression(args1, entityInstance);
         Double num2 = evaluateExpression(args2, entityInstance);
-
-        entityInstance.getProperty(resProp).setValue(num1 * num2);
+        double newValue = num1 * num2;
+        if (entityInstance.getProperty(resProp).getRange().getTo().doubleValue() > newValue)
+            entityInstance.getProperty(resProp).setValue(num1 * num2);
+        else {
+            //TODO throw exception regarding actions.
+        }
     }
 }

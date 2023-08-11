@@ -49,7 +49,10 @@ public class World {
     @Override
     public String toString() {
         return "World{" +
-                "termination=" + termination +
+                "environment=" + environment +
+                ", entities=" + entities +
+                ", rules=" + rules +
+                ", termination=" + termination +
                 '}';
     }
 }

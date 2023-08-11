@@ -20,7 +20,6 @@ public class EntitiesDefinition {
         entities.put(number, entity);
     }
 
-
     public EntityInstance getEntity (int serialNumber){
         return entities.get(serialNumber);
     }

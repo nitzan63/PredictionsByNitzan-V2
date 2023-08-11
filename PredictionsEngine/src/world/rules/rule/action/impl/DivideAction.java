@@ -18,7 +18,12 @@ public class DivideAction extends CalculationAction {
         if (num2 == 0) {
             throw new ArithmeticException("can't divide by zero!");
         } else {
-            entityInstance.getProperty(resProp).setValue(num1 / num2);
+            double newValue = num1 / num2;
+            if (entityInstance.getProperty(resProp).getRange().getFrom().doubleValue() < newValue)
+                entityInstance.getProperty(resProp).setValue(num1 / num2);
+            else {
+                ////TODO throw exception regarding rules.
+            }
         }
         // TODO handle what happens when you divide by 0! maybe in the validation part.
     }
