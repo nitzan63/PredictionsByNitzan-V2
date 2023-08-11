@@ -5,7 +5,7 @@ import world.utils.range.Range;
 public interface EntityProperty {
 
     String getName();
-    Class<?> getType();
+    String getType();
     Range<?> getRange();
     boolean isRandomInitialize();
     Object getValue();

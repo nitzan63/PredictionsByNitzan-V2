@@ -47,8 +47,8 @@ public class PropertyDecimal implements EntityProperty, EnvProperty {
     }
 
     @Override
-    public Class<?> getType() {
-        return Integer.class;
+    public String getType() {
+        return "decimal";
     }
 
     @Override
@@ -78,11 +78,7 @@ public class PropertyDecimal implements EntityProperty, EnvProperty {
 
     @Override
     public void setValue(Object newValue) {
-        if (newValue.getClass() == Integer.class)
-            this.value = (Integer) newValue;
-        else {
-            //TODO handle else with exception?
-        }
+        value = (Integer) newValue;
     }
 
     @Override

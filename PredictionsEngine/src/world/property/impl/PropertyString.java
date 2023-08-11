@@ -42,8 +42,8 @@ public class PropertyString implements EntityProperty, EnvProperty {
     }
 
     @Override
-    public Class<?> getType() {
-        return String.class;
+    public String getType() {
+        return "string";
     }
 
     @Override

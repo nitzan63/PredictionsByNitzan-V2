@@ -5,7 +5,7 @@ import world.utils.range.Range;
 public interface EnvProperty {
     String getName();
 
-    Class<?> getType();
+    String getType();
 
     Range<?> getRange();
 

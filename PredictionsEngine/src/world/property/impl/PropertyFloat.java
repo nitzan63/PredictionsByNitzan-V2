@@ -47,8 +47,8 @@ public class PropertyFloat implements EntityProperty, EnvProperty {
     }
 
     @Override
-    public Class<?> getType() {
-        return Float.class;
+    public String getType() {
+        return "float";
     }
 
     @Override

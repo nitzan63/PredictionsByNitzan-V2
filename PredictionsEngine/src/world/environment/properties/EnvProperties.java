@@ -22,7 +22,7 @@ public class EnvProperties {
 
     public EnvProperty getProperty(String name) {
         for (EnvProperty property : properties)
-            if (property.getName() == name)
+            if (property.getName().equals(name))
                 return property;
         return null; //TODO handle if not found
     }

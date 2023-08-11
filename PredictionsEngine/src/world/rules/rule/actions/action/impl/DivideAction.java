@@ -1,4 +1,4 @@
 package world.rules.rule.actions.action.impl;
 
-public class Multiply {
+public class DivideAction {
 }

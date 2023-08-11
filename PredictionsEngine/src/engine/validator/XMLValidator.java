@@ -18,7 +18,7 @@ public class XMLValidator {
 
         if (!exceptions.isEmpty()){
             for (ValidationException e : exceptions){
-                System.out.println(e);
+                System.out.println(e); //TODO move to UI!!!
             }
             return false;
         }

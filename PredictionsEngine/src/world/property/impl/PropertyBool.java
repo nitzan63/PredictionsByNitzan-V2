@@ -37,8 +37,8 @@ public class PropertyBool implements EntityProperty, EnvProperty {
     }
 
     @Override
-    public Class<?> getType() {
-        return boolean.class;
+    public String getType() {
+        return "boolean";
     }
 
     @Override
