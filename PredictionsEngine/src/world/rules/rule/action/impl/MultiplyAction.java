@@ -1,8 +1,8 @@
-package world.rules.rule.actions.action.impl;
+package world.rules.rule.action.impl;
 
 import world.entities.EntitiesDefinition;
 import world.entities.entity.EntityInstance;
-import world.rules.rule.actions.action.api.CalculationAction;
+import world.rules.rule.action.api.CalculationAction;
 
 public class MultiplyAction extends CalculationAction {
 

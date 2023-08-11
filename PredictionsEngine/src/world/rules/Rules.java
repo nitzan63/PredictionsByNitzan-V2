@@ -1,6 +1,8 @@
 package world.rules;
 
-import world.rules.rule.Rule;
+import world.entities.EntitiesDefinition;
+import world.rules.rule.activation.Activation;
+import world.rules.rule.api.Rule;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -18,5 +20,11 @@ public class Rules {
 
     public List<Rule> getRules(){
         return rules;
+    }
+
+    public void simulateRules(EntitiesDefinition entitiesDefinition, int tickNumber){
+        for (Rule rule : rules){
+            rule.performActions(entitiesDefinition, tickNumber);
+        }
     }
 }

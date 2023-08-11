@@ -1,8 +1,6 @@
-package world.rules.rule.actions.action.api;
+package world.rules.rule.action.api;
 
 import world.entities.EntitiesDefinition;
-import world.rules.rule.actions.action.api.AbstractAction;
-import world.rules.rule.actions.action.api.ActionType;
 
 public abstract class CalculationAction extends AbstractAction {
     protected final String entityName;

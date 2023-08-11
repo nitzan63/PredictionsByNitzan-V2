@@ -1,4 +1,4 @@
-package world.rules.rule.actions.action.api;
+package world.rules.rule.action.api;
 
 import world.entities.EntitiesDefinition;
 import world.entities.entity.EntityInstance;

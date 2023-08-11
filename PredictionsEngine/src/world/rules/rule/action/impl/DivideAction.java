@@ -1,8 +1,8 @@
-package world.rules.rule.actions.action.impl;
+package world.rules.rule.action.impl;
 
 import world.entities.EntitiesDefinition;
 import world.entities.entity.EntityInstance;
-import world.rules.rule.actions.action.api.CalculationAction;
+import world.rules.rule.action.api.CalculationAction;
 
 public class DivideAction extends CalculationAction {
 
@@ -11,12 +11,15 @@ public class DivideAction extends CalculationAction {
     }
 
     @Override
-    public void invoke(EntityInstance entityInstance) {
+    public void invoke(EntityInstance entityInstance) throws ArithmeticException{
 
         Double num1 = evaluateExpression(args1, entityInstance);
         Double num2 = evaluateExpression(args2, entityInstance);
-        if (num2 != 0)
+        if (num2 == 0) {
+            throw new ArithmeticException("can't divide by zero!");
+        } else {
             entityInstance.getProperty(resProp).setValue(num1 / num2);
+        }
         // TODO handle what happens when you divide by 0! maybe in the validation part.
     }
 
