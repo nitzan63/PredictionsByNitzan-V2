@@ -3,14 +3,11 @@ package engine.mapper.world.entities.entity.properties.property;
 import engine.mapper.world.utils.range.RangeMapper;
 import scheme.generated.PRDProperty;
 import world.entities.entity.properties.property.api.EntityProperty;
-import world.environment.properties.property.api.EnvProperty;
 import world.property.impl.PropertyBool;
 import world.property.impl.PropertyDecimal;
 import world.property.impl.PropertyFloat;
 import world.property.impl.PropertyString;
 import world.utils.range.Range;
-
-import java.util.Objects;
 
 public class EntityPropertyMapper {
     public static EntityProperty mapProperty(PRDProperty jaxbProperty) {

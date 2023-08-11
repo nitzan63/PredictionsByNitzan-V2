@@ -2,8 +2,6 @@ package engine.mapper.world.environment.properties.property;
 
 import engine.mapper.world.utils.range.RangeMapper;
 import scheme.generated.PRDEnvProperty;
-import scheme.generated.PRDProperty;
-import scheme.generated.PRDRange;
 import world.environment.properties.property.api.EnvProperty;
 import world.property.impl.PropertyBool;
 import world.property.impl.PropertyDecimal;
