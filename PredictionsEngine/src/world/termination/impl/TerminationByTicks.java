@@ -13,4 +13,11 @@ private final int maxTicks;
     public boolean isNotTerminated(int tickNumber, int elapsedSeconds) {
         return tickNumber <= maxTicks;
     }
+
+    @Override
+    public String toString() {
+        return "TerminationByTicks{" +
+                "maxTicks=" + maxTicks +
+                '}';
+    }
 }

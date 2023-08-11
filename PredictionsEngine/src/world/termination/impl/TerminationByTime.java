@@ -13,4 +13,11 @@ public class TerminationByTime implements Termination {
     public boolean isNotTerminated(int tickNumber, int elapsedSeconds) {
         return elapsedSeconds <= maxTime;
     }
+
+    @Override
+    public String toString() {
+        return "TerminationByTime{" +
+                "maxTime=" + maxTime +
+                '}';
+    }
 }

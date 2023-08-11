@@ -15,4 +15,12 @@ public class TerminationCombined implements Termination {
     public boolean isNotTerminated(int tickNumber, int elapsedSeconds) {
         return byTime.isNotTerminated(tickNumber, elapsedSeconds) && byTicks.isNotTerminated(tickNumber, elapsedSeconds);
     }
+
+    @Override
+    public String toString() {
+        return "TerminationCombined{" +
+                "byTime=" + byTime +
+                ", byTicks=" + byTicks +
+                '}';
+    }
 }
