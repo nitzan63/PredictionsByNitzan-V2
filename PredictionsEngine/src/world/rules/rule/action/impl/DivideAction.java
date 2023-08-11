@@ -13,8 +13,8 @@ public class DivideAction extends CalculationAction {
     @Override
     public void invoke(EntityInstance entityInstance) throws ArithmeticException{
 
-        Double num1 = evaluateExpression(args1, entityInstance);
-        Double num2 = evaluateExpression(args2, entityInstance);
+        Double num1 = (Double) evaluateExpression(args1, entityInstance);
+        Double num2 = (Double) evaluateExpression(args2, entityInstance);
         if (num2 == 0) {
             throw new ArithmeticException("can't divide by zero!");
         } else {

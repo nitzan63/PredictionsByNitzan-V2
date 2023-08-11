@@ -11,13 +11,13 @@ import java.util.List;
 public class EntitiesMapper {
     public static EntitiesDefinition mapEntities (PRDEntities jaxbEntities) {
         List<PRDEntity> jaxbEntityList = jaxbEntities.getPRDEntity();
-        Integer population = jaxbEntityList.get(0).getPRDPopulation();
+        int population = jaxbEntityList.get(0).getPRDPopulation();
         String name = jaxbEntityList.get(0).getName();
         EntitiesDefinition entities = new EntitiesDefinition(name, population);
         int serialNumber = 1;
 
         PRDEntity jaxbEntity = jaxbEntityList.get(0);
-        
+
         while (serialNumber <= population){
             EntityInstance entity = EntityMapper.mapEntity(jaxbEntity, serialNumber);
             entities.addEntity(entity, serialNumber);

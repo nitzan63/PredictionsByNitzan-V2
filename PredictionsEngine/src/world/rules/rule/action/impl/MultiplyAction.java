@@ -13,8 +13,8 @@ public class MultiplyAction extends CalculationAction {
     @Override
     public void invoke(EntityInstance entityInstance) {
 
-        Double num1 = evaluateExpression(args1, entityInstance);
-        Double num2 = evaluateExpression(args2, entityInstance);
+        Double num1 = (Double) evaluateExpression(args1, entityInstance);
+        Double num2 = (Double) evaluateExpression(args2, entityInstance);
         double newValue = num1 * num2;
         if (entityInstance.getProperty(resProp).getRange().getTo().doubleValue() > newValue)
             entityInstance.getProperty(resProp).setValue(num1 * num2);

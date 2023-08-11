@@ -20,7 +20,7 @@ public class IncreaseAction extends AbstractAction {
         double newValue;
         EntityProperty property = entityInstance.getProperty(propertyName);
         Double value = (Double) property.getValue();
-        Double expression = evaluateExpression(byExpression, entityInstance);
+        Double expression = (Double) evaluateExpression(byExpression, entityInstance);
         newValue = value + expression;
         if (newValue > property.getRange().getTo().doubleValue())
             property.setValue(value + expression);
