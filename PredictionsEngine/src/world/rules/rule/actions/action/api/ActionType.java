@@ -1,5 +1,5 @@
 package world.rules.rule.actions.action.api;
 
 public enum ActionType {
-    INCREASE, DECREASE, KILL
+    INCREASE, DECREASE, MULTIPLY, CALCULATION, KILL
 }

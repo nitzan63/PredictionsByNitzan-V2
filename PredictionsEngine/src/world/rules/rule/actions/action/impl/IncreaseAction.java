@@ -21,7 +21,7 @@ public class IncreaseAction extends AbstractAction {
 
         EntityProperty property = entityInstance.getProperty(propertyName);
         Double value = (Double) property.getValue();
-        Double expression = evaluateExpression(byExpression);
+        Double expression = evaluateExpression(byExpression, entityInstance);
 
         property.setValue(value + expression);
 
