@@ -6,8 +6,8 @@ import world.environment.Environment;
 import world.utils.expression.ExpressionEvaluator;
 
 public abstract class AbstractAction implements Action {
-    private final ActionType actionType;
-    private final EntitiesDefinition entitiesDefinition;
+    protected final ActionType actionType;
+    protected final EntitiesDefinition entitiesDefinition;
 
     protected AbstractAction(ActionType actionType, EntitiesDefinition entitiesDefinition) {
         this.actionType = actionType;
@@ -26,13 +26,6 @@ public abstract class AbstractAction implements Action {
 
     protected Object evaluateExpression(String expression, EntityInstance entityInstance) {
         return ExpressionEvaluator.evaluateExpression(expression, entityInstance);
-//        //if the expression represents an env var:
-//        if (expression.startsWith("environment(") && expression.endsWith(")")) {
-//            String envVar = expression.substring(12, expression.length() - 1);
-//            return Environment.getEnvironmentPropValue(envVar);
-//        } else if (entityInstance.getProperty(expression) != null) { // if the action represents one of the entity prop:
-//            return (Double) entityInstance.getProperty(expression).getValue();
-//        } else return Double.parseDouble(expression); //just a number!
     }
 }
 

@@ -20,6 +20,14 @@ public class SetAction extends AbstractAction {
     @Override
     public void invoke(EntityInstance entityInstance) {
         Object value = evaluateExpression(expression, entityInstance);
-        entityInstance.getProperty(propertyName).setValue(value);
+        if (value instanceof Double){ // handle the cases when trying to set value out of range.
+            if ((double) value < entityInstance.getProperty(propertyName).getRange().getFrom().doubleValue()){
+                entityInstance.getProperty(propertyName).setValue(entityInstance.getProperty(propertyName).getRange().getFrom().doubleValue());
+            } else if ((double) value > entityInstance.getProperty(propertyName).getRange().getTo().doubleValue()){
+                entityInstance.getProperty(propertyName).setValue(entityInstance.getProperty(propertyName).getRange().getTo());
+            } else entityInstance.getProperty(propertyName).setValue(value);
+        } else {
+            entityInstance.getProperty(propertyName).setValue(value);
+        }
     }
 }

@@ -19,7 +19,7 @@ public class MultiplyAction extends CalculationAction {
         if (entityInstance.getProperty(resProp).getRange().getTo().doubleValue() > newValue)
             entityInstance.getProperty(resProp).setValue(num1 * num2);
         else {
-            //TODO throw exception regarding actions.
+            entityInstance.getProperty(resProp).setValue(entityInstance.getProperty(resProp).getRange().getTo().doubleValue());
         }
     }
 }

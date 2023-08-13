@@ -22,7 +22,7 @@ public class DivideAction extends CalculationAction {
             if (entityInstance.getProperty(resProp).getRange().getFrom().doubleValue() < newValue)
                 entityInstance.getProperty(resProp).setValue(num1 / num2);
             else {
-                ////TODO throw exception regarding rules.
+                entityInstance.getProperty(resProp).setValue(entityInstance.getProperty(resProp).getRange().getFrom().doubleValue());
             }
         }
         // TODO handle what happens when you divide by 0! maybe in the validation part.

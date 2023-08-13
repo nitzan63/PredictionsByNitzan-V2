@@ -48,6 +48,10 @@ public class EntitiesDefinition {
         this.population = population;
     }
 
+    public void removeEntityInstance (int serialNumber){
+        entities.remove(serialNumber);
+    }
+
     @Override
     public String toString() {
         return "Entities{" +

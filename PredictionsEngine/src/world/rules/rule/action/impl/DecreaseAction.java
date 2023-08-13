@@ -25,7 +25,7 @@ public class DecreaseAction extends AbstractAction {
         if (newValue > property.getRange().getFrom().doubleValue())
             property.setValue(value - expression);
         else {
-            //TODO handle exception
+            entityInstance.getProperty(propertyName).setValue(entityInstance.getProperty(propertyName).getRange().getFrom().doubleValue());
         }
 
     }

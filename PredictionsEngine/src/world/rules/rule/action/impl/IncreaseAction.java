@@ -25,7 +25,7 @@ public class IncreaseAction extends AbstractAction {
         if (newValue > property.getRange().getTo().doubleValue())
             property.setValue(value + expression);
         else {
-            //TODO throw exception regarding actions.
+            entityInstance.getProperty(propertyName).setValue(entityInstance.getProperty(propertyName).getRange().getTo().doubleValue());
         }
 
     }

@@ -10,6 +10,6 @@ public class KillAction extends AbstractAction {
 
     @Override
     public void invoke(EntityInstance entityInstance) {
-
+        entitiesDefinition.removeEntityInstance(entityInstance.getSerialNumber());
     }
 }
