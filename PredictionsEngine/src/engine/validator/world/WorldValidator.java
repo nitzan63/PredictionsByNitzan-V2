@@ -2,16 +2,37 @@ package engine.validator.world;
 
 import engine.validator.world.entities.EntitiesValidator;
 import engine.validator.world.environment.EnvironmentValidator;
+import engine.validator.world.rules.RulesValidator;
+import engine.validator.world.termination.TerminationValidator;
 import scheme.generated.PRDWorld;
 import world.environment.Environment;
 
 import javax.xml.bind.ValidationException;
 
+import static java.util.Arrays.stream;
+
 public class WorldValidator {
+    private static PRDWorld currentWorld;
     public static void validateWorld(PRDWorld world) throws ValidationException {
+        currentWorld = world;
         EnvironmentValidator.validateEnvironment(world.getPRDEvironment());
         EntitiesValidator.validateEntities(world.getPRDEntities());
-        //RulesValidator.validateRules(world.getPRDRules());
-        //TerminationValidator.validateTermination(world.getPRDTermination()));
+        RulesValidator.validateRules(world.getPRDRules());
+        TerminationValidator.validateTermination(world.getPRDTermination());
     }
+
+    // Auxiliary method to check if an entity exists
+    public static boolean entityExists(String entityName) {
+        return currentWorld.getPRDEntities().getPRDEntity().stream()
+                .anyMatch(entity -> entityName.equals(entity.getName()));
+    }
+
+    // Auxiliary method to check if a property of a given entity exists
+    public static boolean propertyExists(String entityName, String propertyName) {
+        return currentWorld.getPRDEntities().getPRDEntity().stream()
+                .filter(entity -> entityName.equals(entity.getName()))
+                .anyMatch(entity -> entity.getPRDProperties().getPRDProperty().stream()
+                        .anyMatch(property -> propertyName.equals(property.getPRDName())));
+    }
+
 }
