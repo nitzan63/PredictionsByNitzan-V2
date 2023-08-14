@@ -5,8 +5,13 @@ import world.environment.Environment;
 import java.util.Random;
 
 public class AuxiliaryMethods {
-    public static Object environmentAuxMethod(String propertyName){
-        return Environment.getEnvironmentPropValue(propertyName);
+    public static Double environmentAuxMethod(String propertyName){
+        Object value = Environment.getEnvironmentPropValue(propertyName);
+        if (value instanceof Number) {
+            return ((Number) value).doubleValue();
+        } else {
+            throw new IllegalArgumentException(propertyName + " is not a number in the environment.");
+        }
     }
 
     public static Double randomAuxMethod (String args){

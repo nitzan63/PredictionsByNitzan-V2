@@ -13,7 +13,14 @@ public class Environment {
     }
 
     public static Double getEnvironmentPropValue(String propertyName){
-        return (Double) properties.getProperty(propertyName).getValue();
+        Object value = properties.getProperty(propertyName).getValue();
+        if (value instanceof Integer) {
+            return ((Integer) value).doubleValue();
+        } else if (value instanceof Double) {
+            return (Double) value;
+        } else {
+            throw new ClassCastException("The property value is neither an Integer nor a Double.");
+        }
     }
 
     @Override

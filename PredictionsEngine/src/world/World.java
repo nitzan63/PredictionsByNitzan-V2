@@ -12,7 +12,7 @@ public class World {
     private Termination termination;
 
     public void simulateThisTick (int tickNumber){
-        rules.simulateRules(entities, tickNumber);
+            rules.simulateRules(entities, tickNumber);
     }
     public Environment getEnvironment() {
         return environment;

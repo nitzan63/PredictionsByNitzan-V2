@@ -8,6 +8,7 @@ import world.rules.rule.api.Rule;
 
 import javax.swing.text.html.parser.Entity;
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.List;
 import java.util.Map;
 
@@ -44,10 +45,14 @@ public class RuleImpl implements Rule {
     }
 
     public void performActions(EntitiesDefinition entitiesDefinition, int tickNumber) {
-        if (activation.isActive(tickNumber))
-            for (EntityInstance entity : entitiesDefinition.getEntities().values())
-                for (Action action : actionsToPerform)
+        if (activation.isActive(tickNumber)) {
+            Collection<EntityInstance> entitiesCopy = new ArrayList<>(entitiesDefinition.getEntities().values());
+            for (EntityInstance entity : entitiesCopy) {
+                for (Action action : actionsToPerform) {
                     action.invoke(entity);
+                }
+            }
+        }
     }
 
     @Override

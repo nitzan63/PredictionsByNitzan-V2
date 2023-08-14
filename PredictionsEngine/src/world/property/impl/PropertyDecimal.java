@@ -78,6 +78,9 @@ public class PropertyDecimal implements EntityProperty, EnvProperty {
 
     @Override
     public void setValue(Object newValue) {
+        if (newValue instanceof Double){
+            value = ((Double) newValue).intValue();
+        }else
         value = (Integer) newValue;
     }
 

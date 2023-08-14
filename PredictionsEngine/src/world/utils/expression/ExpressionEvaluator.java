@@ -5,7 +5,7 @@ import world.entities.entity.EntityInstance;
 public class ExpressionEvaluator {
     public static Object evaluateExpression (String expression, EntityInstance entityInstance){
         // check if the expression is in a format of auxiliary method:
-        if (expression.matches("\\\\w+\\\\(.+\\\\)")){
+        if (expression.matches("\\w+\\(.+\\)")){
             String[] parts = expression.split("\\(");
             String methodName = parts[0];
             String argument = parts[1].substring(0, parts[1].length() - 1);

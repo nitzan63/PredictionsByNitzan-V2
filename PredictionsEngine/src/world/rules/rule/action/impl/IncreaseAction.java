@@ -19,10 +19,20 @@ public class IncreaseAction extends AbstractAction {
     public void invoke(EntityInstance entityInstance) {
         double newValue;
         EntityProperty property = entityInstance.getProperty(propertyName);
-        Double value = (Double) property.getValue();
+        Object valueObject = property.getValue();
+        Double value;
+        if (valueObject instanceof Integer){
+            value =(((Integer) valueObject).doubleValue());
+        } else if (valueObject instanceof Double){
+            value = (Double) valueObject;
+        } else {
+            throw new IllegalArgumentException("Unexpected type" + valueObject.getClass() + " in " + propertyName + " in " + entityInstance);
+        }
+        // Double value = (Double) property.getValue();
+        //System.out.println("\nbyExpression: " + byExpression + " after evaluation: " + evaluateExpression(byExpression, entityInstance));
         Double expression = (Double) evaluateExpression(byExpression, entityInstance);
         newValue = value + expression;
-        if (newValue > property.getRange().getTo().doubleValue())
+        if (newValue < property.getRange().getTo().doubleValue())
             property.setValue(value + expression);
         else {
             entityInstance.getProperty(propertyName).setValue(entityInstance.getProperty(propertyName).getRange().getTo().doubleValue());
