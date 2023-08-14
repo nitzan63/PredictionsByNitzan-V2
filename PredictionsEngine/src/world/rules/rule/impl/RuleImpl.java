@@ -49,4 +49,13 @@ public class RuleImpl implements Rule {
                 for (Action action : actionsToPerform)
                     action.invoke(entity);
     }
+
+    @Override
+    public String toString() {
+        return "RuleImpl{" +
+                "name='" + name + '\'' +
+                ", activation=" + activation +
+                ", actionsToPerform=" + actionsToPerform +
+                '}';
+    }
 }

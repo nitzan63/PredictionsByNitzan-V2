@@ -30,4 +30,13 @@ public class SetAction extends AbstractAction {
             entityInstance.getProperty(propertyName).setValue(value);
         }
     }
+
+    @Override
+    public String toString() {
+        return "SetAction{" +
+                "propertyName='" + propertyName + '\'' +
+                ", expression='" + expression + '\'' +
+                ", entityName='" + entityName + '\'' +
+                '}';
+    }
 }

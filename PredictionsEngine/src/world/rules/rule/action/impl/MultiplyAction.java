@@ -22,4 +22,14 @@ public class MultiplyAction extends CalculationAction {
             entityInstance.getProperty(resProp).setValue(entityInstance.getProperty(resProp).getRange().getTo().doubleValue());
         }
     }
+
+    @Override
+    public String toString() {
+        return "MultiplyAction{" +
+                "entityName='" + entityName + '\'' +
+                ", resProp='" + resProp + '\'' +
+                ", args1='" + args1 + '\'' +
+                ", args2='" + args2 + '\'' +
+                '}';
+    }
 }

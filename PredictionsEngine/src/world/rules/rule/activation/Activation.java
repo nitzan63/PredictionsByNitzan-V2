@@ -43,4 +43,13 @@ public class Activation {
     public boolean isActive() {
         return isActive;
     }
+
+    @Override
+    public String toString() {
+        return "Activation{" +
+                "isActive=" + isActive +
+                ", probability=" + probability +
+                ", ticksToActivate=" + ticksToActivate +
+                '}';
+    }
 }

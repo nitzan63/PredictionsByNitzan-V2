@@ -27,4 +27,11 @@ public class Rules {
             rule.performActions(entitiesDefinition, tickNumber);
         }
     }
+
+    @Override
+    public String toString() {
+        return "Rules{" +
+                "rules=" + rules +
+                '}';
+    }
 }

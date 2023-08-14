@@ -30,5 +30,11 @@ public class IncreaseAction extends AbstractAction {
 
     }
 
-
+    @Override
+    public String toString() {
+        return "IncreaseAction{" +
+                "propertyName='" + propertyName + '\'' +
+                ", byExpression='" + byExpression + '\'' +
+                '}';
+    }
 }

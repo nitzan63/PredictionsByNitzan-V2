@@ -28,4 +28,13 @@ public class DivideAction extends CalculationAction {
         // TODO handle what happens when you divide by 0! maybe in the validation part.
     }
 
+    @Override
+    public String toString() {
+        return "DivideAction{" +
+                "entityName='" + entityName + '\'' +
+                ", resProp='" + resProp + '\'' +
+                ", args1='" + args1 + '\'' +
+                ", args2='" + args2 + '\'' +
+                '}';
+    }
 }

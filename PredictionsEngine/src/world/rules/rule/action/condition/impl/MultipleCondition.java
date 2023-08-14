@@ -44,4 +44,11 @@ public class MultipleCondition implements Condition {
 
     }
 
+    @Override
+    public String toString() {
+        return "MultipleCondition{" +
+                "conditionList=" + conditionList +
+                ", logicalOperator=" + logicalOperator +
+                '}';
+    }
 }

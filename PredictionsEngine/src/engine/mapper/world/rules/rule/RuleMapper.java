@@ -15,16 +15,20 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class RuleMapper {
-    public static Rule mapRule(PRDRule jaxbRule, EntitiesDefinition entitesContext){
+    public static Rule mapRule(PRDRule jaxbRule, EntitiesDefinition entitiesContext){
         String name = jaxbRule.getName();
-        Activation activation = ActivationMapper.mapActivation(jaxbRule.getPRDActivation());
-        Rule rule = new RuleImpl(name, activation);
+        if (jaxbRule.getPRDActivation() != null) { // if there is an activation section:
+            Activation activation = ActivationMapper.mapActivation(jaxbRule.getPRDActivation());
+            Rule rule = new RuleImpl(name, activation);
+        }
+        // else - activation default - every tick , probability = 1.
+        Rule rule = new RuleImpl(name, new Activation(1,1));
         PRDActions jaxbActions = jaxbRule.getPRDActions();
 
         if (jaxbActions != null){
             List<Action> actions = new ArrayList<>();
             for (PRDAction jaxbAction: jaxbActions.getPRDAction()){
-                Action action = ActionMapper.mapAction(jaxbAction, entitesContext);
+                Action action = ActionMapper.mapAction(jaxbAction, entitiesContext);
                 actions.add(action);
             }
             for (Action action : actions){

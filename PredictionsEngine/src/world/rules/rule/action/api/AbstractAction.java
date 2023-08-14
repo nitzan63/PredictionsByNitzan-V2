@@ -27,5 +27,13 @@ public abstract class AbstractAction implements Action {
     protected Object evaluateExpression(String expression, EntityInstance entityInstance) {
         return ExpressionEvaluator.evaluateExpression(expression, entityInstance);
     }
+
+    @Override
+    public String toString() {
+        return "AbstractAction{" +
+                "actionType=" + actionType +
+                ", entitiesDefinition=" + entitiesDefinition +
+                '}';
+    }
 }
 

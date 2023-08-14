@@ -2,9 +2,12 @@ package world.rules.rule.action.condition.impl;
 
 import world.entities.EntitiesDefinition;
 import world.entities.entity.EntityInstance;
+import world.rules.rule.action.api.Action;
 import world.rules.rule.action.condition.api.Condition;
 import world.rules.rule.action.condition.api.Operator;
 import world.utils.expression.ExpressionEvaluator;
+
+import java.util.List;
 
 public class SingleCondition implements Condition {
     private final String propertyName;
@@ -33,7 +36,6 @@ public class SingleCondition implements Condition {
     }
 
 
-    @Override
     public boolean evaluate(EntityInstance entityInstance) {
         Object propertyValue = entityInstance.getProperty(propertyName).getValue();
         Object value = ExpressionEvaluator.evaluateExpression(rawValue, entityInstance);
@@ -62,5 +64,14 @@ public class SingleCondition implements Condition {
             default:
                 return false; // TODO handle this case.
         }
+    }
+
+    @Override
+    public String toString() {
+        return "SingleCondition{" +
+                "propertyName='" + propertyName + '\'' +
+                ", operator=" + operator +
+                ", rawValue='" + rawValue + '\'' +
+                '}';
     }
 }

@@ -13,4 +13,6 @@ public class KillAction extends AbstractAction {
         entitiesDefinition.removeEntityInstance(entityInstance.getSerialNumber());
         //TODO handle what happens if not found?
     }
+
+
 }

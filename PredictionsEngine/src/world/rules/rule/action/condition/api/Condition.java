@@ -5,5 +5,4 @@ import world.entities.entity.EntityInstance;
 public interface Condition {
     boolean evaluate(EntityInstance entityInstance);
 
-
 }

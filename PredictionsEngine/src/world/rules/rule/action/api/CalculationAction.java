@@ -24,4 +24,14 @@ public abstract class CalculationAction extends AbstractAction {
     public String getPropertyName() {
         return resProp;
     }
+
+    @Override
+    public String toString() {
+        return "CalculationAction{" +
+                "entityName='" + entityName + '\'' +
+                ", resProp='" + resProp + '\'' +
+                ", args1='" + args1 + '\'' +
+                ", args2='" + args2 + '\'' +
+                '}';
+    }
 }
