@@ -26,5 +26,7 @@ public class Main {
             System.out.println(tickNumber + " " + TimeUtils.getElapsedSeconds(startTimeMillis));
             tickNumber++;
         }
+
+        System.out.println(prdWorld);
     }
 }

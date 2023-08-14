@@ -1,5 +1,6 @@
 ## To-Do Next
-- [ ] Implement Condition
+- [ ] Implement Condition -
+  - [ ] Implement the then/else logic in condition / rule...
 - [ ] Implement Mapper for Rule -> Rules -> Action -> Activation
 - [ ] Implement Validator for Rules
 - [ ] Implement Validator for Termination

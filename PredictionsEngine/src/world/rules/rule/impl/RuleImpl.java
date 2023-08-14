@@ -17,7 +17,7 @@ public class RuleImpl implements Rule {
     private final List<Action> actionsToPerform;
 
 
-    public RuleImpl(String name, Activation activation, EntitiesDefinition entitiesDefinition) {
+    public RuleImpl(String name, Activation activation) {
         this.name = name;
         this.actionsToPerform = new ArrayList<>();
         this.activation = activation;
