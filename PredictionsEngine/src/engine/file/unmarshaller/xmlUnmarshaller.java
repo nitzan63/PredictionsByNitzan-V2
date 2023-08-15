@@ -16,7 +16,6 @@ public class xmlUnmarshaller {
             return (PRDWorld) u.unmarshal(new File(filePath));
         } catch (JAXBException e) {
             throw new RuntimeException(e);
-            //TODO: Handle Exception
         }
     }
 }

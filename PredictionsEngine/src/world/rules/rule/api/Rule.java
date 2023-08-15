@@ -11,5 +11,5 @@ public interface Rule {
     Activation getActivation();
     List<Action> getActionsToPerform();
     void addAction (Action action);
-    public void performActions(EntitiesDefinition entitiesDefinition, int tickNumber);
+    public void performActions(EntitiesDefinition entitiesDefinition, int tickNumber) throws Exception;
 }

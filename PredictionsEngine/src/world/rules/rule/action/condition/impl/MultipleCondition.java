@@ -21,7 +21,7 @@ public class MultipleCondition implements Condition {
                 this.logicalOperator = LogicalOperator.OR;
                 break;
             default:
-                this.logicalOperator = null; //TODO handle this case. make sure to pass the logical operator as lowercase.
+                this.logicalOperator = null;
         }
     }
 
@@ -38,7 +38,7 @@ public class MultipleCondition implements Condition {
                 case OR:
                     return conditionList.stream().anyMatch(condition -> condition.evaluate(entityInstance));
                 default:
-                    return false; //TODO handle this case if needed.
+                    return false;
             }
         } else return false;
 

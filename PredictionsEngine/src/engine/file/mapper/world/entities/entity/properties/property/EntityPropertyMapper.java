@@ -34,7 +34,7 @@ public class EntityPropertyMapper {
                         property = new PropertyBool(name, false, false);
                     } else if (init.equals("true")) {
                         property = new PropertyBool(name, false, true);
-                    }  //TODO handle this exception - invalid boolean value
+                    }
                 }
                 break;
             case "decimal": {
@@ -47,9 +47,7 @@ public class EntityPropertyMapper {
                         Integer intInit = Integer.parseInt(init);
                         property = new PropertyDecimal(name, false, intInit, range);
                     }
-                    //TODO make sure this works outside the try scope
                 } catch (NumberFormatException e) {
-                    throw e; //TODO handle this exception
                 }
                 break;
             }
@@ -62,9 +60,8 @@ public class EntityPropertyMapper {
                         Float floatInit = Float.parseFloat(init);
                         property = new PropertyFloat(name, false, floatInit, range);
                     }
-                    //TODO make sure this works outside the try scope
+
                 } catch (NumberFormatException e) {
-                    throw e; //TODO handle this exception
                 }
                 break;
         }

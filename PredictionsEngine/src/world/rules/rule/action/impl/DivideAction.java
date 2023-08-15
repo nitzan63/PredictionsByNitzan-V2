@@ -16,7 +16,7 @@ public class DivideAction extends CalculationAction {
         Double num1 = (Double) evaluateExpression(args1, entityInstance);
         Double num2 = (Double) evaluateExpression(args2, entityInstance);
         if (num2 == 0) {
-            throw new ArithmeticException("can't divide by zero!");
+            throw new ArithmeticException("can't divide by zero! in Entity number: " + entityInstance.getSerialNumber() + ", args2 is " + args2 + " that means number: " + num2);
         } else {
             double newValue = num1 / num2;
             if (entityInstance.getProperty(resProp).getRange().getFrom().doubleValue() < newValue)
@@ -25,7 +25,6 @@ public class DivideAction extends CalculationAction {
                 entityInstance.getProperty(resProp).setValue(entityInstance.getProperty(resProp).getRange().getFrom().doubleValue());
             }
         }
-        // TODO handle what happens when you divide by 0! maybe in the validation part.
     }
 
     @Override

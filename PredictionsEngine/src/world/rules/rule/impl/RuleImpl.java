@@ -44,14 +44,18 @@ public class RuleImpl implements Rule {
         actionsToPerform.add(action);
     }
 
-    public void performActions(EntitiesDefinition entitiesDefinition, int tickNumber) {
-        if (activation.isActive(tickNumber)) {
-            Collection<EntityInstance> entitiesCopy = new ArrayList<>(entitiesDefinition.getEntities().values());
-            for (EntityInstance entity : entitiesCopy) {
-                for (Action action : actionsToPerform) {
-                    action.invoke(entity);
+    public void performActions(EntitiesDefinition entitiesDefinition, int tickNumber) throws Exception {
+        try {
+            if (activation.isActive(tickNumber)) {
+                Collection<EntityInstance> entitiesCopy = new ArrayList<>(entitiesDefinition.getEntities().values());
+                for (EntityInstance entity : entitiesCopy) {
+                    for (Action action : actionsToPerform) {
+                        action.invoke(entity);
+                    }
                 }
             }
+        } catch (Exception e){
+            throw new Exception ("Error in rule " + name + e.getMessage() , e);
         }
     }
 

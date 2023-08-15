@@ -28,7 +28,7 @@ public class ActionMapper {
             case "condition":
                 return ConditionActionMapper.mapConditionAction(jaxbAction, entitiesContext);
             default:
-                return null; //TODO handle this case.
+                return null;
         }
     }
     public static List<Action> mapActions(PRDThen jaxbThen, EntitiesDefinition entitiesContext){

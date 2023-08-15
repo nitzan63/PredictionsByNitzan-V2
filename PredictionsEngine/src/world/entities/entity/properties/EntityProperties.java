@@ -25,7 +25,6 @@ public class EntityProperties {
             if (property.getName().equals(name))
                 return property;
         return null;
-        //return null; //TODO handle if not found
     }
 
     @Override

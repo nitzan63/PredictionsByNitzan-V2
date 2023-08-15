@@ -11,8 +11,12 @@ public class World {
     private Rules rules;
     private Termination termination;
 
-    public void simulateThisTick (int tickNumber){
+    public void simulateThisTick (int tickNumber) throws Exception{
+        try {
             rules.simulateRules(entities, tickNumber);
+        } catch (Exception e){
+            throw new Exception("In Tick Number: " + tickNumber +" Error: " + e.getMessage(), e);
+        }
     }
     public Environment getEnvironment() {
         return environment;

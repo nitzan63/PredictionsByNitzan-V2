@@ -13,7 +13,6 @@ import java.util.List;
 public class TerminationMapper {
     public static Termination mapTermination(PRDTermination prdTermination){
         List<Object> terminationConditions = prdTermination.getPRDByTicksOrPRDBySecond();
-        // TODO in validation check if the list is empty.
         int maxTick = 0;
         int maxTime = 0;
         for (Object termination : terminationConditions){

@@ -22,10 +22,11 @@ public class Rules {
         return rules;
     }
 
-    public void simulateRules(EntitiesDefinition entitiesDefinition, int tickNumber){
-        for (Rule rule : rules){
-            rule.performActions(entitiesDefinition, tickNumber);
-        }
+    public void simulateRules(EntitiesDefinition entitiesDefinition, int tickNumber) throws Exception{
+            for (Rule rule : rules) {
+                rule.performActions(entitiesDefinition, tickNumber);
+            }
+
     }
 
     @Override

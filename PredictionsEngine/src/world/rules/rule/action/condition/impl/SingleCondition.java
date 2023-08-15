@@ -41,7 +41,7 @@ public class SingleCondition implements Condition {
         Object value = ExpressionEvaluator.evaluateExpression(rawValue, entityInstance);
 
         if (operator == null || value == null || propertyValue == null)
-            return false; //TODO handle this case.
+            return false;
         switch (operator){
             case EQUAL:
                 return propertyValue.equals(value);
@@ -62,7 +62,7 @@ public class SingleCondition implements Condition {
                 }
                 return false;
             default:
-                return false; // TODO handle this case.
+                return false;
         }
     }
 

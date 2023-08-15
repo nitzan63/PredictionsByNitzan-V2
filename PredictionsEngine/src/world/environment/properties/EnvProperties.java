@@ -24,7 +24,7 @@ public class EnvProperties {
         for (EnvProperty property : properties)
             if (property.getName().equals(name))
                 return property;
-        return null; //TODO handle if not found
+        return null;
     }
 
     @Override
