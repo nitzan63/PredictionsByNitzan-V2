@@ -8,14 +8,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class XMLValidator {
-    public static List<ValidationException> validateXML(PRDWorld world){
-        List<ValidationException> exceptions = new ArrayList<>();
-        try {
+    public static void validateXML(PRDWorld world) throws ValidationException{
             WorldValidator.validateWorld(world);
-        } catch (ValidationException e){
-            exceptions.add(e);
-        }
-
-        return exceptions;
     }
 }

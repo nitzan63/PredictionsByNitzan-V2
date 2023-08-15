@@ -11,7 +11,7 @@ import javax.xml.bind.ValidationException;
 public class Main {
     public static void main(String[] args) {
 
-        String filePath = "/Users/nitzanainemer/IdeaProjects/PredictionsByNitzan/PredictionsEngine/src/scheme/xml/ex1-cigarets.xml";
+        String filePath = "/Users/nitzanainemer/IdeaProjects/PredictionsByNitzan/PredictionsEngine/src/scheme/xml/ex1-error-6.xml";
 
         XMLProcessor processor = new XMLProcessor();
 
@@ -19,11 +19,7 @@ public class Main {
             World world = processor.processXML(filePath);
             System.out.println("XML processed successfully and returned a World object: " + world);
         } catch (XMLProcessingException e) {
-            System.err.println("Error processing XML: " + e.getMessage());
-            Throwable cause = e.getCause();
-            if (cause != null) {
-                System.err.println("Cause: " + cause.getMessage());
-            }
+            System.err.println(e.getMessage());
         } catch (Exception e) {
             System.err.println("Unexpected error: " + e.getMessage());
         }

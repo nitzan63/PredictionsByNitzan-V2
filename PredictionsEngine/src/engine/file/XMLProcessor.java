@@ -22,10 +22,7 @@ public class XMLProcessor {
             // Step 2: Unmarshall
             jaxbWorld = xmlUnmarshaller.unmarshallToJava(filePath);
             // Step 3: Run validateXML
-            List<ValidationException> exceptions = XMLValidator.validateXML(jaxbWorld);
-            if (!exceptions.isEmpty()) {
-                throw new XMLProcessingException("XML validation failed", exceptions.get(0));
-            }
+            XMLValidator.validateXML(jaxbWorld);
             // Step 4: Map
             world = WorldMapper.mapWorld(jaxbWorld);
             // Step 5: Run validateXMLPostMapping

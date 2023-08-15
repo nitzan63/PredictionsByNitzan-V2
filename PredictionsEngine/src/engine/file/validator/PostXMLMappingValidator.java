@@ -8,6 +8,7 @@ import world.rules.Rules;
 import world.rules.rule.action.api.Action;
 import world.rules.rule.action.api.ActionType;
 import world.rules.rule.action.api.CalculationAction;
+import world.rules.rule.action.impl.ConditionAction;
 import world.rules.rule.api.Rule;
 import world.utils.expression.ExpressionEvaluator;
 
@@ -25,48 +26,7 @@ public class PostXMLMappingValidator {
         for (Rule rule : rules.getRules()) {
             // For each action:
             for (Action action : rule.getActionsToPerform()) {
-                // check that the name exists:
-                String contextEntityName = action.getEntityName();
-                if (!contextEntityName.equals(actualEntitiesName)) {
-                    throw new ValidationException("Entity name: " + contextEntityName + ", in rule " + rule.getName() + " does not exist!\n");
-                }
-                // check property name exists:
-                if (action.getPropertyName() != null) {
-                    String contextPropName = action.getPropertyName();
-                    List<String> propertiesNames = getPropertyNames(world);
-                    boolean propertyExists = false;
-                    for (String actualPropName : propertiesNames) {
-                        if (actualPropName.equals(contextPropName)) {
-                            propertyExists = true;
-                            break;
-                        }
-                    }
-                    if (!propertyExists) {
-                        throw new ValidationException("Property Name: " + contextPropName + ", in rule " + rule.getName() + " does not exist!\n");
-                    }
-                }
-                // check if the byExpression is valid:
-                if (action.getByExpression() != null && ((action.getActionType() == ActionType.DECREASE) || (action.getActionType() == ActionType.INCREASE))) {
-                    // check for decrease / increase:
-                    Object evaluatedValue = ExpressionEvaluator.evaluateExpression(action.getByExpression(), exampleEntity);
-                    if (!(evaluatedValue instanceof Number)) {
-                        throw new ValidationException("byExpression value: " + action.getByExpression() + ", in rule " + rule.getName() + " is not a number!\n");
-                    }
-                }
-                else if (action.getActionType() == ActionType.CALCULATION) {
-                    if (action instanceof CalculationAction) {
-                        //check for calculation args:
-                        CalculationAction calcAction = (CalculationAction) action;
-                        Object evaluatedArg1 = ExpressionEvaluator.evaluateExpression(calcAction.getArgs1(), exampleEntity);
-                        Object evaluatedArg2 = ExpressionEvaluator.evaluateExpression(calcAction.getArgs2(), exampleEntity);
-                        if (!(evaluatedArg1 instanceof Number)) {
-                            throw new ValidationException("args1 value: " + calcAction.getArgs1() + ", in calculation action in rule " + rule.getName() + " is not a number!\n");
-                        }
-                        if (!(evaluatedArg2 instanceof Number)) {
-                            throw new ValidationException("args2 value: " + calcAction.getArgs2() + ", in calculation action in rule " + rule.getName() + " is not a number!\n");
-                        }
-                    }
-                }
+                validateAction(action, rule, actualEntitiesName, exampleEntity);
             }
         }
     }
@@ -78,4 +38,69 @@ public class PostXMLMappingValidator {
                 }
                 return propNames;
             }
+
+    private static void validateAction(Action action, Rule rule, String actualEntitiesName, EntityInstance exampleEntity) throws ValidationException {
+        if (action instanceof ConditionAction) {
+            ConditionAction conditionAction = (ConditionAction) action;
+            for (Action thenAction : conditionAction.getThenActions()) {
+                validateAction(thenAction, rule, actualEntitiesName, exampleEntity);
+            }
+            if (conditionAction.getElseActions() != null) {
+                for (Action elseAction : conditionAction.getElseActions()) {
+                    validateAction(elseAction, rule, actualEntitiesName, exampleEntity);
+                }
+            }
+        } else {
+            // check that the name exists:
+            String contextEntityName = action.getEntityName();
+            if (!contextEntityName.equals(actualEntitiesName)) {
+                throw new ValidationException("Entity name: " + contextEntityName + ", in rule " + rule.getName() + " does not exist!\n");
+            }
+            // check property name exists:
+            if (action.getPropertyName() != null) {
+                String contextPropName = action.getPropertyName();
+                List<String> propertiesNames = getPropertyNames(exampleEntity);
+                boolean propertyExists = false;
+                for (String actualPropName : propertiesNames) {
+                    if (actualPropName.equals(contextPropName)) {
+                        propertyExists = true;
+                        break;
+                    }
+                }
+                if (!propertyExists) {
+                    throw new ValidationException("Property Name: " + contextPropName + ", in rule " + rule.getName() + " does not exist!\n");
+                }
+            }
+            // check if the byExpression is valid:
+            if (action.getByExpression() != null && ((action.getActionType() == ActionType.DECREASE) || (action.getActionType() == ActionType.INCREASE))) {
+                // check for decrease / increase:
+                Object evaluatedValue = ExpressionEvaluator.evaluateExpression(action.getByExpression(), exampleEntity);
+                if (!(evaluatedValue instanceof Number)) {
+                    throw new ValidationException("byExpression value: " + action.getByExpression() + ", in rule " + rule.getName() + " is not a number!\n");
+                }
+            }
+            else if (action.getActionType() == ActionType.CALCULATION) {
+                if (action instanceof CalculationAction) {
+                    //check for calculation args:
+                    CalculationAction calcAction = (CalculationAction) action;
+                    Object evaluatedArg1 = ExpressionEvaluator.evaluateExpression(calcAction.getArgs1(), exampleEntity);
+                    Object evaluatedArg2 = ExpressionEvaluator.evaluateExpression(calcAction.getArgs2(), exampleEntity);
+                    if (!(evaluatedArg1 instanceof Number)) {
+                        throw new ValidationException("args1 value: " + calcAction.getArgs1() + ", in calculation action in rule " + rule.getName() + " is not a number!\n");
+                    }
+                    if (!(evaluatedArg2 instanceof Number)) {
+                        throw new ValidationException("args2 value: " + calcAction.getArgs2() + ", in calculation action in rule " + rule.getName() + " is not a number!\n");
+                    }
+                }
+            }
+        }
+    }
+
+    private static List<String> getPropertyNames(EntityInstance entityInstance) {
+        List<String> propNames = new ArrayList<>();
+        for (EntityProperty prop : entityInstance.getProperties().getProperties()) {
+            propNames.add(prop.getName());
+        }
+        return propNames;
+    }
 }

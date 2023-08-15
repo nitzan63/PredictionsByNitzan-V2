@@ -44,6 +44,14 @@ public class ConditionAction extends AbstractAction {
             action.invoke(entityInstance);
     }
 
+    public List<Action> getThenActions() {
+        return thenActions;
+    }
+
+    public List<Action> getElseActions() {
+        return elseActions;
+    }
+
     @Override
     public String toString() {
         return "ConditionAction{" +

@@ -18,7 +18,7 @@ public class RuleValidator {
             for (PRDAction action : rule.getPRDActions().getPRDAction())
                 ActionValidator.validateAction(action);
         } catch (ValidationException e) {
-            throw new ValidationException("In rule " + rule.getName(), e);
+            throw new ValidationException("In rule " + rule.getName() + e.getMessage() , e);
         }
     }
 
