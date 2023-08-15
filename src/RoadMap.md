@@ -4,10 +4,10 @@
 - [x] Implement Mapper for Rule -> Rules -> Action -> Activation
 - [x] Implement Validator for Rules
 - [x] Implement Validator for Termination
-- [ ] Go Over TODO notes
+- [x] Go Over TODO notes
 - [ ] Run Tests using Maya's XML files
 - [ ] Create Simulation Engine / Class / Method...
 - [ ] Design an Exception system for the simulation time.
 - [ ] Create a DTO module.
 - [ ] Start Implementing UI...
-- [ ] Check byExpression before run!
+- [x] Check byExpression before run!

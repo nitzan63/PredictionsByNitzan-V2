@@ -13,9 +13,7 @@ public class KillAction extends AbstractAction {
     @Override
     public void invoke(EntityInstance entityInstance) {
         entitiesDefinition.removeEntityInstance(entityInstance.getSerialNumber());
-        System.out.println("\nKilled Entity Number " + entityInstance.getSerialNumber());
         entitiesDefinition.setPopulation(entitiesDefinition.getPopulation() - 1);
-        //TODO handle what happens if not found?
     }
 
     @Override

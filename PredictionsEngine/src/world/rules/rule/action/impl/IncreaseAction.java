@@ -28,8 +28,6 @@ public class IncreaseAction extends AbstractAction {
         } else {
             throw new IllegalArgumentException("Unexpected type" + valueObject.getClass() + " in " + propertyName + " in " + entityInstance);
         }
-        // Double value = (Double) property.getValue();
-        //System.out.println("\nbyExpression: " + byExpression + " after evaluation: " + evaluateExpression(byExpression, entityInstance));
         Double expression = (Double) evaluateExpression(byExpression, entityInstance);
         newValue = value + expression;
         if (newValue < property.getRange().getTo().doubleValue())
