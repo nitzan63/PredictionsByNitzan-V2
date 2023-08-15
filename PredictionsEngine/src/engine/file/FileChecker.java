@@ -1,5 +1,7 @@
 package engine.file;
 
+import engine.file.exceptions.FileValidationException;
+
 import java.io.File;
 
 public class FileChecker {
@@ -14,8 +16,3 @@ public class FileChecker {
     }
 }
 
-class FileValidationException extends Exception {
-    public FileValidationException(String message) {
-        super(message);
-    }
-}

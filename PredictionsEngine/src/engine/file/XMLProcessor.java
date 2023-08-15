@@ -1,5 +1,7 @@
 package engine.file;
 
+import engine.file.exceptions.FileValidationException;
+import engine.file.exceptions.XMLProcessingException;
 import engine.file.mapper.world.WorldMapper;
 import engine.file.unmarshaller.xmlUnmarshaller;
 import engine.file.validator.PostXMLMappingValidator;
@@ -40,12 +42,3 @@ public class XMLProcessor {
     }
 }
 
-class XMLProcessingException extends Exception {
-    public XMLProcessingException(String message) {
-        super(message);
-    }
-
-    public XMLProcessingException(String message, Throwable cause) {
-        super(message, cause);
-    }
-}
