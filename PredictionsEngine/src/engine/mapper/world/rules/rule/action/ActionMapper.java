@@ -14,6 +14,7 @@ import java.util.List;
 public class ActionMapper {
     public static Action mapAction (PRDAction jaxbAction, EntitiesDefinition entitiesContext){
         String actionType = jaxbAction.getType().toLowerCase();
+        String entityName = jaxbAction.getEntity();
         switch (actionType){
             case "increase":
                 return IncreaseActionMapper.mapIncreaseAction(jaxbAction, entitiesContext);
@@ -22,7 +23,7 @@ public class ActionMapper {
             case "calculation":
                 return CalculationActionMapper.mapCalculationAction(jaxbAction, entitiesContext);
             case "kill":
-                return new KillAction(entitiesContext);
+                return new KillAction(entitiesContext, entityName);
             case "set":
                 return SetActionMapper.mapSetAction(jaxbAction, entitiesContext);
             case "condition":

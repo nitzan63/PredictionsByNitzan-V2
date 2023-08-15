@@ -8,13 +8,11 @@ import world.rules.rule.action.api.ActionType;
 public class SetAction extends AbstractAction {
     private final String propertyName;
     private final String expression;
-    private final String entityName;
 
     public SetAction(EntitiesDefinition entitiesDefinition, String propertyName, String expression, String entityName) {
-        super(ActionType.SET, entitiesDefinition);
+        super(ActionType.SET, entitiesDefinition, entityName);
         this.propertyName = propertyName;
         this.expression = expression;
-        this.entityName = entityName;
     }
 
     @Override

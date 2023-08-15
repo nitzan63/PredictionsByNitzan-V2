@@ -9,6 +9,7 @@ public class IncreaseActionMapper {
     public static IncreaseAction mapIncreaseAction(PRDAction jaxbAction, EntitiesDefinition entitiesContext) {
         String propertyName = jaxbAction.getProperty();
         String byExpression = jaxbAction.getBy();
-        return new IncreaseAction(entitiesContext, propertyName, byExpression);
+        String entityName = jaxbAction.getEntity();
+        return new IncreaseAction(entitiesContext, propertyName, byExpression , entityName);
     }
 }

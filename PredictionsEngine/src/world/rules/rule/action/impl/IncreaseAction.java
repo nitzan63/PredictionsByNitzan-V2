@@ -10,8 +10,8 @@ public class IncreaseAction extends AbstractAction {
     private final String propertyName;
     private final String byExpression;
 
-    public IncreaseAction(EntitiesDefinition entitiesDefinition, String property, String byExpression) {
-        super(ActionType.INCREASE, entitiesDefinition);
+    public IncreaseAction(EntitiesDefinition entitiesDefinition, String property, String byExpression, String entityName) {
+        super(ActionType.INCREASE, entitiesDefinition, entityName);
         this.propertyName = property;
         this.byExpression = byExpression;
     }

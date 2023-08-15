@@ -8,6 +8,7 @@ public class DecreaseActionMapper {
     public static DecreaseAction mapDecreaseAction(PRDAction jaxbAction, EntitiesDefinition entitiesContext) {
         String propertyName = jaxbAction.getProperty();
         String byExpression = jaxbAction.getBy();
-        return new DecreaseAction(entitiesContext, propertyName, byExpression);
+        String entityName = jaxbAction.getEntity();
+        return new DecreaseAction(entitiesContext, propertyName, byExpression, entityName);
     }
 }

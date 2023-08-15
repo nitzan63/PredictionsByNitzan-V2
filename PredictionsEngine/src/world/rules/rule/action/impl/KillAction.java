@@ -6,7 +6,9 @@ import world.rules.rule.action.api.AbstractAction;
 import world.rules.rule.action.api.ActionType;
 
 public class KillAction extends AbstractAction {
-    public KillAction(EntitiesDefinition entitiesDefinition) {super(ActionType.KILL, entitiesDefinition);}
+    public KillAction(EntitiesDefinition entitiesDefinition, String entityName) {
+        super(ActionType.KILL, entitiesDefinition, entityName);
+    }
 
     @Override
     public void invoke(EntityInstance entityInstance) {
