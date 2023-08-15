@@ -19,7 +19,7 @@ public class PropertyDecimal implements EntityProperty, EnvProperty {
         this.range = range;
         if (isRandom) {
             Random random = new Random();
-            this.value = random.nextInt((range.getTo() - range.getFrom() + 1) + range.getFrom());
+            this.value = random.nextInt(range.getTo() - range.getFrom() + 1) + range.getFrom();
         } else this.value = init;
     }
 
@@ -38,7 +38,7 @@ public class PropertyDecimal implements EntityProperty, EnvProperty {
         this.name = name;
         this.range = range;
         Random random = new Random();
-        this.value = random.nextInt((range.getTo() - range.getFrom() + 1) + range.getFrom());
+        this.value = random.nextInt(range.getTo() - range.getFrom() + 1) + range.getFrom();
     }
 
     @Override

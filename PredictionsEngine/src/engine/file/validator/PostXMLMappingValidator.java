@@ -34,9 +34,15 @@ public class PostXMLMappingValidator {
                 if (action.getPropertyName() != null) {
                     String contextPropName = action.getPropertyName();
                     List<String> propertiesNames = getPropertyNames(world);
+                    boolean propertyExists = false;
                     for (String actualPropName : propertiesNames) {
-                        if (!actualPropName.equals(contextPropName))
-                            throw new ValidationException("Property Name: " + contextPropName + ", in rule " + rule.getName() + " does not exist!\n");
+                        if (actualPropName.equals(contextPropName)) {
+                            propertyExists = true;
+                            break;
+                        }
+                    }
+                    if (!propertyExists) {
+                        throw new ValidationException("Property Name: " + contextPropName + ", in rule " + rule.getName() + " does not exist!\n");
                     }
                 }
                 // check if the byExpression is valid:
