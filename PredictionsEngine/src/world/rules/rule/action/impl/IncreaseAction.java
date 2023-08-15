@@ -41,6 +41,16 @@ public class IncreaseAction extends AbstractAction {
     }
 
     @Override
+    public String getPropertyName() {
+        return propertyName;
+    }
+
+    @Override
+    public String getByExpression() {
+        return byExpression;
+    }
+
+    @Override
     public String toString() {
         return "IncreaseAction{" +
                 "propertyName='" + propertyName + '\'' +

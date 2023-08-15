@@ -28,6 +28,17 @@ public class ConditionAction extends AbstractAction {
         }
     }
 
+    @Override
+    public String getPropertyName() {
+        return null;
+    }
+
+
+    @Override
+    public String getByExpression() {
+        return null;
+    }
+
     private void performActions(List<Action> actions, EntityInstance entityInstance){
         for (Action action : actions)
             action.invoke(entityInstance);

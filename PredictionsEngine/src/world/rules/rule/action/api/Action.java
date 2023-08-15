@@ -7,4 +7,10 @@ public interface Action {
     void invoke (EntityInstance entityInstance);
     ActionType getActionType();
     public EntitiesDefinition getContextEntity();
+
+    public String getEntityName();
+
+    public String getPropertyName();
+
+    public String getByExpression();
 }

@@ -18,5 +18,15 @@ public class KillAction extends AbstractAction {
         //TODO handle what happens if not found?
     }
 
+    @Override
+    public String getPropertyName() {
+        return null;
+    }
+
+    @Override
+    public String getByExpression() {
+        return null;
+    }
+
 
 }

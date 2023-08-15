@@ -18,10 +18,22 @@ public abstract class CalculationAction extends AbstractAction {
         return entityName;
     }
 
+    public String getArgs1() {
+        return args1;
+    }
+
+    public String getArgs2() {
+        return args2;
+    }
 
     public String getPropertyName() {
         return resProp;
     }
+
+    public String getByExpression(){
+        return null;
+    }
+
 
     @Override
     public String toString() {

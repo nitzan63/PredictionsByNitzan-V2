@@ -30,6 +30,16 @@ public class SetAction extends AbstractAction {
     }
 
     @Override
+    public String getPropertyName() {
+        return propertyName;
+    }
+
+    @Override
+    public String getByExpression() {
+        return expression;
+    }
+
+    @Override
     public String toString() {
         return "SetAction{" +
                 "propertyName='" + propertyName + '\'' +

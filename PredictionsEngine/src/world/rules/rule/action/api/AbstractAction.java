@@ -30,6 +30,10 @@ public abstract class AbstractAction implements Action {
         return ExpressionEvaluator.evaluateExpression(expression, entityInstance);
     }
 
+    public String getEntityName() {
+        return entityName;
+    }
+
     @Override
     public String toString() {
         return "AbstractAction{" +
