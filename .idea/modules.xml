@@ -6,6 +6,7 @@
       <module fileurl="file://$PROJECT_DIR$/DTO/DTO.iml" filepath="$PROJECT_DIR$/DTO/DTO.iml" />
       <module fileurl="file://$PROJECT_DIR$/PredictionsByNitzan.iml" filepath="$PROJECT_DIR$/PredictionsByNitzan.iml" />
       <module fileurl="file://$PROJECT_DIR$/PredictionsEngine/PredictionsEngine.iml" filepath="$PROJECT_DIR$/PredictionsEngine/PredictionsEngine.iml" />
+      <module fileurl="file://$PROJECT_DIR$/UI/UI.iml" filepath="$PROJECT_DIR$/UI/UI.iml" />
     </modules>
   </component>
 </project>
