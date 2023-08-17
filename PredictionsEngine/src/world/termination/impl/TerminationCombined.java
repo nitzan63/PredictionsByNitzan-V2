@@ -11,6 +11,8 @@ public class TerminationCombined implements Termination {
         this.byTime = new TerminationByTime(maxSeconds);
     }
 
+
+
     public TerminationByTime getByTime() {
         return byTime;
     }
@@ -22,6 +24,16 @@ public class TerminationCombined implements Termination {
     @Override
     public boolean isNotTerminated(int tickNumber, int elapsedSeconds) {
         return byTime.isNotTerminated(tickNumber, elapsedSeconds) && byTicks.isNotTerminated(tickNumber, elapsedSeconds);
+    }
+
+    @Override
+    public String getTerminationMessage() {
+        if (byTicks.getTerminationMessage() != null)
+            return byTicks.getTerminationMessage();
+        if (byTime.getTerminationMessage() != null)
+            return byTime.getTerminationMessage();
+        return null;
+
     }
 
     @Override

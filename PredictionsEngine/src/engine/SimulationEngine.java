@@ -4,9 +4,10 @@ import api.DTOEngineInterface;
 import dto.*;
 import engine.file.XMLProcessor;
 import engine.file.exceptions.XMLProcessingException;
+import engine.input.validator.EnvironmentInputValidator;
+import engine.simulation.SimulationRunner;
 import world.World;
 import world.entities.EntitiesDefinition;
-import world.entities.entity.EntityInstance;
 import world.entities.entity.properties.property.api.EntityProperty;
 import world.environment.Environment;
 import world.environment.properties.EnvProperties;
@@ -18,11 +19,17 @@ import world.termination.impl.TerminationByTicks;
 import world.termination.impl.TerminationByTime;
 import world.termination.impl.TerminationCombined;
 
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
+
+import static engine.input.validator.EnvironmentInputValidator.parseValue;
 
 public class SimulationEngine implements DTOEngineInterface {
     private World world;
+    private final List<ErrorDTO> errorList = new ArrayList<>();
+    private SimulationRunner simulationRunner;
 
     @Override
     public void loadXmlFile(String filePath) throws Exception {
@@ -30,6 +37,8 @@ public class SimulationEngine implements DTOEngineInterface {
             XMLProcessor processor = new XMLProcessor();
             this.world = processor.processXML(filePath);
         } catch (XMLProcessingException e) {
+            ErrorDTO errorDTO = new ErrorDTO(e.getMessage(), e.getClass().getName(), LocalDateTime.now());
+            errorList.add(errorDTO);
             throw new Exception("Error processing XML file: " + e.getMessage(), e);
         }
     }
@@ -87,7 +96,65 @@ public class SimulationEngine implements DTOEngineInterface {
     @Override
     public EnvironmentDTO getEnvironmentProperties() {
         EnvironmentDTO environmentDTO = new EnvironmentDTO();
-        EnvProperties properties = world.getEnvironment()
+        EnvProperties properties = Environment.getProperties();
+        for (EnvProperty property : properties.getProperties()){
+            environmentDTO.addEnvironmentProperty(property.getName(), property.getValue());
+        }
+        return environmentDTO;
+    }
+
+    @Override
+    public void setEnvironmentProperties(UserEnvironmentInputDTO input) {
+        // Validate the user input
+        EnvProperties properties = Environment.getProperties();
+        try {
+            EnvironmentInputValidator.validateInput(input, properties);
+        } catch (IllegalArgumentException e){
+            ErrorDTO errorDTO = new ErrorDTO(e.getMessage(), e.getClass().getName(), LocalDateTime.now());
+            errorList.add(errorDTO);
+            return;
+        }
+
+        // Apply the changes to the environment properties
+        for (Map.Entry<String, String> entry : input.getUserInputProperties().entrySet()) {
+            String propertyName = entry.getKey();
+            String stringValue = entry.getValue();
+
+            EnvProperty property = properties.getProperty(propertyName);
+            if (property != null) {
+                String expectedType = property.getType();
+                Object value = EnvironmentInputValidator.parseValue(stringValue, expectedType);  // Use the public method
+                property.setValue(value);
+            }
+        }
+    }
+
+    public void RunSimulation() {
+        if (world != null) {
+            simulationRunner = new SimulationRunner(world);
+            simulationRunner.runSimulation();
+        } else {
+            throw new IllegalStateException("World has not been initialized yet.");
+        }
+    }
+    public SimulationRunResultsDTO getSimulationResults(String runIdentifier) {
+        if (simulationRunner != null) {
+            return simulationRunner.getResultsByID(runIdentifier);
+        } else {
+            throw new IllegalStateException("Simulation has not been run yet.");
+        }
+    }
+
+    public Map<String, SimulationRunResultsDTO> getAllSimulationResults() {
+        if (simulationRunner != null) {
+            return simulationRunner.getAllSimulationResults();
+        } else {
+            throw new IllegalStateException("Simulation has not been run yet.");
+        }
+    }
+
+    public void exit(){
+        System.exit(0);
     }
 
 

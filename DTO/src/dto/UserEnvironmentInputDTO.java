@@ -3,13 +3,13 @@ package dto;
 import java.util.Map;
 
 public class UserEnvironmentInputDTO {
-    private final Map<String, Object> userInputProperties;
+    private final Map<String, String> userInputProperties;
 
-    public UserEnvironmentInputDTO(Map<String, Object> userInputProperties) {
+    public UserEnvironmentInputDTO(Map<String, String> userInputProperties) {
         this.userInputProperties = userInputProperties;
     }
 
-    public Map<String, Object> getUserInputProperties() {
+    public Map<String, String> getUserInputProperties() {
         return userInputProperties;
     }
 }

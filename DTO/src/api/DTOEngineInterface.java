@@ -1,11 +1,9 @@
 package api;
 
-import dto.EntitiesDefinitionDTO;
-import dto.EnvironmentDTO;
-import dto.RuleDTO;
-import dto.TerminationDTO;
+import dto.*;
 
 import java.util.List;
+import java.util.Map;
 
 public interface DTOEngineInterface {
     void loadXmlFile (String Path) throws Exception;
@@ -13,4 +11,10 @@ public interface DTOEngineInterface {
     List<RuleDTO> getRules();
     TerminationDTO getTermination();
     EnvironmentDTO getEnvironmentProperties();
+    void setEnvironmentProperties(UserEnvironmentInputDTO input);
+    void RunSimulation();
+    SimulationRunResultsDTO getSimulationResults(String runIdentifier);
+    Map<String, SimulationRunResultsDTO> getAllSimulationResults();
+
+    void exit();
 }
