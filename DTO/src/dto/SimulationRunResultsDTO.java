@@ -7,12 +7,18 @@ import java.util.Map;
 
 public class SimulationRunResultsDTO {
     private final String runIdentifier;
+    private final String dateTime;
     private PopulationStatisticsDTO populationStatistics;
     private Map<String, PropertyHistogramDTO> propertyHistograms;
 
-    public SimulationRunResultsDTO(String runIdentifier) {
+    public SimulationRunResultsDTO(String runIdentifier, String dateTime) {
         this.runIdentifier = runIdentifier;
         this.propertyHistograms = new HashMap<>();
+        this.dateTime = dateTime;
+    }
+
+    public String getDateTime() {
+        return dateTime;
     }
 
     public String getRunIdentifier() {

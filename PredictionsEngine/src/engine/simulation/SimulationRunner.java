@@ -33,8 +33,8 @@ public class SimulationRunner {
 
     public SimulationRunMetadataDTO runSimulation() {
 
-        SimulationRunResultsDTO resultsDTO = new SimulationRunResultsDTO(runIdentifier);
-        PopulationStatisticsDTO populationStatistics = new PopulationStatisticsDTO(world.getEntities().getPopulation(), 0);
+        SimulationRunResultsDTO resultsDTO = new SimulationRunResultsDTO(runIdentifier , LocalDateTime.now().format(DateTimeFormatter.ofPattern("dd-MM-yyyy | HH.mm.ss")));
+        PopulationStatisticsDTO populationStatistics = new PopulationStatisticsDTO(world.getEntities().getEntityName(), world.getEntities().getPopulation(), 0);
         simulationResults.put(runIdentifier, resultsDTO);
 
         while (shouldContinue()) {
