@@ -24,8 +24,6 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
-import static engine.input.validator.EnvironmentInputValidator.parseValue;
-
 public class SimulationEngine implements DTOEngineInterface {
     private World world;
     private final List<ErrorDTO> errorList = new ArrayList<>();
@@ -48,9 +46,9 @@ public class SimulationEngine implements DTOEngineInterface {
         String name = entities.getEntityName();
         int population = entities.getPopulation();
         List<EntityProperty> properties = entities.getEntity(0).getProperties().getProperties();
-        List<EntityPropertyDTO> propertyDTOList = new ArrayList<>();
+        List<PropertyDTO> propertyDTOList = new ArrayList<>();
         for (EntityProperty property : properties) {
-            propertyDTOList.add(new EntityPropertyDTO(property.getName(), property.getType(), property.getRange().getFromDouble(), property.getRange().getToDouble(), property.isRandomInitialize()));
+            propertyDTOList.add(new PropertyDTO(property.getName(), property.getType(), property.getRange().getFromDouble(), property.getRange().getToDouble(), property.isRandomInitialize(), property.getValue()));
         }
         return new EntitiesDefinitionDTO(name, population, propertyDTOList);
     }

@@ -1,18 +1,24 @@
 package dto;
 
-public class EntityPropertyDTO {
+public class PropertyDTO {
     private String name;
     private String type;
     private double rangeFrom;
     private double rangeTo;
     private boolean isRandomlyInitialized;
+    String value;
 
-    public EntityPropertyDTO(String name, String type, double rangeFrom, double rangeTo, boolean isRandomlyInitialized) {
+    public PropertyDTO(String name, String type, double rangeFrom, double rangeTo, boolean isRandomlyInitialized, Object value) {
         this.name = name;
         this.type = type;
         this.rangeFrom = rangeFrom;
         this.rangeTo = rangeTo;
         this.isRandomlyInitialized = isRandomlyInitialized;
+        this.value = value.toString();
+    }
+
+    public String getValue() {
+        return value;
     }
 
     public String getName() {

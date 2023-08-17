@@ -5,9 +5,9 @@ import java.util.List;
 public class EntitiesDefinitionDTO {
     private String name;
     private int population;
-    private List<EntityPropertyDTO> properties;
+    private List<PropertyDTO> properties;
 
-    public EntitiesDefinitionDTO(String name, int population, List<EntityPropertyDTO> properties) {
+    public EntitiesDefinitionDTO(String name, int population, List<PropertyDTO> properties) {
         this.name = name;
         this.population = population;
         this.properties = properties;
@@ -29,11 +29,11 @@ public class EntitiesDefinitionDTO {
         this.population = population;
     }
 
-    public List<EntityPropertyDTO> getProperties() {
+    public List<PropertyDTO> getProperties() {
         return properties;
     }
 
-    public void setProperties(List<EntityPropertyDTO> properties) {
+    public void setProperties(List<PropertyDTO> properties) {
         this.properties = properties;
     }
 

@@ -1,13 +1,14 @@
 package dto;
 
 import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.Map;
 
 public class EnvironmentDTO {
     private Map<String, Object> environmentProperties;
 
     public EnvironmentDTO() {
-        this.environmentProperties = new HashMap<>();
+        this.environmentProperties = new LinkedHashMap<>();
     }
 
     public Map<String, Object> getEnvironmentProperties() {
