@@ -127,10 +127,10 @@ public class SimulationEngine implements DTOEngineInterface {
         }
     }
 
-    public void RunSimulation() {
+    public SimulationRunMetadataDTO RunSimulation() {
         if (world != null) {
             simulationRunner = new SimulationRunner(world);
-            simulationRunner.runSimulation();
+            return simulationRunner.runSimulation();
         } else {
             throw new IllegalStateException("World has not been initialized yet.");
         }

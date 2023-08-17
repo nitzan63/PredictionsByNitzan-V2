@@ -36,8 +36,8 @@ public class DTOSimulationInterface {
         engineInterface.setEnvironmentProperties(input);
     }
 
-    public void runSimulation() {
-        engineInterface.RunSimulation();
+    public SimulationRunMetadataDTO runSimulation() {
+        return engineInterface.RunSimulation();
     }
 
     public SimulationRunResultsDTO getSimulationResults(String runIdentifier) {

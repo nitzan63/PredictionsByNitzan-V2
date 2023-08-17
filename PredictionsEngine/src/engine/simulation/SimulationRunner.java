@@ -31,7 +31,7 @@ public class SimulationRunner {
         this.runIdentifier = generateRunIdentifier();
     }
 
-    public void runSimulation() {
+    public SimulationRunMetadataDTO runSimulation() {
 
         SimulationRunResultsDTO resultsDTO = new SimulationRunResultsDTO(runIdentifier);
         PopulationStatisticsDTO populationStatistics = new PopulationStatisticsDTO(world.getEntities().getPopulation(), 0);
@@ -71,6 +71,7 @@ public class SimulationRunner {
 
         SimulationRunMetadataDTO metadataDTO = new SimulationRunMetadataDTO(runIdentifier, LocalDateTime.now().toString(), termination.getTerminationMessage());
         simulationData.put(runIdentifier, metadataDTO);
+        return metadataDTO;
     }
 
     private boolean shouldContinue() {
