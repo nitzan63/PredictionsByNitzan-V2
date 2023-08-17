@@ -24,7 +24,7 @@ public class Activation {
         return isActive;
     }
 
-    public double getProbability(double probability) {
+    public double getProbability() {
         return this.probability;
     }
 

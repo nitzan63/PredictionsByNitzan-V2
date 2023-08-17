@@ -14,6 +14,10 @@ public class TerminationByTime implements Termination {
         return elapsedSeconds <= maxTime;
     }
 
+    public int getMaxTime() {
+        return maxTime;
+    }
+
     @Override
     public String toString() {
         return "TerminationByTime{" +

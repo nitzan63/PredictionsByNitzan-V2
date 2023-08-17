@@ -14,6 +14,14 @@ public class Range<T extends Number & Comparable<T>> {
         return from;
     }
 
+    public Double getFromDouble (){
+        return from.doubleValue();
+    }
+
+    public Double getToDouble(){
+        return to.doubleValue();
+    }
+
     public T getTo() {
         return to;
     }

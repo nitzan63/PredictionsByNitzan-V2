@@ -12,6 +12,10 @@ public class Environment {
         Environment.properties = properties;
     }
 
+    public static EnvProperties getProperties() {
+        return properties;
+    }
+
     public static Double getEnvironmentPropValue(String propertyName){
         Object value = properties.getProperty(propertyName).getValue();
         if (value instanceof Integer) {

@@ -11,6 +11,14 @@ public class TerminationCombined implements Termination {
         this.byTime = new TerminationByTime(maxSeconds);
     }
 
+    public TerminationByTime getByTime() {
+        return byTime;
+    }
+
+    public TerminationByTicks getByTicks() {
+        return byTicks;
+    }
+
     @Override
     public boolean isNotTerminated(int tickNumber, int elapsedSeconds) {
         return byTime.isNotTerminated(tickNumber, elapsedSeconds) && byTicks.isNotTerminated(tickNumber, elapsedSeconds);

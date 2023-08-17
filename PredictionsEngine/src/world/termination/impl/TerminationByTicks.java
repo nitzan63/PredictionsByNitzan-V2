@@ -14,6 +14,10 @@ private final int maxTicks;
         return tickNumber <= maxTicks;
     }
 
+    public int getMaxTicks() {
+        return maxTicks;
+    }
+
     @Override
     public String toString() {
         return "TerminationByTicks{" +

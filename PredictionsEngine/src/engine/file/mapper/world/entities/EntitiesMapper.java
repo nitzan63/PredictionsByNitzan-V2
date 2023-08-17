@@ -14,7 +14,7 @@ public class EntitiesMapper {
         int population = jaxbEntityList.get(0).getPRDPopulation();
         String name = jaxbEntityList.get(0).getName();
         EntitiesDefinition entities = new EntitiesDefinition(name, population);
-        int serialNumber = 1;
+        int serialNumber = 0;
 
         PRDEntity jaxbEntity = jaxbEntityList.get(0);
 
