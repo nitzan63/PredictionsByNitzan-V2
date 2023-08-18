@@ -45,7 +45,7 @@ public class DisplayPastActivationCommand implements Command {
         sortedSimulations = new ArrayList<>(allSimulations.values());
         sortedSimulations.sort(Comparator.comparing(SimulationRunResultsDTO::getDateTime));
         for (int i = 0; i < sortedSimulations.size(); i++) {
-            System.out.println((i + 1) + ". " + sortedSimulations.get(i).getDateTime() + " | " + sortedSimulations.get(i).getRunIdentifier());
+            System.out.println((i + 1) + ". Date and Time: " + sortedSimulations.get(i).getDateTime() + " | Simulation ID: " + sortedSimulations.get(i).getRunIdentifier());
         }
     }
 
@@ -66,12 +66,12 @@ public class DisplayPastActivationCommand implements Command {
             switch (choice) {
                 case 1:
                     displayPopulationStatistics(results.getPopulationStatistics());
-                    continue;
+                    break;
                 case 2:
                     displayPropertyHistograms(results.getPropertyHistograms());
-                    continue;
+                    break;
                 case 0:
-                    continue;
+                    return;
                 default:
                     System.out.println("Please choose from options 1 or 2.");
                     break;

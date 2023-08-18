@@ -29,11 +29,13 @@ public class SimulationEngine implements DTOEngineInterface {
     private final List<ErrorDTO> errorList = new ArrayList<>();
     private SimulationRunner simulationRunner;
 
+
     @Override
     public void loadXmlFile(String filePath) throws Exception {
         try {
             XMLProcessor processor = new XMLProcessor();
             this.world = processor.processXML(filePath);
+            this.simulationRunner = new SimulationRunner(world);
         } catch (XMLProcessingException e) {
             ErrorDTO errorDTO = new ErrorDTO(e.getMessage(), e.getClass().getName(), LocalDateTime.now());
             errorList.add(errorDTO);
@@ -96,7 +98,8 @@ public class SimulationEngine implements DTOEngineInterface {
         EnvironmentDTO environmentDTO = new EnvironmentDTO();
         EnvProperties properties = Environment.getProperties();
         for (EnvProperty property : properties.getProperties()){
-            environmentDTO.addEnvironmentProperty(property.getName(), property.getValue());
+            PropertyDTO propertyDTO = new PropertyDTO(property.getName(), property.getType(), property.getRange().getFromDouble(), property.getRange().getToDouble(), false, property.getValue());
+            environmentDTO.addEnvironmentProperty(property.getName(), propertyDTO);
         }
         return environmentDTO;
     }
@@ -129,7 +132,6 @@ public class SimulationEngine implements DTOEngineInterface {
 
     public SimulationRunMetadataDTO RunSimulation() {
         if (world != null) {
-            simulationRunner = new SimulationRunner(world);
             return simulationRunner.runSimulation();
         } else {
             throw new IllegalStateException("World has not been initialized yet.");

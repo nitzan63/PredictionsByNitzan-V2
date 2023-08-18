@@ -6,8 +6,16 @@
 - [x] Implement Validator for Termination
 - [x] Go Over TODO notes
 - [ ] Run Tests using Maya's XML files
-- [ ] Create Simulation Engine / Class / Method...
-- [ ] Design an Exception system for the simulation time.
-- [ ] Create a DTO module.
-- [ ] Start Implementing UI...
+- [x] Create Simulation Engine / Class / Method...
+- [x] Design an Exception system for the simulation time.
+- [x] Create a DTO module.
+- [x] Start Implementing UI...
 - [x] Check byExpression before run!
+
+# Bug fixes!
+- [ ] check range when updating env properties.
+- [ ] results presenting non ending loop
+- [ ] message when choosing unavailable command.
+- [ ] remain entities -1
+- [ ] presenting results when all entities are dead
+- [ ] sort Property Histogram by value

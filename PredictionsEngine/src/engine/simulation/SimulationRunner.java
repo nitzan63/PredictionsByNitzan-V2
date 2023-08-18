@@ -16,7 +16,7 @@ public class SimulationRunner {
     private final Termination termination;
     private int tickNumber;
     private final long startTime;
-    private final String runIdentifier;
+    private String runIdentifier;
     private final Map<String, SimulationRunMetadataDTO> simulationData = new HashMap<>();
     private final Map<String, SimulationRunResultsDTO> simulationResults = new HashMap<>();
     private final List<ErrorDTO> errorList = new ArrayList<>();
@@ -28,11 +28,11 @@ public class SimulationRunner {
         this.termination = world.getTermination();
         this.tickNumber = 0;
         this.startTime = System.currentTimeMillis();
-        this.runIdentifier = generateRunIdentifier();
+        this.runIdentifier =null;
     }
 
     public SimulationRunMetadataDTO runSimulation() {
-
+        runIdentifier = generateRunIdentifier();
         SimulationRunResultsDTO resultsDTO = new SimulationRunResultsDTO(runIdentifier , LocalDateTime.now().format(DateTimeFormatter.ofPattern("dd-MM-yyyy | HH.mm.ss")));
         PopulationStatisticsDTO populationStatistics = new PopulationStatisticsDTO(world.getEntities().getEntityName(), world.getEntities().getPopulation(), 0);
         simulationResults.put(runIdentifier, resultsDTO);

@@ -13,7 +13,7 @@ import java.util.*;
 public class RunSimulationCommand implements Command {
     private final DTOSimulationInterface simulationInterface;
     private final UserInputHandler inputHandler;
-    private final Map<String, String > userInputProperties;
+    private final Map<String, String> userInputProperties;
 
     public RunSimulationCommand(DTOSimulationInterface simulationInterface, UserInputHandler inputHandler) {
         this.simulationInterface = simulationInterface;
@@ -62,31 +62,53 @@ public class RunSimulationCommand implements Command {
 
     private void displayEnvironmentProperties() {
         EnvironmentDTO environmentDTO = simulationInterface.getEnvironmentProperties();
-        Map<String, Object> environmentProperties = environmentDTO.getEnvironmentProperties();
+        Map<String, PropertyDTO> environmentProperties = environmentDTO.getEnvironmentProperties();
         System.out.println("Environment properties:");
         int counter = 1;
-        for (Map.Entry<String, Object> entry : environmentProperties.entrySet()) {
-            PropertyDTO property = (PropertyDTO) entry.getValue();
-            System.out.println(counter + ". Name: " + property.getName() + ", Type: " + property.getType() +
-                    ", Range: [" + property.getRangeFrom() + ", " + property.getRangeTo() + "]");
+        for (Map.Entry<String, PropertyDTO> entry : environmentProperties.entrySet()) {
+            PropertyDTO property = entry.getValue();
+            System.out.println(counter + ". Name: " + property.getName() + ", Type: " + property.getType() + ", Range: [" + property.getRangeFrom() + ", " + property.getRangeTo() + "]");
             counter++;
         }
     }
 
     private void updateEnvironmentProperty(int choice, String newValue) {
         EnvironmentDTO environmentDTO = simulationInterface.getEnvironmentProperties();
-        Map<String, Object> environmentProperties = environmentDTO.getEnvironmentProperties();
+        Map<String, PropertyDTO> environmentProperties = environmentDTO.getEnvironmentProperties();
 
         int counter = 1;
+        String selectedPropertyKey = null;
 
-        for (Map.Entry<String, Object> entry : environmentProperties.entrySet()) {
+        for (Map.Entry<String, PropertyDTO> entry : environmentProperties.entrySet()) {
             if (counter == choice) {
-                userInputProperties.put(entry.getKey(), newValue);
+                if (entry.getValue().getType().equals("decimal") || entry.getValue().getType().equals("float")) {
+                    double value = Double.parseDouble(newValue);
+                    if (value > entry.getValue().getRangeTo() || value < entry.getValue().getRangeFrom()) {
+                        System.out.println("Property value should be in range from " + entry.getValue().getRangeFrom() + " to " + entry.getValue().getRangeTo());
+                        break;
+                    }
+                } else if (entry.getValue().getType().equals("boolean")) {
+                    if (!(newValue.equalsIgnoreCase("true") || newValue.equalsIgnoreCase("false"))) {
+                        System.out.println("Property value needs to be boolean! (true of false");
+                        break;
+                    }
+                }
+                selectedPropertyKey = entry.getKey();
                 break;
             }
             counter++;
         }
+
+        if (selectedPropertyKey != null) {
+            // Update the userInputProperties map
+            userInputProperties.put(selectedPropertyKey, newValue);
+
+            // Update the environment properties in the engine
+            UserEnvironmentInputDTO inputDTO = new UserEnvironmentInputDTO(userInputProperties);
+            simulationInterface.setEnvironmentProperties(inputDTO);
+        }
     }
+
 
     private void displayUpdatedProperties() {
         // This method should display the properties and values that have been updated by the user
@@ -98,10 +120,10 @@ public class RunSimulationCommand implements Command {
 
     private void displayFinalEnvironmentProperties() {
         EnvironmentDTO environmentDTO = simulationInterface.getEnvironmentProperties();
-        Map<String, Object> environmentProperties = environmentDTO.getEnvironmentProperties();
+        Map<String, PropertyDTO> environmentProperties = environmentDTO.getEnvironmentProperties();
         System.out.println("Final environment properties:");
-        for (Map.Entry<String, Object> entry : environmentProperties.entrySet()) {
-            PropertyDTO property = (PropertyDTO) entry.getValue();
+        for (Map.Entry<String, PropertyDTO> entry : environmentProperties.entrySet()) {
+            PropertyDTO property = entry.getValue();
             String propertyName = property.getName();
             // Check if the user has updated the property
             if (userInputProperties.containsKey(propertyName)) {
