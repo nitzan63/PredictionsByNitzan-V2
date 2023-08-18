@@ -23,6 +23,10 @@ public class RunSimulationCommand implements Command {
 
     public void execute() {
         //Handle Environment properties from the user:
+        if (!simulationInterface.isWorldLoaded()){
+            System.out.println("To run simulation, make sure you have loaded a valid file (Command 1)");
+            return;
+        }
         handleEnvironmentProperties();
         displayFinalEnvironmentProperties();
 

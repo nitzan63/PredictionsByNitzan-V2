@@ -15,9 +15,13 @@ public class DisplaySimulationDetailsCommand implements Command {
     }
 
     public void execute() {
-        displayEntities();
-        displayRules();
-        displayTerminationConditions();
+        if (simulationInterface.isWorldLoaded()){
+            displayEntities();
+            displayRules();
+            displayTerminationConditions();
+        } else {
+            System.out.println("To display simulation details, first load a file (command 1).");
+        }
     }
 
     private void displayEntities() {

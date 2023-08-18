@@ -86,7 +86,7 @@ public class DisplayPastActivationCommand implements Command {
 
     private void displayPopulationStatistics(PopulationStatisticsDTO populationStatistics) {
         System.out.println("Population Statistics:");
-        System.out.println("Entity: " + populationStatistics.getEntityName() + ", Initial Quantity: " + populationStatistics.getInitialPopulation() + ", Final Quantity: " + populationStatistics.getFinalPopulation());
+        System.out.println("Entity: " + populationStatistics.getEntityName() + ", Initial Quantity: " + (populationStatistics.getInitialPopulation()-1) + ", Final Quantity: " + populationStatistics.getFinalPopulation());
 
     }
 

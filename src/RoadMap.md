@@ -13,9 +13,9 @@
 - [x] Check byExpression before run!
 
 # Bug fixes!
-- [ ] check range when updating env properties.
-- [ ] results presenting non ending loop
-- [ ] message when choosing unavailable command.
-- [ ] remain entities -1
-- [ ] presenting results when all entities are dead
-- [ ] sort Property Histogram by value
+- [x] check range when updating env properties.
+- [x] results presenting non ending loop
+- [x] message when choosing unavailable command.
+- [x] remain entities -1
+- [x] presenting results when all entities are dead
+- [x] sort Property Histogram by value

@@ -7,9 +7,18 @@ import java.util.Map;
 
 public class DTOSimulationInterface {
     private final DTOEngineInterface engineInterface;
+    private  boolean worldLoaded = false;
 
     public DTOSimulationInterface(DTOEngineInterface engineInterface) {
         this.engineInterface = engineInterface;
+    }
+
+    public void setWorldLoaded(boolean worldLoaded) {
+        this.worldLoaded = worldLoaded;
+    }
+
+    public boolean isWorldLoaded() {
+        return worldLoaded;
     }
 
     public void loadXmlFile(String path) throws Exception {

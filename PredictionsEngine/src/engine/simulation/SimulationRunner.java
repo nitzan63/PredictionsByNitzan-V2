@@ -52,7 +52,7 @@ public class SimulationRunner {
             }
         }
 
-        populationStatistics.setFinalPopulation(world.getEntities().getPopulation());
+        populationStatistics.setFinalPopulation(world.getEntities().getPopulation() + 1);
         resultsDTO.setPopulationStatistics(populationStatistics);
         for (EntityInstance entityInstance : world.getEntities().getEntities().values()){
             EntityProperties entityProperties= entityInstance.getProperties();

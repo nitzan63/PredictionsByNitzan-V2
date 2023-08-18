@@ -41,7 +41,7 @@
 			<PRD-actions>
 				<PRD-action entity="Smoker" type="increase" property="age" by="1"/>
 			</PRD-actions>
-			<PRD-activation ticks="50"/>
+			<PRD-activation ticks="12"/>
 		</PRD-rule>
 		<PRD-rule name="got cancer">
 			<PRD-actions>

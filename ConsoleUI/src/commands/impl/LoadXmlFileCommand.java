@@ -19,6 +19,7 @@ public class LoadXmlFileCommand implements Command {
         try {
             simulationInterface.loadXmlFile(filePath);
             System.out.println("XML file loaded successfully!");
+            simulationInterface.setWorldLoaded(true);
         } catch (Exception e){
             System.out.println("Error loading XML file: " + e.getMessage());
         }
