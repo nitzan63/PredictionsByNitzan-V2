@@ -1,15 +1,22 @@
 package main;
 
+import api.DTOSimulationInterface;
+import commands.api.Command;
+import commands.impl.*;
+import engine.SimulationEngine;
 import input.UserInputHandler;
 import output.MenuDisplay;
 
 public class SimulationCLI {
     private final MenuDisplay menuDisplay;
     private final UserInputHandler userInputHandler;
+    private final DTOSimulationInterface simulationInterface;
+
 
     public SimulationCLI() {
         this.menuDisplay = new MenuDisplay();
         this.userInputHandler = new UserInputHandler();
+        this.simulationInterface = new DTOSimulationInterface(new SimulationEngine());
     }
 
     public static void main(String[] args) {
@@ -19,7 +26,7 @@ public class SimulationCLI {
 
     public void runCLI() {
         // Display the welcome message
-        System.out.println("Welcome to the Simulation CLI!");
+        System.out.println("Welcome to the Predictions Simulation by Nitzan!");
 
         // Start the command loop
         while (true) {
@@ -37,16 +44,29 @@ public class SimulationCLI {
     private void handleCommand(String command) {
         switch (command) {
             case "1":
-                // Handle the "Load XML File" command
-                // TODO: Implement this
+                Command loadXmlCommand = new LoadXmlFileCommand(simulationInterface, userInputHandler);
+                loadXmlCommand.execute();
                 break;
             case "2":
-                // Handle the "Display Simulation Details" command
-                // TODO: Implement this
+                Command displayDetailsCommand = new DisplaySimulationDetailsCommand(simulationInterface);
+                displayDetailsCommand.execute();
                 break;
-            // Add other cases for other commands
+            case "3":
+                Command runSimulation = new RunSimulationCommand(simulationInterface, userInputHandler);
+                runSimulation.execute();
+                break;
+            case "4":
+                Command displayPastResults = new DisplayPastActivationCommand(simulationInterface, userInputHandler);
+                displayPastResults.execute();
+                break;
+            case "5":
+                Command exitCommand = new ExitCommand(simulationInterface);
+                exitCommand.execute();
+                System.exit(0);
+                break;
             default:
                 System.out.println("Invalid command. Please try again.");
         }
     }
 }
+
