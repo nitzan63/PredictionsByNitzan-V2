@@ -17,12 +17,14 @@ import java.util.List;
 public class RuleMapper {
     public static Rule mapRule(PRDRule jaxbRule, EntitiesDefinition entitiesContext){
         String name = jaxbRule.getName();
+        Rule rule;
         if (jaxbRule.getPRDActivation() != null) { // if there is an activation section:
             Activation activation = ActivationMapper.mapActivation(jaxbRule.getPRDActivation());
-            Rule rule = new RuleImpl(name, activation);
+            rule = new RuleImpl(name, activation);
+        } else {
+            // else - activation default - every tick , probability = 1.
+            rule = new RuleImpl(name, new Activation(1, 1));
         }
-        // else - activation default - every tick , probability = 1.
-        Rule rule = new RuleImpl(name, new Activation(1,1));
         PRDActions jaxbActions = jaxbRule.getPRDActions();
 
         if (jaxbActions != null){

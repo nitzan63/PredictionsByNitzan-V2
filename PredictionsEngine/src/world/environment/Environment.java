@@ -12,6 +12,9 @@ public class Environment {
         Environment.properties = properties;
     }
 
+    public static void randomEnvProperties(){
+        properties.generateRandomEnvPropertiesValues();
+    }
     public static EnvProperties getProperties() {
         return properties;
     }

@@ -11,6 +11,9 @@ import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
 import java.util.Map;
+import java.util.stream.Collectors;
+import java.util.*;
+import java.util.stream.Collectors;
 
 public class DisplayPastActivationCommand implements Command {
     private final DTOSimulationInterface simulationInterface;
@@ -91,10 +94,26 @@ public class DisplayPastActivationCommand implements Command {
         System.out.println("Property Histograms:");
         for (String propertyName : propertyHistograms.keySet()) {
             PropertyHistogramDTO histogram = propertyHistograms.get(propertyName);
-            System.out.println("Property: " + propertyName);
-            for (Map.Entry<String, Integer> entry : histogram.getHistogram().entrySet()) {
+            System.out.println("\nProperty: " + propertyName);
+            System.out.println("---------------------------");
+
+            // Sort the histogram keys based on their natural order or numerical value
+            Map<String, Integer> sortedHistogram = new TreeMap<>((a, b) -> {
+                try {
+                    double valA = Double.parseDouble(a);
+                    double valB = Double.parseDouble(b);
+                    return Double.compare(valA, valB);
+                } catch (NumberFormatException e) {
+                    return a.compareTo(b);
+                }
+            });
+
+            sortedHistogram.putAll(histogram.getHistogram());
+
+            for (Map.Entry<String, Integer> entry : sortedHistogram.entrySet()) {
                 System.out.println("Value: " + entry.getKey() + ", Count: " + entry.getValue());
             }
         }
     }
+
 }
