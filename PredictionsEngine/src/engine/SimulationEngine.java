@@ -6,6 +6,7 @@ import engine.file.XMLProcessor;
 import engine.file.exceptions.XMLProcessingException;
 import engine.input.validator.EnvironmentInputValidator;
 import engine.simulation.SimulationRunner;
+import scheme.generated.PRDWorld;
 import world.World;
 import world.entities.EntitiesDefinition;
 import world.entities.entity.properties.property.api.EntityProperty;
@@ -28,10 +29,11 @@ public class SimulationEngine implements DTOEngineInterface {
     private World world;
     private final List<ErrorDTO> errorList = new ArrayList<>();
     private SimulationRunner simulationRunner;
-
+    private String xmlFilePath;
 
     @Override
     public void loadXmlFile(String filePath) throws Exception {
+        this.xmlFilePath = filePath;
         try {
             XMLProcessor processor = new XMLProcessor();
             this.world = processor.processXML(filePath);
@@ -47,7 +49,7 @@ public class SimulationEngine implements DTOEngineInterface {
         EntitiesDefinition entities = world.getEntities();
         String name = entities.getEntityName();
         int population = entities.getPopulation();
-        List<EntityProperty> properties = entities.getEntity(0).getProperties().getProperties();
+        List<EntityProperty> properties = entities.getEntity(1).getProperties().getProperties();
         List<PropertyDTO> propertyDTOList = new ArrayList<>();
         for (EntityProperty property : properties) {
             propertyDTOList.add(new PropertyDTO(property.getName(), property.getType(), property.getRange().getFromDouble(), property.getRange().getToDouble(), property.isRandomInitialize(), property.getValue()));
@@ -132,7 +134,9 @@ public class SimulationEngine implements DTOEngineInterface {
 
     public SimulationRunMetadataDTO RunSimulation() {
         if (world != null) {
-            return simulationRunner.runSimulation();
+            SimulationRunMetadataDTO resultMetaData = simulationRunner.runSimulation();
+            resetEntities();
+            return resultMetaData;
         } else {
             throw new IllegalStateException("World has not been initialized yet.");
         }
@@ -157,5 +161,16 @@ public class SimulationEngine implements DTOEngineInterface {
         System.exit(0);
     }
 
+    private void resetEntities() {
+        try {
+            // Process the XML file to get the initial entities
+            XMLProcessor processor = new XMLProcessor();
+            World resetWorld = processor.processXML(xmlFilePath);
 
+            // Reset the entities in the world object
+            world.setEntities(resetWorld.getEntities());
+        } catch (XMLProcessingException ignore) {
+
+        }
+    }
 }

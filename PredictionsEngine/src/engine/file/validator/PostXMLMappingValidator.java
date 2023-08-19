@@ -19,7 +19,7 @@ import java.util.List;
 public class PostXMLMappingValidator {
     public static void validateXMLPostMapping(World world) throws ValidationException {
         String actualEntitiesName = world.getEntities().getEntityName();
-        EntityInstance exampleEntity = world.getEntities().getEntity(0);
+        EntityInstance exampleEntity = world.getEntities().getEntity(1);
         Rules rules = world.getRules();
 
         // For each rule:
@@ -33,7 +33,7 @@ public class PostXMLMappingValidator {
 
             private static List<String> getPropertyNames (World world){
                 List<String> propNames = new ArrayList<>();
-                for (EntityProperty prop : world.getEntities().getEntity(0).getProperties().getProperties()) {
+                for (EntityProperty prop : world.getEntities().getEntity(1).getProperties().getProperties()) {
                     propNames.add(prop.getName());
                 }
                 return propNames;

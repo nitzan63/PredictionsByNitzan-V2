@@ -1,6 +1,8 @@
 package engine.simulation;
 
 import dto.*;
+import engine.file.mapper.world.entities.EntitiesMapper;
+import scheme.generated.PRDWorld;
 import world.World;
 import world.entities.entity.EntityInstance;
 import world.entities.entity.properties.EntityProperties;
@@ -52,7 +54,7 @@ public class SimulationRunner {
             }
         }
 
-        populationStatistics.setFinalPopulation(world.getEntities().getPopulation() + 1);
+        populationStatistics.setFinalPopulation(world.getEntities().getPopulation());
         resultsDTO.setPopulationStatistics(populationStatistics);
         for (EntityInstance entityInstance : world.getEntities().getEntities().values()){
             EntityProperties entityProperties= entityInstance.getProperties();
@@ -117,5 +119,6 @@ public class SimulationRunner {
     public List<ErrorDTO> getErrorList() {
         return errorList;
     }
+
 
 }

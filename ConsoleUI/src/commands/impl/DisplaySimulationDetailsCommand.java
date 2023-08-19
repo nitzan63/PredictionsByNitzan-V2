@@ -58,9 +58,9 @@ public class DisplaySimulationDetailsCommand implements Command {
     private void displayTerminationConditions() {
         System.out.println("\nTermination conditions:");
         TerminationDTO terminationCondition = simulationInterface.getTermination();
-        if (terminationCondition.getMaxTicks() != null || terminationCondition.getMaxTicks() > 0)
+        if (terminationCondition.getMaxTicks() != null && terminationCondition.getMaxTicks() > 0)
             System.out.println("Termination By Ticks - " + terminationCondition.getMaxTicks() + " Ticks.");
-        if (terminationCondition.getMaxTime() != null || terminationCondition.getMaxTime() > 0)
+        if (terminationCondition.getMaxTime() != null && terminationCondition.getMaxTime() > 0)
             System.out.println("Termination By Time - " + terminationCondition.getMaxTime() + " Seconds.");
     }
 

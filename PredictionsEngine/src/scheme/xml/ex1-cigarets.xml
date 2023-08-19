@@ -68,12 +68,12 @@
 					</PRD-else>
 				</PRD-action>
 			</PRD-actions>
-			<PRD-activation probability="0.03"/>
+			<PRD-activation probability="0.2"/>
 		</PRD-rule>
 		<PRD-rule name="death">
 			<PRD-actions>
 				<PRD-action entity="Smoker" type="condition">
-					<PRD-condition singularity="single" entity="Smoker" property="lung-cancer-progress" operator="bt" value="95"/>
+					<PRD-condition singularity="single" entity="Smoker" property="lung-cancer-progress" operator="bt" value="90"/>
 					<PRD-then>
 						<PRD-action entity="Smoker" type="kill"></PRD-action>
 					</PRD-then>
@@ -82,6 +82,6 @@
 		</PRD-rule>
 	</PRD-rules>
 	<PRD-termination>	
-		<PRD-by-ticks count="200"/>
+		<PRD-by-ticks count="400"/>
 	</PRD-termination>
 </PRD-world>
