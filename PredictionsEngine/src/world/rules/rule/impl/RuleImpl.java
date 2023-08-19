@@ -7,10 +7,7 @@ import world.rules.rule.activation.Activation;
 import world.rules.rule.api.Rule;
 
 import javax.swing.text.html.parser.Entity;
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 public class RuleImpl implements Rule {
     private final String name;

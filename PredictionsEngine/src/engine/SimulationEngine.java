@@ -134,6 +134,7 @@ public class SimulationEngine implements DTOEngineInterface {
 
     public SimulationRunMetadataDTO RunSimulation() {
         if (world != null) {
+            simulationRunner.setWorld(world);
             SimulationRunMetadataDTO resultMetaData = simulationRunner.runSimulation();
             resetEntities();
             return resultMetaData;
@@ -168,7 +169,8 @@ public class SimulationEngine implements DTOEngineInterface {
             World resetWorld = processor.processXML(xmlFilePath);
 
             // Reset the entities in the world object
-            world.setEntities(resetWorld.getEntities());
+            //world.setEntities(resetWorld.getEntities());
+            world = resetWorld;
         } catch (XMLProcessingException ignore) {
 
         }

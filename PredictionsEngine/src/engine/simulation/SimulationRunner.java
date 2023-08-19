@@ -15,10 +15,10 @@ import java.time.format.DateTimeFormatter;
 import java.util.*;
 
 public class SimulationRunner {
-    private final World world;
+    private World world;
     private final Termination termination;
     private int tickNumber;
-    private final long startTime;
+    private long startTime;
     private String runIdentifier;
     private final Map<String, SimulationRunMetadataDTO> simulationData = new HashMap<>();
     private final Map<String, SimulationRunResultsDTO> simulationResults = new HashMap<>();
@@ -39,7 +39,8 @@ public class SimulationRunner {
         SimulationRunResultsDTO resultsDTO = new SimulationRunResultsDTO(runIdentifier , LocalDateTime.now().format(DateTimeFormatter.ofPattern("dd-MM-yyyy | HH:mm:ss")));
         PopulationStatisticsDTO populationStatistics = new PopulationStatisticsDTO(world.getEntities().getEntityName(), world.getEntities().getPopulation(), 0);
         simulationResults.put(runIdentifier, resultsDTO);
-
+        tickNumber = 0;
+        startTime = System.currentTimeMillis();
         while (shouldContinue()) {
             tickNumber++;
             int elapsedSeconds = getElapsedSeconds();
@@ -121,4 +122,7 @@ public class SimulationRunner {
     }
 
 
+    public void setWorld(World world) {
+        this.world = world;
+    }
 }
