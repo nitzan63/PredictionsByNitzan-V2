@@ -1,12 +1,12 @@
 package commands.impl;
 
-import api.DTOSimulationInterface;
+import api.DTOUIInterface;
 import commands.api.Command;
 
 public class ExitCommand implements Command {
-    DTOSimulationInterface simulationInterface;
+    DTOUIInterface simulationInterface;
 
-    public ExitCommand(DTOSimulationInterface simulationInterface) {
+    public ExitCommand(DTOUIInterface simulationInterface) {
         this.simulationInterface = simulationInterface;
     }
 

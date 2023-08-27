@@ -1,14 +1,14 @@
 package commands.impl;
 
-import api.DTOSimulationInterface;
+import api.DTOUIInterface;
 import commands.api.Command;
 import input.UserInputHandler;
 
 public class LoadXmlFileCommand implements Command {
-    private final DTOSimulationInterface simulationInterface;
+    private final DTOUIInterface simulationInterface;
     private final UserInputHandler inputHandler;
 
-    public LoadXmlFileCommand(DTOSimulationInterface simulationInterface, UserInputHandler inputHandler){
+    public LoadXmlFileCommand(DTOUIInterface simulationInterface, UserInputHandler inputHandler){
         this.inputHandler =inputHandler;
         this.simulationInterface = simulationInterface;
     }

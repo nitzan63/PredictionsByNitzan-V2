@@ -53,3 +53,7 @@ What data should be in the DTO?
 4. Display Simulation output - Both Engine and UI.
 5. Only (or at least mostly) in the UI.
 
+## Task 2
+
+* 
+

@@ -1,6 +1,6 @@
 package commands.impl;
 
-import api.DTOSimulationInterface;
+import api.DTOUIInterface;
 import commands.api.Command;
 import dto.PopulationStatisticsDTO;
 import dto.PropertyHistogramDTO;
@@ -11,18 +11,16 @@ import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
 import java.util.Map;
-import java.util.stream.Collectors;
 import java.util.*;
-import java.util.stream.Collectors;
 
 public class DisplayPastActivationCommand implements Command {
-    private final DTOSimulationInterface simulationInterface;
+    private final DTOUIInterface simulationInterface;
     private final UserInputHandler inputHandler;
     private List<SimulationRunResultsDTO> sortedSimulations;
 
 
 
-    public DisplayPastActivationCommand(DTOSimulationInterface simulationInterface, UserInputHandler inputHandler) {
+    public DisplayPastActivationCommand(DTOUIInterface simulationInterface, UserInputHandler inputHandler) {
         this.simulationInterface = simulationInterface;
         this.inputHandler = inputHandler;
     }

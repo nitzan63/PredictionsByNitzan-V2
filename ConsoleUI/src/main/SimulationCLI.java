@@ -1,6 +1,6 @@
 package main;
 
-import api.DTOSimulationInterface;
+import api.DTOUIInterface;
 import commands.api.Command;
 import commands.impl.*;
 import engine.SimulationEngine;
@@ -10,13 +10,13 @@ import output.MenuDisplay;
 public class SimulationCLI {
     private final MenuDisplay menuDisplay;
     private final UserInputHandler userInputHandler;
-    private final DTOSimulationInterface simulationInterface;
+    private final DTOUIInterface simulationInterface;
 
 
     public SimulationCLI() {
         this.menuDisplay = new MenuDisplay();
         this.userInputHandler = new UserInputHandler();
-        this.simulationInterface = new DTOSimulationInterface(new SimulationEngine());
+        this.simulationInterface = new DTOUIInterface(new SimulationEngine());
     }
 
     public static void main(String[] args) {

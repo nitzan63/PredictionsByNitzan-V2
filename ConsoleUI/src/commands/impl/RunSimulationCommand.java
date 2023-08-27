@@ -1,6 +1,6 @@
 package commands.impl;
 
-import api.DTOSimulationInterface;
+import api.DTOUIInterface;
 import commands.api.Command;
 import dto.EnvironmentDTO;
 import dto.PropertyDTO;
@@ -11,11 +11,11 @@ import input.UserInputHandler;
 import java.util.*;
 
 public class RunSimulationCommand implements Command {
-    private final DTOSimulationInterface simulationInterface;
+    private final DTOUIInterface simulationInterface;
     private final UserInputHandler inputHandler;
     private final Map<String, String> userInputProperties;
 
-    public RunSimulationCommand(DTOSimulationInterface simulationInterface, UserInputHandler inputHandler) {
+    public RunSimulationCommand(DTOUIInterface simulationInterface, UserInputHandler inputHandler) {
         this.simulationInterface = simulationInterface;
         this.inputHandler = inputHandler;
         this.userInputProperties = new LinkedHashMap<>();

@@ -5,11 +5,11 @@ import dto.*;
 import java.util.List;
 import java.util.Map;
 
-public class DTOSimulationInterface {
+public class DTOUIInterface {
     private final DTOEngineInterface engineInterface;
     private  boolean worldLoaded = false;
 
-    public DTOSimulationInterface(DTOEngineInterface engineInterface) {
+    public DTOUIInterface(DTOEngineInterface engineInterface) {
         this.engineInterface = engineInterface;
     }
 

@@ -1,6 +1,6 @@
 package commands.impl;
 
-import api.DTOSimulationInterface;
+import api.DTOUIInterface;
 import commands.api.Command;
 import dto.EntitiesDefinitionDTO;
 import dto.PropertyDTO;
@@ -8,9 +8,9 @@ import dto.RuleDTO;
 import dto.TerminationDTO;
 
 public class DisplaySimulationDetailsCommand implements Command {
-    private final DTOSimulationInterface simulationInterface;
+    private final DTOUIInterface simulationInterface;
 
-    public DisplaySimulationDetailsCommand(DTOSimulationInterface simulationInterface) {
+    public DisplaySimulationDetailsCommand(DTOUIInterface simulationInterface) {
         this.simulationInterface = simulationInterface;
     }
 
