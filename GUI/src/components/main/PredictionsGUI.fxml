@@ -32,10 +32,10 @@
                     <tabs>
                       <Tab fx:id="detailsTabTitle" text="Details">
                         <content>
-                          <AnchorPane>
+                          <AnchorPane maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308">
                                  <children>
                                     <ScrollPane prefHeight="396.5" prefWidth="798.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0" />
-                                    <fx:include source="../details/DetailsTab.fxml" />
+                                    <fx:include fx:id="detailsComponent" source="../details/DetailsTab.fxml" />
                                  </children></AnchorPane>
                         </content>
                       </Tab>

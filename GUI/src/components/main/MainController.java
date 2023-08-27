@@ -1,6 +1,7 @@
 package components.main;
 
 import api.DTOUIInterface;
+import components.SharedResources;
 import engine.SimulationEngine;
 import javafx.beans.property.SimpleBooleanProperty;
 import javafx.beans.property.SimpleStringProperty;
@@ -44,6 +45,7 @@ public class MainController {
     // Constructor:
     public MainController() {
         this.simulationInterface = new DTOUIInterface(new SimulationEngine());
+        SharedResources.getInstance().setDTOUIInterface(this.simulationInterface);
         isFileSelected = new SimpleBooleanProperty(false);
         selectedFileProperty = new SimpleStringProperty();
     }
