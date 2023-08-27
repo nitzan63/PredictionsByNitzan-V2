@@ -15,7 +15,7 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Text?>
 
-<ScrollPane fitToHeight="true" fitToWidth="true" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" xmlns="http://javafx.com/javafx/20.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="components.main.MainController">
+<ScrollPane fitToHeight="true" fitToWidth="true" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" prefHeight="600.0" prefWidth="900.0" xmlns="http://javafx.com/javafx/20.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="components.main.MainController">
    <content>
       <GridPane maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" minHeight="550.0" minWidth="800.0" prefHeight="550.0" prefWidth="800.0">
         <columnConstraints>
@@ -32,7 +32,11 @@
                     <tabs>
                       <Tab fx:id="detailsTabTitle" text="Details">
                         <content>
-                          <AnchorPane minHeight="180.0" minWidth="200.0" prefHeight="180.0" prefWidth="200.0" />
+                          <AnchorPane>
+                                 <children>
+                                    <ScrollPane prefHeight="396.5" prefWidth="798.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0" />
+                                    <fx:include source="../details/DetailsTab.fxml" />
+                                 </children></AnchorPane>
                         </content>
                       </Tab>
                       <Tab fx:id="executionTabTitle" text="New Execution">

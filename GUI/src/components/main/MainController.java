@@ -51,6 +51,7 @@ public class MainController {
     public void initialize() {
         filePathTextField.textProperty().bind(selectedFileProperty);
         executionTabTitle.disableProperty().bind(isFileSelected.not());
+        detailsTabTitle.disableProperty().bind(isFileSelected.not());
     }
 
     public void setPrimaryStage(Stage primaryStage) {
