@@ -25,7 +25,7 @@ public class DetailsTabController {
 
     //
     private DTOUIInterface simulationInterface;
-    private String[] factors = {"Environment Properties", "Rules", "Entity", "Termination"};
+    private String[] factors = {"Environment Properties", "Rules", "Entity", "Termination", "Grid"};
 
     public DetailsTabController() {
 
@@ -51,16 +51,23 @@ public class DetailsTabController {
             displayEntities();
         } else if ("Termination".equals(factor)) {
             displayTerminationConditions();
+        } else if ("Grid".equals(factor)){
+            displayGrid();
         }
     }
 
-    public void displayRules(){
+    private void displayRules(){
         detailsFlowPane.getChildren().clear();
         List<RuleDTO> rules = simulationInterface.getRules();
         for (RuleDTO rule : rules){
             addRuleToFlowPane(rule);
         }
     }
+
+    private void displayGrid(){
+        detailsFlowPane.getChildren().clear();
+    }
+
 
     private void addRuleToFlowPane(RuleDTO rule) {
         // Initialize the controller and FXML loader here
