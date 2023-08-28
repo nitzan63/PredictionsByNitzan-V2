@@ -27,6 +27,8 @@ public class MainController {
     @FXML
     private Tab executionTabTitle;
     @FXML
+    private Tab resultsTabTitle;
+    @FXML
     private TextField filePathTextField;
     @FXML
     private Button loadFileButton;
@@ -55,6 +57,8 @@ public class MainController {
         filePathTextField.textProperty().bind(selectedFileProperty);
         executionTabTitle.disableProperty().bind(isFileSelected.not());
         detailsTabTitle.disableProperty().bind(isFileSelected.not());
+        resultsTabTitle.disableProperty().bind(isFileSelected.not());
+
     }
 
     public void setPrimaryStage(Stage primaryStage) {
@@ -89,6 +93,8 @@ public class MainController {
 
 
             isFileSelected.set(true);
+            SharedResources.getInstance().setIsFileSelected(true);
+
         } catch (Exception e) {
             // Fail Alert:
             Alert alert = new Alert(Alert.AlertType.ERROR);

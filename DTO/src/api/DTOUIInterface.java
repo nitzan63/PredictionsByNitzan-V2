@@ -2,12 +2,16 @@ package api;
 
 import dto.*;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
 public class DTOUIInterface {
     private final DTOEngineInterface engineInterface;
     private  boolean worldLoaded = false;
+    private final List<Runnable> simulationRunListeners = new ArrayList<>();
+
+
 
     public DTOUIInterface(DTOEngineInterface engineInterface) {
         this.engineInterface = engineInterface;
@@ -46,7 +50,12 @@ public class DTOUIInterface {
     }
 
     public SimulationRunMetadataDTO runSimulation() {
-        return engineInterface.RunSimulation();
+        SimulationRunMetadataDTO result = engineInterface.RunSimulation();
+        // Notify listeners
+        for (Runnable listener : simulationRunListeners) {
+            listener.run();
+        }
+        return result;
     }
 
     public SimulationRunResultsDTO getSimulationResults(String runIdentifier) {
@@ -60,4 +69,15 @@ public class DTOUIInterface {
     public void exit() {
         engineInterface.exit();
     }
+
+    public void addSimulationRunListener(Runnable listener) {
+        simulationRunListeners.add(listener);
+    }
+
+    public void removeSimulationRunListener(Runnable listener) {
+        simulationRunListeners.remove(listener);
+    }
+
+
+
 }
