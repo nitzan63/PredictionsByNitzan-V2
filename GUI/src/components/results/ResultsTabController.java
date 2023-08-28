@@ -2,12 +2,14 @@ package components.results;
 
 import api.DTOUIInterface;
 import components.SharedResources;
+import dto.PropertyHistogramDTO;
 import dto.SimulationRunResultsDTO;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.scene.chart.BarChart;
 import javafx.scene.chart.LineChart;
+import javafx.scene.chart.XYChart;
 import javafx.scene.control.*;
 
 import java.util.Map;
@@ -27,9 +29,9 @@ public class ResultsTabController {
     @FXML
     private Label progressPrecentLabel;
     @FXML
-    private ChoiceBox<?> propertyChooser;
+    private ChoiceBox<String> propertyChooser;
     @FXML
-    private BarChart<?, ?> propertyHistogramBarChart;
+    private BarChart<String, Number> propertyHistogramBarChart;
     @FXML
     private Button resumeButton;
     @FXML
@@ -70,6 +72,51 @@ public class ResultsTabController {
                 populationStatisticsTab.setDisable(true);
             }
         });
+
+        // Add a listener to pastSimulationList to handle when a simulation is selected
+        pastSimulationList.getSelectionModel().selectedItemProperty().addListener((obs, oldVal, newVal) -> {
+            if (newVal != null) {
+                propertyHistogramTab.setDisable(false);  // Enable the tab
+                populationStatisticsTab.setDisable(false);  // Enable the other tab as well
+                loadPropertyChoices(newVal);  // Load the properties for the selected simulation
+            }
+        });
+
+        // Add a listener to propertyChooser to update the propertyHistogramBarChart when a property is selected.
+        propertyChooser.getSelectionModel().selectedItemProperty().addListener((obs, oldVal, newVal) -> {
+            if (newVal != null) {
+                String runIdentifier = pastSimulationList.getSelectionModel().getSelectedItem();
+                updateHistogramChart(runIdentifier, newVal.toString());  // Update the chart
+            }
+        });
+    }
+
+    private void updateHistogramChart(String runIdentifier, String propertyName) {
+        SimulationRunResultsDTO selectedRun = simulationInterface.getSimulationResults(runIdentifier);
+        if (selectedRun != null) {
+            PropertyHistogramDTO histogram = selectedRun.getPropertyHistograms().get(propertyName);
+            if (histogram != null) {
+                // Clear old data
+                propertyHistogramBarChart.getData().clear();
+
+                // Create new series
+                XYChart.Series<String, Number> series = new XYChart.Series<>();
+                for (Map.Entry<String, Integer> entry : histogram.getHistogram().entrySet()) {
+                    series.getData().add(new XYChart.Data<>(entry.getKey(), entry.getValue()));
+                }
+
+                // Add series to chart
+                propertyHistogramBarChart.getData().add(series);
+            }
+        }
+    }
+
+    private void loadPropertyChoices(String runIdentifier) {
+        SimulationRunResultsDTO selectedRun = simulationInterface.getSimulationResults(runIdentifier);
+        if (selectedRun != null) {
+            ObservableList<String> propertyNames = FXCollections.observableArrayList(selectedRun.getPropertyHistograms().keySet());
+            propertyChooser.setItems(propertyNames);
+        }
     }
 
 
