@@ -32,7 +32,7 @@
                     <tabs>
                       <Tab fx:id="detailsTabTitle" text="Details">
                         <content>
-                          <AnchorPane maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308">
+                          <AnchorPane>
                                  <children>
                                     <ScrollPane prefHeight="396.5" prefWidth="798.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0" />
                                     <fx:include fx:id="detailsComponent" source="../details/DetailsTab.fxml" />
@@ -41,7 +41,11 @@
                       </Tab>
                       <Tab fx:id="executionTabTitle" text="New Execution">
                         <content>
-                          <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0" />
+                          <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
+                                 <children>
+                                    <ScrollPane prefHeight="444.5" prefWidth="896.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0" />
+                                    <fx:include source="../execution/ExecutionTab.fxml" />
+                                 </children></AnchorPane>
                         </content>
                       </Tab>
                         <Tab fx:id="resultsTabTitle" text="Results">

@@ -2,6 +2,7 @@ package components.main;
 
 import api.DTOUIInterface;
 import components.SharedResources;
+import components.execution.ExecutionTabController;
 import engine.SimulationEngine;
 import javafx.beans.property.SimpleBooleanProperty;
 import javafx.beans.property.SimpleStringProperty;
@@ -79,6 +80,13 @@ public class MainController {
             successAlert.setHeaderText("File Loaded Successfully");
             successAlert.setContentText("The XML file was loaded without any issues.");
             successAlert.showAndWait();
+
+            // update execution tab:
+            ExecutionTabController executionController = ExecutionTabController.getInstance();
+            if (executionController != null) {
+                executionController.updateOnXMLLoad();
+            }
+
 
             isFileSelected.set(true);
         } catch (Exception e) {
