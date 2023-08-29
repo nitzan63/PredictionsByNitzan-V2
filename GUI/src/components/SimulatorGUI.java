@@ -5,13 +5,11 @@ import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
-import javafx.scene.layout.GridPane;
 import javafx.stage.Stage;
 
-import java.awt.*;
 import java.net.URL;
 
-public class TestMain extends Application {
+public class SimulatorGUI extends Application {
 
     @Override
     public void start(Stage primaryStage) throws Exception {

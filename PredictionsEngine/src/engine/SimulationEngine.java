@@ -24,12 +24,16 @@ import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
 
 public class SimulationEngine implements DTOEngineInterface {
     private World world;
     private final List<ErrorDTO> errorList = new ArrayList<>();
     private SimulationRunner simulationRunner;
     private String xmlFilePath;
+    private ExecutorService executorService;
+
 
     @Override
     public void loadXmlFile(String filePath) throws Exception {
@@ -38,6 +42,11 @@ public class SimulationEngine implements DTOEngineInterface {
             XMLProcessor processor = new XMLProcessor();
             this.world = processor.processXML(filePath);
             this.simulationRunner = new SimulationRunner(world);
+
+            // change this when implementing the number of threads getter:
+            int numberOfThreads = 1;
+            executorService = Executors.newFixedThreadPool(numberOfThreads);
+
         } catch (XMLProcessingException e) {
             ErrorDTO errorDTO = new ErrorDTO(e.getMessage(), e.getClass().getName(), LocalDateTime.now());
             errorList.add(errorDTO);
@@ -134,8 +143,8 @@ public class SimulationEngine implements DTOEngineInterface {
 
     public SimulationRunMetadataDTO RunSimulation() {
         if (world != null) {
-
-            SimulationRunMetadataDTO resultMetaData = simulationRunner.runSimulation();
+            executorService.execute(simulationRunner);
+            SimulationRunMetadataDTO resultMetaData = simulationRunner.getRunMetadataDTO();
             resetEntities();
             return resultMetaData;
         } else {
@@ -158,8 +167,8 @@ public class SimulationEngine implements DTOEngineInterface {
         }
     }
 
-    public void exit(){
-        System.exit(0);
+    public void exit() {
+        executorService.shutdown();
     }
 
     private void resetEntities() {

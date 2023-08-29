@@ -14,7 +14,7 @@ import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.*;
 
-public class SimulationRunner {
+public class SimulationRunner implements Runnable {
     private World world;
     private final Termination termination;
     private int tickNumber;
@@ -23,6 +23,7 @@ public class SimulationRunner {
     private final Map<String, SimulationRunMetadataDTO> simulationData = new HashMap<>();
     private final Map<String, SimulationRunResultsDTO> simulationResults = new HashMap<>();
     private final List<ErrorDTO> errorList = new ArrayList<>();
+    private SimulationRunMetadataDTO runMetadataDTO;
 
 
 
@@ -124,5 +125,14 @@ public class SimulationRunner {
 
     public void setWorld(World world) {
         this.world = world;
+    }
+
+    @Override
+    public void run() {
+        runMetadataDTO = runSimulation();
+    }
+
+    public SimulationRunMetadataDTO getRunMetadataDTO() {
+        return runMetadataDTO;
     }
 }
