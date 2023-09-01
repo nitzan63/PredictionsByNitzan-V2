@@ -1,7 +1,6 @@
 package engine.file.validator;
 
 import world.World;
-import world.entities.EntitiesDefinition;
 import world.entities.entity.EntityInstance;
 import world.entities.entity.properties.property.api.EntityProperty;
 import world.rules.Rules;
@@ -18,8 +17,8 @@ import java.util.List;
 
 public class PostXMLMappingValidator {
     public static void validateXMLPostMapping(World world) throws ValidationException {
-        String actualEntitiesName = world.getEntities().getEntityName();
-        EntityInstance exampleEntity = world.getEntities().getEntity(1);
+        String actualEntitiesName = world.getEntitiesMap().getEntityName();
+        EntityInstance exampleEntity = world.getEntitiesMap().getEntity(1);
         Rules rules = world.getRules();
 
         // For each rule:
@@ -33,7 +32,7 @@ public class PostXMLMappingValidator {
 
             private static List<String> getPropertyNames (World world){
                 List<String> propNames = new ArrayList<>();
-                for (EntityProperty prop : world.getEntities().getEntity(1).getProperties().getProperties()) {
+                for (EntityProperty prop : world.getEntitiesMap().getEntity(1).getProperties().getProperties()) {
                     propNames.add(prop.getName());
                 }
                 return propNames;

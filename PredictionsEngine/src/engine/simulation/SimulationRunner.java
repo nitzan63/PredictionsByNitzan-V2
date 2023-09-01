@@ -5,7 +5,6 @@ import world.World;
 import world.entities.entity.EntityInstance;
 import world.entities.entity.properties.EntityProperties;
 import world.entities.entity.properties.property.api.EntityProperty;
-import world.environment.Environment;
 import world.termination.api.Termination;
 
 import java.time.LocalDateTime;
@@ -36,7 +35,7 @@ public class SimulationRunner implements Runnable {
     public SimulationRunMetadataDTO runSimulation() {
         runIdentifier = generateRunIdentifier();
         SimulationRunResultsDTO resultsDTO = new SimulationRunResultsDTO(runIdentifier , LocalDateTime.now().format(DateTimeFormatter.ofPattern("dd-MM-yyyy | HH:mm:ss")));
-        PopulationStatisticsDTO populationStatistics = new PopulationStatisticsDTO(world.getEntities().getEntityName(), world.getEntities().getPopulation(), 0);
+        PopulationStatisticsDTO populationStatistics = new PopulationStatisticsDTO(world.getEntitiesMap().getEntityName(), world.getEntitiesMap().getPopulation(), 0);
         simulationResults.put(runIdentifier, resultsDTO);
         tickNumber = 0;
         startTime = System.currentTimeMillis();
@@ -53,9 +52,9 @@ public class SimulationRunner implements Runnable {
                 errorList.add(errorDTO);
             }
         }
-        populationStatistics.setFinalPopulation(world.getEntities().getPopulation());
+        populationStatistics.setFinalPopulation(world.getEntitiesMap().getPopulation());
         resultsDTO.setPopulationStatistics(populationStatistics);
-        for (EntityInstance entityInstance : world.getEntities().getEntities().values()){
+        for (EntityInstance entityInstance : world.getEntitiesMap().getEntities().values()){
             EntityProperties entityProperties= entityInstance.getProperties();
             for (EntityProperty property:entityProperties.getProperties()){
                 String propName = property.getName();

@@ -7,11 +7,12 @@ import world.rules.rule.action.api.Action;
 import world.rules.rule.activation.Activation;
 
 import java.util.List;
+import java.util.Map;
 
 public interface Rule {
     String getName();
     Activation getActivation();
     List<Action> getActionsToPerform();
     void addAction (Action action);
-    public void performActions(EntitiesDefinition entitiesDefinition, int tickNumber, Environment environment) throws Exception;
+    public void performActions(Map<String, EntitiesDefinition> entitiesMap, int tickNumber, Environment environment) throws Exception;
 }

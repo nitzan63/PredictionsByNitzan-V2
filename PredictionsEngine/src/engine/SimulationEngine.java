@@ -9,7 +9,6 @@ import engine.simulation.SimulationRunner;
 import world.World;
 import world.entities.EntitiesDefinition;
 import world.entities.entity.properties.property.api.EntityProperty;
-import world.environment.Environment;
 import world.environment.properties.EnvProperties;
 import world.environment.properties.property.api.EnvProperty;
 import world.rules.rule.action.api.Action;
@@ -54,7 +53,7 @@ public class SimulationEngine implements DTOEngineInterface {
     }
 
     public EntitiesDefinitionDTO getEntitiesDefinition() {
-        EntitiesDefinition entities = world.getEntities();
+        EntitiesDefinition entities = world.getEntitiesMap();
         String name = entities.getEntityName();
         int population = entities.getPopulation();
         List<EntityProperty> properties = entities.getEntity(1).getProperties().getProperties();

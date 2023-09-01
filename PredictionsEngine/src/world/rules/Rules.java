@@ -9,6 +9,7 @@ import world.rules.rule.api.Rule;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 public class Rules {
     private final List<Rule> rules;
@@ -25,9 +26,9 @@ public class Rules {
         return rules;
     }
 
-    public void simulateRules(EntitiesDefinition entitiesDefinition, int tickNumber, Environment environment) throws Exception{
+    public void simulateRules(Map<String,EntitiesDefinition> entitiesMap, int tickNumber, Environment environment) throws Exception{
             for (Rule rule : rules) {
-                rule.performActions(entitiesDefinition, tickNumber, environment);
+                rule.performActions(entitiesMap, tickNumber, environment);
             }
 
     }

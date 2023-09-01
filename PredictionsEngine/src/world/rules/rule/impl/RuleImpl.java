@@ -1,5 +1,6 @@
 package world.rules.rule.impl;
 
+import com.sun.xml.internal.ws.api.ha.StickyFeature;
 import world.entities.EntitiesDefinition;
 import world.entities.entity.EntityInstance;
 import world.environment.Environment;
@@ -43,13 +44,30 @@ public class RuleImpl implements Rule {
         actionsToPerform.add(action);
     }
 
-    public void performActions(EntitiesDefinition entitiesDefinition, int tickNumber, Environment environment) throws Exception {
+    public void performActions(Map<String, EntitiesDefinition> entitiesMap, int tickNumber, Environment environment) throws Exception {
         try {
+            // Check if rule is active:
             if (activation.isActive(tickNumber)) {
-                Collection<EntityInstance> entitiesCopy = new ArrayList<>(entitiesDefinition.getEntities().values());
-                for (EntityInstance entity : entitiesCopy) {
-                    for (Action action : actionsToPerform) {
-                        action.invoke(entity, environment);
+
+                // Iterate over all entity types:
+                for (Map.Entry<String, EntitiesDefinition> entry : entitiesMap.entrySet()) {
+
+                    String entityName = entry.getKey();
+                    EntitiesDefinition entitiesDefinition = entry.getValue();
+
+                    // Create a copy of the entity instances to run on (for kill action):
+                    Collection<EntityInstance> entitiesCopy = new ArrayList<>(entitiesDefinition.getEntities().values());
+
+                    // Iterate over all entity instances:
+                    for (EntityInstance entity : entitiesCopy) {
+                        for (Action action : actionsToPerform) {
+
+                            // check if the action is related to this entity:
+                            if (action.getEntityName().equals(entityName)) {
+                                // invoke the action on the entity instance.
+                                action.invoke(entity, environment);
+                            }
+                        }
                     }
                 }
             }

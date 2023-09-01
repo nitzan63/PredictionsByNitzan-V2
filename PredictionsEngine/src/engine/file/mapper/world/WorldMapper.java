@@ -10,10 +10,10 @@ import world.World;
 public class WorldMapper {
     public static World mapWorld (PRDWorld jaxbWorld){
         World world = new World();
-        world.setEntities(EntitiesMapper.mapEntities(jaxbWorld.getPRDEntities()));
+        world.setEntitiesMap(EntitiesMapper.mapEntities(jaxbWorld.getPRDEntities()));
         world.setEnvironment(EnvMapper.mapEnvironment(jaxbWorld.getPRDEvironment()));
         world.setTermination(TerminationMapper.mapTermination(jaxbWorld.getPRDTermination()));
-        world.setRules(RulesMapper.mapRules(jaxbWorld.getPRDRules(), world.getEntities()));
+        world.setRules(RulesMapper.mapRules(jaxbWorld.getPRDRules(), world.getEntitiesMap()));
         return world;
     }
 }
