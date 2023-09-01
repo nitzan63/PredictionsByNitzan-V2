@@ -1,7 +1,7 @@
 package engine.file.mapper.world.rules.rule.action;
 
 import engine.file.mapper.world.rules.rule.condition.ConditionMapper;
-import scheme.generated.PRDAction;
+import scheme.v1.generated.PRDAction;
 import world.entities.EntitiesDefinition;
 import world.rules.rule.action.api.Action;
 import world.rules.rule.action.condition.api.Condition;

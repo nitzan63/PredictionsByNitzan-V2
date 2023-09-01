@@ -2,7 +2,7 @@ package engine.file.validator.world.environment.properties.property;
 
 import engine.file.validator.world.utils.NameValidator;
 import engine.file.validator.world.utils.RangeValidator;
-import scheme.generated.PRDEnvProperty;
+import scheme.v1.generated.PRDEnvProperty;
 
 import javax.xml.bind.ValidationException;
 

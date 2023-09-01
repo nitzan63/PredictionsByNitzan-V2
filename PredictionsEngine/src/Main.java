@@ -1,12 +1,6 @@
 import engine.file.XMLProcessor;
 import engine.file.exceptions.XMLProcessingException;
-import engine.file.unmarshaller.xmlUnmarshaller;
-import engine.file.mapper.world.WorldMapper;
-import engine.file.validator.XMLValidator;
-import scheme.generated.PRDWorld;
 import world.World;
-
-import javax.xml.bind.ValidationException;
 
 public class Main {
     public static void main(String[] args) {

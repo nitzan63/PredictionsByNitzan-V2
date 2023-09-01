@@ -2,6 +2,7 @@ package world.rules.rule.action.impl;
 
 import world.entities.EntitiesDefinition;
 import world.entities.entity.EntityInstance;
+import world.environment.Environment;
 import world.rules.rule.action.api.AbstractAction;
 import world.rules.rule.action.api.ActionType;
 
@@ -16,8 +17,8 @@ public class SetAction extends AbstractAction {
     }
 
     @Override
-    public void invoke(EntityInstance entityInstance) {
-        Object value = evaluateExpression(expression, entityInstance);
+    public void invoke(EntityInstance entityInstance, Environment environment) {
+        Object value = evaluateExpression(expression, entityInstance, environment);
         if (value instanceof Double){ // handle the cases when trying to set value out of range.
             if ((double) value < entityInstance.getProperty(propertyName).getRange().getFrom().doubleValue()){
                 entityInstance.getProperty(propertyName).setValue(entityInstance.getProperty(propertyName).getRange().getFrom().doubleValue());

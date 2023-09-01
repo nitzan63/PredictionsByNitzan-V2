@@ -3,7 +3,7 @@ package engine.file.validator.world.entities.entity.properties.property;
 import engine.file.validator.world.utils.NameValidator;
 import engine.file.validator.world.utils.RangeValidator;
 import engine.file.validator.world.utils.ValueValidator;
-import scheme.generated.PRDProperty;
+import scheme.v1.generated.PRDProperty;
 
 import javax.xml.bind.ValidationException;
 

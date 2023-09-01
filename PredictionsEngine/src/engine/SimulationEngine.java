@@ -6,7 +6,6 @@ import engine.file.XMLProcessor;
 import engine.file.exceptions.XMLProcessingException;
 import engine.input.validator.EnvironmentInputValidator;
 import engine.simulation.SimulationRunner;
-import scheme.generated.PRDWorld;
 import world.World;
 import world.entities.EntitiesDefinition;
 import world.entities.entity.properties.property.api.EntityProperty;
@@ -88,17 +87,17 @@ public class SimulationEngine implements DTOEngineInterface {
     @Override
     public TerminationDTO getTermination() {
         Termination termination = world.getTermination();
-        if (termination instanceof TerminationCombined){
+        if (termination instanceof TerminationCombined) {
             TerminationCombined terminationCombined = (TerminationCombined) termination;
             return new TerminationDTO(terminationCombined.getByTicks().getMaxTicks(), terminationCombined.getByTime().getMaxTime());
-        } else if (termination instanceof TerminationByTime){
+        } else if (termination instanceof TerminationByTime) {
             TerminationByTime terminationByTime = (TerminationByTime) termination;
             return new TerminationDTO(null, terminationByTime.getMaxTime());
-        } else if (termination instanceof TerminationByTicks){
+        } else if (termination instanceof TerminationByTicks) {
             TerminationByTicks terminationByTicks = (TerminationByTicks) termination;
             return new TerminationDTO(terminationByTicks.getMaxTicks(), null);
-        } else{
-            return new TerminationDTO(0,0);
+        } else {
+            return new TerminationDTO(0, 0);
         }
 
         //TODO remember returning null as ticks or time...
@@ -107,8 +106,8 @@ public class SimulationEngine implements DTOEngineInterface {
     @Override
     public EnvironmentDTO getEnvironmentProperties() {
         EnvironmentDTO environmentDTO = new EnvironmentDTO();
-        EnvProperties properties = Environment.getProperties();
-        for (EnvProperty property : properties.getProperties()){
+        EnvProperties properties = world.getEnvironment().getProperties();
+        for (EnvProperty property : properties.getProperties()) {
             PropertyDTO propertyDTO = new PropertyDTO(property.getName(), property.getType(), property.getRange().getFromDouble(), property.getRange().getToDouble(), false, property.getValue());
             environmentDTO.addEnvironmentProperty(property.getName(), propertyDTO);
         }
@@ -118,10 +117,10 @@ public class SimulationEngine implements DTOEngineInterface {
     @Override
     public void setEnvironmentProperties(UserEnvironmentInputDTO input) {
         // Validate the user input
-        EnvProperties properties = Environment.getProperties();
+        EnvProperties properties = world.getEnvironment().getProperties();
         try {
             EnvironmentInputValidator.validateInput(input, properties);
-        } catch (IllegalArgumentException e){
+        } catch (IllegalArgumentException e) {
             ErrorDTO errorDTO = new ErrorDTO(e.getMessage(), e.getClass().getName(), LocalDateTime.now());
             errorList.add(errorDTO);
             return;
@@ -151,6 +150,7 @@ public class SimulationEngine implements DTOEngineInterface {
             throw new IllegalStateException("World has not been initialized yet.");
         }
     }
+
     public SimulationRunResultsDTO getSimulationResults(String runIdentifier) {
         if (simulationRunner != null) {
             return simulationRunner.getResultsByID(runIdentifier);

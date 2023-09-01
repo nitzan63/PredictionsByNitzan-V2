@@ -3,7 +3,7 @@ package engine.file.validator.world.entities.entity;
 import engine.file.validator.world.entities.entity.population.PopulationValidator;
 import engine.file.validator.world.entities.entity.properties.PropertiesValidator;
 import engine.file.validator.world.utils.NameValidator;
-import scheme.generated.PRDEntity;
+import scheme.v1.generated.PRDEntity;
 
 import javax.xml.bind.ValidationException;
 

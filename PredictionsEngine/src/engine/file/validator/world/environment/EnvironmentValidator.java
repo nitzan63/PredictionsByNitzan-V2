@@ -1,7 +1,7 @@
 package engine.file.validator.world.environment;
 
 import engine.file.validator.world.environment.properties.EnvPropertiesValidator;
-import scheme.generated.PRDEvironment;
+import scheme.v1.generated.PRDEvironment;
 
 import javax.xml.bind.ValidationException;
 

@@ -1,8 +1,8 @@
 package engine.file.validator.world.rules;
 
 import engine.file.validator.world.rules.rule.RuleValidator;
-import scheme.generated.PRDRule;
-import scheme.generated.PRDRules;
+import scheme.v1.generated.PRDRule;
+import scheme.v1.generated.PRDRules;
 
 import javax.xml.bind.ValidationException;
 import java.util.HashSet;

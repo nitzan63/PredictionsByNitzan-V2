@@ -1,6 +1,6 @@
 package engine.file.validator.world.rules.rule.activation;
 
-import scheme.generated.PRDActivation;
+import scheme.v1.generated.PRDActivation;
 
 import javax.xml.bind.ValidationException;
 

@@ -3,6 +3,7 @@ package world.rules.rule.action.impl;
 import world.entities.EntitiesDefinition;
 import world.entities.entity.EntityInstance;
 import world.entities.entity.properties.property.api.EntityProperty;
+import world.environment.Environment;
 import world.rules.rule.action.api.AbstractAction;
 import world.rules.rule.action.api.ActionType;
 
@@ -16,7 +17,7 @@ public class IncreaseAction extends AbstractAction {
         this.byExpression = byExpression;
     }
 
-    public void invoke(EntityInstance entityInstance) {
+    public void invoke(EntityInstance entityInstance, Environment environment) {
         double newValue;
         EntityProperty property = entityInstance.getProperty(propertyName);
         Object valueObject = property.getValue();
@@ -28,7 +29,7 @@ public class IncreaseAction extends AbstractAction {
         } else {
             throw new IllegalArgumentException("Unexpected type" + valueObject.getClass() + " in " + propertyName + " in " + entityInstance);
         }
-        Double expression = (Double) evaluateExpression(byExpression, entityInstance);
+        Double expression = (Double) evaluateExpression(byExpression, entityInstance, environment);
         newValue = value + expression;
         if (newValue < property.getRange().getTo().doubleValue())
             property.setValue(value + expression);

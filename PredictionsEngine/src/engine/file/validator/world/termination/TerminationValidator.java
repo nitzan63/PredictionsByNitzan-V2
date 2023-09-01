@@ -1,8 +1,8 @@
 package engine.file.validator.world.termination;
 
-import scheme.generated.PRDBySecond;
-import scheme.generated.PRDByTicks;
-import scheme.generated.PRDTermination;
+import scheme.v1.generated.PRDBySecond;
+import scheme.v1.generated.PRDByTicks;
+import scheme.v1.generated.PRDTermination;
 
 import javax.xml.bind.ValidationException;
 

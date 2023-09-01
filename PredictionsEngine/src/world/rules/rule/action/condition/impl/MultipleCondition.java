@@ -1,6 +1,7 @@
 package world.rules.rule.action.condition.impl;
 
 import world.entities.entity.EntityInstance;
+import world.environment.Environment;
 import world.rules.rule.action.condition.api.Condition;
 import world.rules.rule.action.condition.api.LogicalOperator;
 
@@ -30,13 +31,13 @@ public class MultipleCondition implements Condition {
     }
 
     @Override
-    public boolean evaluate(EntityInstance entityInstance) {
+    public boolean evaluate(EntityInstance entityInstance, Environment environment) {
         if (logicalOperator != null) {
             switch (logicalOperator) {
                 case AND:
-                    return conditionList.stream().allMatch(condition -> condition.evaluate(entityInstance));
+                    return conditionList.stream().allMatch(condition -> condition.evaluate(entityInstance, environment));
                 case OR:
-                    return conditionList.stream().anyMatch(condition -> condition.evaluate(entityInstance));
+                    return conditionList.stream().anyMatch(condition -> condition.evaluate(entityInstance, environment));
                 default:
                     return false;
             }

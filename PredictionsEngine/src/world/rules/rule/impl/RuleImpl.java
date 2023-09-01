@@ -2,6 +2,8 @@ package world.rules.rule.impl;
 
 import world.entities.EntitiesDefinition;
 import world.entities.entity.EntityInstance;
+import world.environment.Environment;
+import world.environment.properties.EnvProperties;
 import world.rules.rule.action.api.Action;
 import world.rules.rule.activation.Activation;
 import world.rules.rule.api.Rule;
@@ -41,13 +43,13 @@ public class RuleImpl implements Rule {
         actionsToPerform.add(action);
     }
 
-    public void performActions(EntitiesDefinition entitiesDefinition, int tickNumber) throws Exception {
+    public void performActions(EntitiesDefinition entitiesDefinition, int tickNumber, Environment environment) throws Exception {
         try {
             if (activation.isActive(tickNumber)) {
                 Collection<EntityInstance> entitiesCopy = new ArrayList<>(entitiesDefinition.getEntities().values());
                 for (EntityInstance entity : entitiesCopy) {
                     for (Action action : actionsToPerform) {
-                        action.invoke(entity);
+                        action.invoke(entity, environment);
                     }
                 }
             }

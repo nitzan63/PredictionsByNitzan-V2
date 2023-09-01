@@ -1,8 +1,8 @@
 package engine.file.mapper.world.termination;
 
-import scheme.generated.PRDBySecond;
-import scheme.generated.PRDByTicks;
-import scheme.generated.PRDTermination;
+import scheme.v1.generated.PRDBySecond;
+import scheme.v1.generated.PRDByTicks;
+import scheme.v1.generated.PRDTermination;
 import world.termination.api.Termination;
 import world.termination.impl.TerminationByTicks;
 import world.termination.impl.TerminationByTime;

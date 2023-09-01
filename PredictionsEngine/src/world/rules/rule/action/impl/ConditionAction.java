@@ -2,6 +2,7 @@ package world.rules.rule.action.impl;
 
 import world.entities.EntitiesDefinition;
 import world.entities.entity.EntityInstance;
+import world.environment.Environment;
 import world.rules.rule.action.api.AbstractAction;
 import world.rules.rule.action.api.Action;
 import world.rules.rule.action.api.ActionType;
@@ -20,11 +21,11 @@ public class ConditionAction extends AbstractAction {
     }
 
     @Override
-    public void invoke(EntityInstance entityInstance) {
-        if (condition.evaluate(entityInstance)) {
-            performActions(thenActions, entityInstance);
+    public void invoke(EntityInstance entityInstance, Environment environment) {
+        if (condition.evaluate(entityInstance, environment)) {
+            performActions(thenActions, entityInstance, environment);
         } else if (elseActions != null){
-            performActions(elseActions, entityInstance);
+            performActions(elseActions, entityInstance, environment);
         }
     }
 
@@ -39,9 +40,9 @@ public class ConditionAction extends AbstractAction {
         return null;
     }
 
-    private void performActions(List<Action> actions, EntityInstance entityInstance){
+    private void performActions(List<Action> actions, EntityInstance entityInstance, Environment environment){
         for (Action action : actions)
-            action.invoke(entityInstance);
+            action.invoke(entityInstance, environment);
     }
 
     public List<Action> getThenActions() {

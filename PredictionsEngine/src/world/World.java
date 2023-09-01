@@ -13,11 +13,12 @@ public class World {
 
     public void simulateThisTick (int tickNumber) throws Exception{
         try {
-            rules.simulateRules(entities, tickNumber);
+            rules.simulateRules(entities, tickNumber , environment);
         } catch (Exception e){
             throw new Exception("In Tick Number: " + tickNumber +" Error: " + e.getMessage(), e);
         }
     }
+
     public Environment getEnvironment() {
         return environment;
     }

@@ -1,7 +1,9 @@
 package world.rules.rule.action.condition.impl;
 
+import world.World;
 import world.entities.EntitiesDefinition;
 import world.entities.entity.EntityInstance;
+import world.environment.Environment;
 import world.rules.rule.action.api.Action;
 import world.rules.rule.action.condition.api.Condition;
 import world.rules.rule.action.condition.api.Operator;
@@ -36,9 +38,9 @@ public class SingleCondition implements Condition {
     }
 
 
-    public boolean evaluate(EntityInstance entityInstance) {
+    public boolean evaluate(EntityInstance entityInstance, Environment environment) {
         Object propertyValue = entityInstance.getProperty(propertyName).getValue();
-        Object value = ExpressionEvaluator.evaluateExpression(rawValue, entityInstance);
+        Object value = ExpressionEvaluator.evaluateExpression(rawValue, entityInstance, environment);
 
         if (operator == null || value == null || propertyValue == null)
             return false;

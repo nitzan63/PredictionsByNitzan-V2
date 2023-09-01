@@ -2,6 +2,7 @@ package world.rules.rule.action.impl;
 
 import world.entities.EntitiesDefinition;
 import world.entities.entity.EntityInstance;
+import world.environment.Environment;
 import world.rules.rule.action.api.AbstractAction;
 import world.rules.rule.action.api.ActionType;
 
@@ -11,7 +12,7 @@ public class KillAction extends AbstractAction {
     }
 
     @Override
-    public void invoke(EntityInstance entityInstance) {
+    public void invoke(EntityInstance entityInstance, Environment environment) {
         entitiesDefinition.removeEntityInstance(entityInstance.getSerialNumber());
         entitiesDefinition.setPopulation(entitiesDefinition.getPopulation() - 1);
     }

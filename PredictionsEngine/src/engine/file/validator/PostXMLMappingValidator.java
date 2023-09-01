@@ -26,7 +26,7 @@ public class PostXMLMappingValidator {
         for (Rule rule : rules.getRules()) {
             // For each action:
             for (Action action : rule.getActionsToPerform()) {
-                validateAction(action, rule, actualEntitiesName, exampleEntity);
+                validateAction(action, rule, actualEntitiesName, exampleEntity, world);
             }
         }
     }
@@ -39,15 +39,15 @@ public class PostXMLMappingValidator {
                 return propNames;
             }
 
-    private static void validateAction(Action action, Rule rule, String actualEntitiesName, EntityInstance exampleEntity) throws ValidationException {
+    private static void validateAction(Action action, Rule rule, String actualEntitiesName, EntityInstance exampleEntity, World world) throws ValidationException {
         if (action instanceof ConditionAction) {
             ConditionAction conditionAction = (ConditionAction) action;
             for (Action thenAction : conditionAction.getThenActions()) {
-                validateAction(thenAction, rule, actualEntitiesName, exampleEntity);
+                validateAction(thenAction, rule, actualEntitiesName, exampleEntity, world);
             }
             if (conditionAction.getElseActions() != null) {
                 for (Action elseAction : conditionAction.getElseActions()) {
-                    validateAction(elseAction, rule, actualEntitiesName, exampleEntity);
+                    validateAction(elseAction, rule, actualEntitiesName, exampleEntity, world);
                 }
             }
         } else {
@@ -74,7 +74,7 @@ public class PostXMLMappingValidator {
             // check if the byExpression is valid:
             if (action.getByExpression() != null && ((action.getActionType() == ActionType.DECREASE) || (action.getActionType() == ActionType.INCREASE))) {
                 // check for decrease / increase:
-                Object evaluatedValue = ExpressionEvaluator.evaluateExpression(action.getByExpression(), exampleEntity);
+                Object evaluatedValue = ExpressionEvaluator.evaluateExpression(action.getByExpression(), exampleEntity, world.getEnvironment());
                 if (!(evaluatedValue instanceof Number)) {
                     throw new ValidationException("byExpression value: " + action.getByExpression() + ", in rule " + rule.getName() + " is not a number!\n");
                 }
@@ -83,8 +83,8 @@ public class PostXMLMappingValidator {
                 if (action instanceof CalculationAction) {
                     //check for calculation args:
                     CalculationAction calcAction = (CalculationAction) action;
-                    Object evaluatedArg1 = ExpressionEvaluator.evaluateExpression(calcAction.getArgs1(), exampleEntity);
-                    Object evaluatedArg2 = ExpressionEvaluator.evaluateExpression(calcAction.getArgs2(), exampleEntity);
+                    Object evaluatedArg1 = ExpressionEvaluator.evaluateExpression(calcAction.getArgs1(), exampleEntity, world.getEnvironment());
+                    Object evaluatedArg2 = ExpressionEvaluator.evaluateExpression(calcAction.getArgs2(), exampleEntity, world.getEnvironment());
                     if (!(evaluatedArg1 instanceof Number)) {
                         throw new ValidationException("args1 value: " + calcAction.getArgs1() + ", in calculation action in rule " + rule.getName() + " is not a number!\n");
                     }

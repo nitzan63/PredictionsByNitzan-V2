@@ -1,8 +1,6 @@
 package engine.simulation;
 
 import dto.*;
-import engine.file.mapper.world.entities.EntitiesMapper;
-import scheme.generated.PRDWorld;
 import world.World;
 import world.entities.entity.EntityInstance;
 import world.entities.entity.properties.EntityProperties;
@@ -55,7 +53,6 @@ public class SimulationRunner implements Runnable {
                 errorList.add(errorDTO);
             }
         }
-
         populationStatistics.setFinalPopulation(world.getEntities().getPopulation());
         resultsDTO.setPopulationStatistics(populationStatistics);
         for (EntityInstance entityInstance : world.getEntities().getEntities().values()){
@@ -77,7 +74,7 @@ public class SimulationRunner implements Runnable {
         SimulationRunMetadataDTO metadataDTO = new SimulationRunMetadataDTO(runIdentifier, LocalDateTime.now().toString(), termination.getTerminationMessage());
         simulationData.put(runIdentifier, metadataDTO);
         // set the env properties to random after simulation run!
-        Environment.randomEnvProperties();
+        world.getEnvironment().getProperties().generateRandomEnvPropertiesValues();
         return metadataDTO;
     }
 

@@ -4,7 +4,7 @@ import engine.file.mapper.world.rules.RulesMapper;
 import engine.file.mapper.world.entities.EntitiesMapper;
 import engine.file.mapper.world.environment.EnvMapper;
 import engine.file.mapper.world.termination.TerminationMapper;
-import scheme.generated.PRDWorld;
+import scheme.v1.generated.PRDWorld;
 import world.World;
 
 public class WorldMapper {

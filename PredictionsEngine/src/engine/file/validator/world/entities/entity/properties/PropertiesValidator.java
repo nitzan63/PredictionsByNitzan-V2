@@ -1,8 +1,8 @@
 package engine.file.validator.world.entities.entity.properties;
 
 import engine.file.validator.world.entities.entity.properties.property.PropertyValidator;
-import scheme.generated.PRDProperties;
-import scheme.generated.PRDProperty;
+import scheme.v1.generated.PRDProperties;
+import scheme.v1.generated.PRDProperty;
 
 import javax.xml.bind.ValidationException;
 import java.util.HashSet;

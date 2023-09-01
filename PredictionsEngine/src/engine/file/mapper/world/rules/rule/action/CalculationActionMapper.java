@@ -1,8 +1,8 @@
 package engine.file.mapper.world.rules.rule.action;
 
-import scheme.generated.PRDAction;
-import scheme.generated.PRDDivide;
-import scheme.generated.PRDMultiply;
+import scheme.v1.generated.PRDAction;
+import scheme.v1.generated.PRDDivide;
+import scheme.v1.generated.PRDMultiply;
 import world.entities.EntitiesDefinition;
 import world.rules.rule.action.api.Action;
 import world.rules.rule.action.impl.DivideAction;

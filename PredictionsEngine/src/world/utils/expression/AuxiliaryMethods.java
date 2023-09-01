@@ -5,8 +5,8 @@ import world.environment.Environment;
 import java.util.Random;
 
 public class AuxiliaryMethods {
-    public static Double environmentAuxMethod(String propertyName){
-        Object value = Environment.getEnvironmentPropValue(propertyName);
+    public static Double environmentAuxMethod(String propertyName, Environment environment){
+        Object value = environment.getEnvironmentPropValue(propertyName);
         if (value instanceof Number) {
             return ((Number) value).doubleValue();
         } else {

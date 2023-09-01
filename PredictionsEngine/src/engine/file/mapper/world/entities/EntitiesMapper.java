@@ -1,8 +1,8 @@
 package engine.file.mapper.world.entities;
 
 import engine.file.mapper.world.entities.entity.EntityMapper;
-import scheme.generated.PRDEntities;
-import scheme.generated.PRDEntity;
+import scheme.v1.generated.PRDEntities;
+import scheme.v1.generated.PRDEntity;
 import world.entities.EntitiesDefinition;
 import world.entities.entity.EntityInstance;
 

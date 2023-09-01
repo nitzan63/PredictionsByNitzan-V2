@@ -26,8 +26,8 @@ public abstract class AbstractAction implements Action {
         return entitiesDefinition;
     }
 
-    protected Object evaluateExpression(String expression, EntityInstance entityInstance) {
-        return ExpressionEvaluator.evaluateExpression(expression, entityInstance);
+    protected Object evaluateExpression(String expression, EntityInstance entityInstance, Environment environment) {
+        return ExpressionEvaluator.evaluateExpression(expression, entityInstance, environment);
     }
 
     public String getEntityName() {

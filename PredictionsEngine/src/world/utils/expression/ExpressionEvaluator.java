@@ -1,24 +1,25 @@
 package world.utils.expression;
 
 import world.entities.entity.EntityInstance;
+import world.environment.Environment;
 
 public class ExpressionEvaluator {
-    public static Object evaluateExpression (String expression, EntityInstance entityInstance){
+    public static Object evaluateExpression (String expression, EntityInstance entityInstance, Environment environment){
         // check if the expression is in a format of auxiliary method:
         if (expression.matches("\\w+\\(.+\\)")){
             String[] parts = expression.split("\\(");
             String methodName = parts[0];
             String argument = parts[1].substring(0, parts[1].length() - 1);
-            return evaluateAuxMethod(methodName, argument);
+            return evaluateAuxMethod(methodName, argument, environment);
         } else if (entityInstance.getProperty(expression) != null){ //check if the expression is a property
             return entityInstance.getProperty(expression).getValue();
         } else return parseFreeValue(expression); // the expression is free value, parse it.
     }
 
-    private static Object evaluateAuxMethod (String methodName, String argument){
+    private static Object evaluateAuxMethod (String methodName, String argument, Environment environment){
         switch (methodName){
             case "environment":
-                return AuxiliaryMethods.environmentAuxMethod(argument);
+                return AuxiliaryMethods.environmentAuxMethod(argument, environment);
             case "random":
                 return AuxiliaryMethods.randomAuxMethod(argument);
             default:

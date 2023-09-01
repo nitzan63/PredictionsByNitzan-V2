@@ -1,7 +1,7 @@
 package engine.file.validator.world.environment.properties;
 
 import engine.file.validator.world.environment.properties.property.EnvPropertyValidator;
-import scheme.generated.PRDEnvProperty;
+import scheme.v1.generated.PRDEnvProperty;
 
 import javax.xml.bind.ValidationException;
 import java.util.HashSet;

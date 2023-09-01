@@ -1,7 +1,7 @@
 package engine.file.mapper.world.environment.properties.property;
 
 import engine.file.mapper.world.utils.range.RangeMapper;
-import scheme.generated.PRDEnvProperty;
+import scheme.v1.generated.PRDEnvProperty;
 import world.environment.properties.property.api.EnvProperty;
 import world.property.impl.PropertyBool;
 import world.property.impl.PropertyDecimal;

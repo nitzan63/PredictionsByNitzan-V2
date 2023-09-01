@@ -6,20 +6,20 @@ import world.environment.properties.property.api.EnvProperty;
 import java.util.List;
 
 public class Environment {
-    private static EnvProperties properties;
+    private EnvProperties properties;
 
     public void setProperties(EnvProperties properties) {
-        Environment.properties = properties;
+        this.properties = properties;
     }
 
-    public static void randomEnvProperties(){
+    public void randomEnvProperties(){
         properties.generateRandomEnvPropertiesValues();
     }
-    public static EnvProperties getProperties() {
+    public EnvProperties getProperties() {
         return properties;
     }
 
-    public static Double getEnvironmentPropValue(String propertyName){
+    public Double getEnvironmentPropValue(String propertyName){
         Object value = properties.getProperty(propertyName).getValue();
         if (value instanceof Integer) {
             return ((Integer) value).doubleValue();

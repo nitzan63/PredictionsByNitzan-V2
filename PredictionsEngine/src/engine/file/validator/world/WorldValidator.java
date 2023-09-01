@@ -4,7 +4,7 @@ import engine.file.validator.world.entities.EntitiesValidator;
 import engine.file.validator.world.environment.EnvironmentValidator;
 import engine.file.validator.world.rules.RulesValidator;
 import engine.file.validator.world.termination.TerminationValidator;
-import scheme.generated.PRDWorld;
+import scheme.v1.generated.PRDWorld;
 
 import javax.xml.bind.ValidationException;
 
