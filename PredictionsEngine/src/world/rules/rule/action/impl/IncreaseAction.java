@@ -1,6 +1,6 @@
 package world.rules.rule.action.impl;
 
-import world.ActionContext;
+import world.rules.rule.action.api.ActionContext;
 import world.entities.EntitiesDefinition;
 import world.entities.entity.EntityInstance;
 import world.entities.entity.properties.property.api.EntityProperty;

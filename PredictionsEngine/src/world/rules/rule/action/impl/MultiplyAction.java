@@ -1,12 +1,9 @@
 package world.rules.rule.action.impl;
 
-import world.ActionContext;
-import world.entities.EntitiesDefinition;
+import world.rules.rule.action.api.ActionContext;
 import world.entities.entity.EntityInstance;
 import world.environment.Environment;
 import world.rules.rule.action.api.CalculationAction;
-
-import java.util.Map;
 
 public class MultiplyAction extends CalculationAction {
 

@@ -1,16 +1,12 @@
 package world.rules.rule.impl;
 
-import com.sun.xml.internal.ws.api.ha.StickyFeature;
-import world.ActionContext;
+import world.rules.rule.action.api.ActionContext;
 import world.entities.EntitiesDefinition;
 import world.entities.entity.EntityInstance;
-import world.environment.Environment;
-import world.environment.properties.EnvProperties;
 import world.rules.rule.action.api.Action;
 import world.rules.rule.activation.Activation;
 import world.rules.rule.api.Rule;
 
-import javax.swing.text.html.parser.Entity;
 import java.util.*;
 
 public class RuleImpl implements Rule {

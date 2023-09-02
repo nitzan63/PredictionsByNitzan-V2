@@ -1,14 +1,11 @@
 package world.rules.rule.action.impl;
 
-import world.ActionContext;
-import world.entities.EntitiesDefinition;
+import world.rules.rule.action.api.ActionContext;
 import world.entities.entity.EntityInstance;
 import world.entities.entity.properties.property.api.EntityProperty;
 import world.environment.Environment;
 import world.rules.rule.action.api.AbstractAction;
 import world.rules.rule.action.api.ActionType;
-
-import java.util.Map;
 
 public class DecreaseAction extends AbstractAction {
     private final String propertyName;

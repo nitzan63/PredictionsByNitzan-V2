@@ -1,7 +1,6 @@
 package world.rules.rule.action.impl;
 
-import world.ActionContext;
-import world.entities.EntitiesDefinition;
+import world.rules.rule.action.api.ActionContext;
 import world.entities.entity.EntityInstance;
 import world.environment.Environment;
 import world.rules.rule.action.api.AbstractAction;
@@ -9,7 +8,6 @@ import world.rules.rule.action.api.Action;
 import world.rules.rule.action.api.ActionType;
 import world.rules.rule.action.condition.api.Condition;
 import java.util.List;
-import java.util.Map;
 
 public class ConditionAction extends AbstractAction {
     private final Condition condition;

@@ -1,16 +1,10 @@
 package world.rules;
 
-import world.ActionContext;
-import world.World;
-import world.entities.EntitiesDefinition;
-import world.environment.Environment;
-import world.environment.properties.EnvProperties;
-import world.rules.rule.activation.Activation;
+import world.rules.rule.action.api.ActionContext;
 import world.rules.rule.api.Rule;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
 
 public class Rules {
     private final List<Rule> rules;

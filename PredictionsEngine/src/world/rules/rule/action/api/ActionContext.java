@@ -1,5 +1,6 @@
-package world;
+package world.rules.rule.action.api;
 
+import world.World;
 import world.entities.EntitiesDefinition;
 import world.environment.Environment;
 import world.grid.Grid;

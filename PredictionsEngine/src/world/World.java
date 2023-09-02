@@ -5,7 +5,7 @@ import world.entities.entity.EntityInstance;
 import world.environment.Environment;
 import world.grid.Grid;
 import world.rules.Rules;
-import world.rules.rule.action.api.Action;
+import world.rules.rule.action.api.ActionContext;
 import world.termination.api.Termination;
 
 import java.util.*;

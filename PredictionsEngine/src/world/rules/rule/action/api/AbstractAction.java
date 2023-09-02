@@ -35,7 +35,7 @@ public abstract class AbstractAction implements Action {
     public String toString() {
         return "AbstractAction{" +
                 "actionType=" + actionType +
-                ", entitiesDefinition=" + allEntitiesDefinitionMap +
+                ", entitiesDefinition=" +
                 '}';
     }
 }
