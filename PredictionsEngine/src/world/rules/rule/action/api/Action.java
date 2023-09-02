@@ -7,7 +7,6 @@ import world.environment.Environment;
 public interface Action {
     void invoke (EntityInstance entityInstance, Environment environment);
     ActionType getActionType();
-    public EntitiesDefinition getContextEntity();
 
     public String getEntityName();
 

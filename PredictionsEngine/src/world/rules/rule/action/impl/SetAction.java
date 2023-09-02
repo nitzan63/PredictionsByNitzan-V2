@@ -6,12 +6,14 @@ import world.environment.Environment;
 import world.rules.rule.action.api.AbstractAction;
 import world.rules.rule.action.api.ActionType;
 
+import java.util.Map;
+
 public class SetAction extends AbstractAction {
     private final String propertyName;
     private final String expression;
 
-    public SetAction(EntitiesDefinition entitiesDefinition, String propertyName, String expression, String entityName) {
-        super(ActionType.SET, entitiesDefinition, entityName);
+    public SetAction(Map<String,EntitiesDefinition> allEntitiesDefinition, String propertyName, String expression, String entityName) {
+        super(ActionType.SET, allEntitiesDefinition, entityName);
         this.propertyName = propertyName;
         this.expression = expression;
     }

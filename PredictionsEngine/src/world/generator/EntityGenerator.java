@@ -75,11 +75,14 @@ public class EntityGenerator {
 
     }
 
-    public EntityInstance replaceFromScratch(String entityName){
+    public EntityInstance replaceFromScratch(EntityInstance prototypeInstance, EntityInstance baseInstance){
+        int row = baseInstance.getRow();
+        int col = baseInstance.getCol();
+
 
     }
 
-    public EntityInstance replaceDerived (String entityName, EntityInstance baseInstance){
+    public EntityInstance replaceDerived (EntityInstance prototypeInstance, EntityInstance baseInstance){
 
     }
 }

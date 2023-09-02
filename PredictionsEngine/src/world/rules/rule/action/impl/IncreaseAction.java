@@ -7,12 +7,14 @@ import world.environment.Environment;
 import world.rules.rule.action.api.AbstractAction;
 import world.rules.rule.action.api.ActionType;
 
+import java.util.Map;
+
 public class IncreaseAction extends AbstractAction {
     private final String propertyName;
     private final String byExpression;
 
-    public IncreaseAction(EntitiesDefinition entitiesDefinition, String property, String byExpression, String entityName) {
-        super(ActionType.INCREASE, entitiesDefinition, entityName);
+    public IncreaseAction(Map<String,EntitiesDefinition> allEntitiesDefinition, String property, String byExpression, String entityName) {
+        super(ActionType.INCREASE, allEntitiesDefinition, entityName);
         this.propertyName = property;
         this.byExpression = byExpression;
     }

@@ -5,25 +5,22 @@ import world.entities.entity.EntityInstance;
 import world.environment.Environment;
 import world.utils.expression.ExpressionEvaluator;
 
+import java.util.Map;
+
 public abstract class AbstractAction implements Action {
     protected final ActionType actionType;
-    protected final EntitiesDefinition entitiesDefinition;
+    protected final Map<String, EntitiesDefinition> allEntitiesDefinitionMap;
     protected final String entityName;
 
-    protected AbstractAction(ActionType actionType, EntitiesDefinition entitiesDefinition, String entityName) {
+    protected AbstractAction(ActionType actionType, Map<String, EntitiesDefinition> allEntitiesDefinition, String entityName) {
         this.actionType = actionType;
-        this.entitiesDefinition = entitiesDefinition;
+        this.allEntitiesDefinitionMap = allEntitiesDefinition;
         this.entityName = entityName;
     }
 
     @Override
     public ActionType getActionType() {
         return actionType;
-    }
-
-    @Override
-    public EntitiesDefinition getContextEntity() {
-        return entitiesDefinition;
     }
 
     protected Object evaluateExpression(String expression, EntityInstance entityInstance, Environment environment) {
@@ -34,8 +31,8 @@ public abstract class AbstractAction implements Action {
         return entityName;
     }
 
-    public EntitiesDefinition getEntitiesDefinition() {
-        return this.entitiesDefinition;
+    public Map<String, EntitiesDefinition> getAllEntitiesDefinitionMap() {
+        return this.allEntitiesDefinitionMap;
     }
 
 
@@ -43,7 +40,7 @@ public abstract class AbstractAction implements Action {
     public String toString() {
         return "AbstractAction{" +
                 "actionType=" + actionType +
-                ", entitiesDefinition=" + entitiesDefinition +
+                ", entitiesDefinition=" + allEntitiesDefinitionMap +
                 '}';
     }
 }

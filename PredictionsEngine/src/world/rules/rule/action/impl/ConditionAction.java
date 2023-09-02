@@ -8,13 +8,14 @@ import world.rules.rule.action.api.Action;
 import world.rules.rule.action.api.ActionType;
 import world.rules.rule.action.condition.api.Condition;
 import java.util.List;
+import java.util.Map;
 
 public class ConditionAction extends AbstractAction {
     private final Condition condition;
     private final List<Action> thenActions;
     private final List<Action> elseActions;
-    public ConditionAction (EntitiesDefinition entitiesDefinition, String entityName, List<Action> thenActions, List<Action> elseActions, Condition condition){
-        super(ActionType.CONDITION, entitiesDefinition, entityName);
+    public ConditionAction (Map<String,EntitiesDefinition> allEntitiesDefinition, String entityName, List<Action> thenActions, List<Action> elseActions, Condition condition){
+        super(ActionType.CONDITION, allEntitiesDefinition, entityName);
         this.elseActions = elseActions;
         this.thenActions = thenActions;
         this.condition = condition;
