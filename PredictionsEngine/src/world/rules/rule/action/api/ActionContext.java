@@ -4,8 +4,7 @@ import world.World;
 import world.entities.EntitiesDefinition;
 import world.environment.Environment;
 import world.grid.Grid;
-import world.rules.Rules;
-import world.termination.api.Termination;
+
 
 import java.util.Map;
 
