@@ -42,6 +42,8 @@ public class WorldGenerator {
             // get the prototype instance from the definition:
             EntityInstance prototype = prototypeWorld.getEntitiesDefinition(entityName).getEntity(PROTOTYPE_INSTANCE);
 
+            entitiesDefinition.setPrototypeEntity(prototype);
+
             for (int i = 0; i < population; i++) {
                 EntityInstance newInstance = entityGenerator.generateNewInstance(prototype, newWorld.getGrid(), i);
                 entitiesDefinition.addEntity(newInstance, i);

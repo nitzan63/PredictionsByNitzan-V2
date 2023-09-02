@@ -10,6 +10,7 @@ public class EntitiesDefinition {
     private String entityName;
     private Map<Integer, EntityInstance> entities = new TreeMap<>();
     Integer population;
+    private EntityInstance prototypeEntity;
 
     public EntitiesDefinition(String name, Integer population){
         this.entityName = name;
@@ -50,6 +51,14 @@ public class EntitiesDefinition {
 
     public void removeEntityInstance (int serialNumber){
         entities.remove(serialNumber);
+    }
+
+    public EntityInstance getPrototypeEntity() {
+        return prototypeEntity;
+    }
+
+    public void setPrototypeEntity(EntityInstance prototypeEntity) {
+        this.prototypeEntity = prototypeEntity;
     }
 
     @Override

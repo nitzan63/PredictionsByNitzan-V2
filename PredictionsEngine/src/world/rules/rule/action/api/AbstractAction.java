@@ -34,6 +34,11 @@ public abstract class AbstractAction implements Action {
         return entityName;
     }
 
+    public EntitiesDefinition getEntitiesDefinition() {
+        return this.entitiesDefinition;
+    }
+
+
     @Override
     public String toString() {
         return "AbstractAction{" +

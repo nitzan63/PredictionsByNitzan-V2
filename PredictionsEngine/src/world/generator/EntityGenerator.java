@@ -74,4 +74,12 @@ public class EntityGenerator {
         return newInstance;
 
     }
+
+    public EntityInstance replaceFromScratch(String entityName){
+
+    }
+
+    public EntityInstance replaceDerived (String entityName, EntityInstance baseInstance){
+
+    }
 }

@@ -2,6 +2,7 @@ package engine.file.validator.world;
 
 import engine.file.validator.world.entities.EntitiesValidator;
 import engine.file.validator.world.environment.EnvironmentValidator;
+import engine.file.validator.world.grid.GridValidator;
 import engine.file.validator.world.rules.RulesValidator;
 import engine.file.validator.world.termination.TerminationValidator;
 import scheme.generated.PRDWorld;
@@ -14,10 +15,11 @@ public class WorldValidator {
     private static PRDWorld currentWorld;
     public static void validateWorld(PRDWorld world) throws ValidationException {
         currentWorld = world;
-        EnvironmentValidator.validateEnvironment(world.getPRDEvironment());
+        EnvironmentValidator.validateEnvironment(world.getPRDEnvironment());
         EntitiesValidator.validateEntities(world.getPRDEntities());
         RulesValidator.validateRules(world.getPRDRules());
         TerminationValidator.validateTermination(world.getPRDTermination());
+        GridValidator.validateGrid(world.getPRDGrid());
     }
 
     // Auxiliary method to check if an entity exists

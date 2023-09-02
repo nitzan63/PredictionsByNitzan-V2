@@ -10,7 +10,6 @@ import javax.xml.bind.ValidationException;
 public class EntityValidator {
     public static void validateEntity(PRDEntity entity) throws ValidationException {
         try {
-            PopulationValidator.validatePopulation(entity.getPRDPopulation());
             PropertiesValidator.validateProperties(entity.getPRDProperties());
             NameValidator.validateName(entity.getName());
         } catch (ValidationException e){
