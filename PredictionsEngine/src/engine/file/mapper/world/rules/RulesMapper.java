@@ -1,8 +1,8 @@
 package engine.file.mapper.world.rules;
 
 import engine.file.mapper.world.rules.rule.RuleMapper;
-import scheme.v1.generated.PRDRule;
-import scheme.v1.generated.PRDRules;
+import scheme.generated.PRDRule;
+import scheme.generated.PRDRules;
 import world.entities.EntitiesDefinition;
 import world.rules.Rules;
 import world.rules.rule.api.Rule;

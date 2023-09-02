@@ -5,7 +5,7 @@ import commands.api.Command;
 import dto.EnvironmentDTO;
 import dto.PropertyDTO;
 import dto.SimulationRunMetadataDTO;
-import dto.UserEnvironmentInputDTO;
+import dto.UserInputDTO;
 import input.UserInputHandler;
 
 import java.util.*;
@@ -108,7 +108,7 @@ public class RunSimulationCommand implements Command {
             userInputProperties.put(selectedPropertyKey, newValue);
 
             // Update the environment properties in the engine
-            UserEnvironmentInputDTO inputDTO = new UserEnvironmentInputDTO(userInputProperties);
+            UserInputDTO inputDTO = new UserInputDTO(userInputProperties);
             simulationInterface.setEnvironmentProperties(inputDTO);
         }
     }

@@ -1,30 +1,33 @@
 package engine.file.mapper.world.entities;
 
 import engine.file.mapper.world.entities.entity.EntityMapper;
-import scheme.v1.generated.PRDEntities;
-import scheme.v1.generated.PRDEntity;
+import scheme.generated.PRDEntities;
+import scheme.generated.PRDEntity;
 import world.entities.EntitiesDefinition;
 import world.entities.entity.EntityInstance;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 public class EntitiesMapper {
-    public static EntitiesDefinition mapEntities (PRDEntities jaxbEntities) {
+    public static Map<String, EntitiesDefinition> mapEntities(PRDEntities jaxbEntities) {
         List<PRDEntity> jaxbEntityList = jaxbEntities.getPRDEntity();
-        int population = jaxbEntityList.get(0).getPRDPopulation();
-        String name = jaxbEntityList.get(0).getName();
-        EntitiesDefinition entities = new EntitiesDefinition(name, population);
-        int serialNumber = 1;
-
-        PRDEntity jaxbEntity = jaxbEntityList.get(0);
-
-        while (serialNumber <= population){
-            EntityInstance entity = EntityMapper.mapEntity(jaxbEntity, serialNumber);
-            entities.addEntity(entity, serialNumber);
-            serialNumber++;
+        // create Map of entities definition to return:
+        Map<String, EntitiesDefinition> entitiesMap = new HashMap<>();
+        // iterate over the entity types in the xml:
+        for (PRDEntity jaxbEntity : jaxbEntityList) {
+            String name = jaxbEntity.getName();
+            // create prototype entity definition with population 0 (the user chooses the population
+            EntitiesDefinition entityDefinition = new EntitiesDefinition(name, 0);
+            // map a prototype entity instance:
+            EntityInstance entityInstancePrototype = EntityMapper.mapEntity(jaxbEntity, 0);
+            // add the prototype instance to the definition:
+            entityDefinition.addEntity(entityInstancePrototype, 0);
+            // put the entity definition in the map of entities:
+            entitiesMap.put(name, entityDefinition);
         }
 
-
-        return entities;
+        return entitiesMap;
     }
 }

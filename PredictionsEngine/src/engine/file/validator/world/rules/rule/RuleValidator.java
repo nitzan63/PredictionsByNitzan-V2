@@ -2,8 +2,8 @@ package engine.file.validator.world.rules.rule;
 
 import engine.file.validator.world.rules.rule.action.ActionValidator;
 import engine.file.validator.world.rules.rule.activation.ActivationValidator;
-import scheme.v1.generated.PRDAction;
-import scheme.v1.generated.PRDRule;
+import scheme.generated.PRDAction;
+import scheme.generated.PRDRule;
 
 import javax.xml.bind.ValidationException;
 

@@ -1,6 +1,6 @@
 package engine.input.validator;
 
-import dto.UserEnvironmentInputDTO;
+import dto.UserInputDTO;
 import world.environment.properties.EnvProperties;
 import world.environment.properties.property.api.EnvProperty;
 import world.utils.range.Range;
@@ -9,8 +9,8 @@ import java.util.Map;
 
 public class EnvironmentInputValidator {
 
-    public static void validateInput(UserEnvironmentInputDTO input, EnvProperties properties) {
-        for (Map.Entry<String, String> entry : input.getUserInputProperties().entrySet()) {
+    public static void validateInput(UserInputDTO input, EnvProperties properties) {
+        for (Map.Entry<String, String> entry : input.getEnvironmertPropMap().entrySet()) {
             String propertyName = entry.getKey();
             String stringValue = entry.getValue();
 

@@ -1,6 +1,6 @@
 package engine.file.mapper.world.utils.range;
 
-import scheme.v1.generated.PRDRange;
+import scheme.generated.PRDRange;
 import world.utils.range.Range;
 
 public class RangeMapper {

@@ -6,7 +6,7 @@ import engine.file.mapper.world.WorldMapper;
 import engine.file.unmarshaller.xmlUnmarshaller;
 import engine.file.validator.PostXMLMappingValidator;
 import engine.file.validator.XMLValidator;
-import scheme.v1.generated.PRDWorld;
+import scheme.generated.PRDWorld;
 import world.World;
 
 import javax.xml.bind.ValidationException;

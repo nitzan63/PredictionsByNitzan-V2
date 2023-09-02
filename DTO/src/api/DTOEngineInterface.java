@@ -11,7 +11,7 @@ public interface DTOEngineInterface {
     List<RuleDTO> getRules();
     TerminationDTO getTermination();
     EnvironmentDTO getEnvironmentProperties();
-    void setEnvironmentProperties(UserEnvironmentInputDTO input);
+    void setEnvironmentProperties(UserInputDTO input);
     SimulationRunMetadataDTO RunSimulation();
     SimulationRunResultsDTO getSimulationResults(String runIdentifier);
     Map<String, SimulationRunResultsDTO> getAllSimulationResults();

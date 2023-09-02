@@ -1,6 +1,6 @@
 package engine.file.mapper.world.rules.rule.action;
 
-import scheme.v1.generated.PRDAction;
+import scheme.generated.PRDAction;
 import world.entities.EntitiesDefinition;
 import world.rules.rule.action.impl.IncreaseAction;
 

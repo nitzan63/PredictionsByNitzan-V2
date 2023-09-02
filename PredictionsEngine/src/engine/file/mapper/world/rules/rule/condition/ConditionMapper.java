@@ -1,6 +1,6 @@
 package engine.file.mapper.world.rules.rule.condition;
 
-import scheme.v1.generated.PRDCondition;
+import scheme.generated.PRDCondition;
 import world.entities.EntitiesDefinition;
 import world.rules.rule.action.condition.api.Condition;
 import world.rules.rule.action.condition.impl.MultipleCondition;

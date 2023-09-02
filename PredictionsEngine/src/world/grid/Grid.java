@@ -13,6 +13,12 @@ public class Grid {
         this.cells = new EntityInstance[rows][columns];
     }
 
+    public Grid(Grid other){
+        this.rows = other.rows;
+        this.cols = other.cols;
+        this.cells = new EntityInstance[rows][cols];
+    }
+
     public boolean placeEntityAt(EntityInstance entityInstance, int row, int col){
         if (cells[row][col] == null){
             cells[row][col] = entityInstance;

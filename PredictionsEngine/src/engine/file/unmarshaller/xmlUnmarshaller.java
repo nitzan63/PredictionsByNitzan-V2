@@ -1,6 +1,6 @@
 package engine.file.unmarshaller;
 
-import scheme.v1.generated.PRDWorld;
+import scheme.generated.PRDWorld;
 
 import javax.xml.bind.JAXBContext;
 import javax.xml.bind.JAXBException;

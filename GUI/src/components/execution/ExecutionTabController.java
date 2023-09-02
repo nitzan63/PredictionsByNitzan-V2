@@ -156,7 +156,7 @@ public class ExecutionTabController {
     @FXML
     private void onStartButtonClick(ActionEvent event) {
         if (!userInputProperties.isEmpty()) {
-            UserEnvironmentInputDTO inputDTO = new UserEnvironmentInputDTO(userInputProperties);
+            UserInputDTO inputDTO = new UserInputDTO(userInputProperties);
             simulationInterface.setEnvironmentProperties(inputDTO);
         }
 

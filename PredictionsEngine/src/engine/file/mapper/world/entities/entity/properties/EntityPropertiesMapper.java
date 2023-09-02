@@ -1,8 +1,8 @@
 package engine.file.mapper.world.entities.entity.properties;
 
 import engine.file.mapper.world.entities.entity.properties.property.EntityPropertyMapper;
-import scheme.v1.generated.PRDProperties;
-import scheme.v1.generated.PRDProperty;
+import scheme.generated.PRDProperties;
+import scheme.generated.PRDProperty;
 import world.entities.entity.properties.EntityProperties;
 import world.entities.entity.properties.property.api.EntityProperty;
 

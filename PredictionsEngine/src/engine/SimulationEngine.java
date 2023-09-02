@@ -114,7 +114,7 @@ public class SimulationEngine implements DTOEngineInterface {
     }
 
     @Override
-    public void setEnvironmentProperties(UserEnvironmentInputDTO input) {
+    public void setEnvironmentProperties(UserInputDTO input) {
         // Validate the user input
         EnvProperties properties = world.getEnvironment().getProperties();
         try {
@@ -126,7 +126,7 @@ public class SimulationEngine implements DTOEngineInterface {
         }
 
         // Apply the changes to the environment properties
-        for (Map.Entry<String, String> entry : input.getUserInputProperties().entrySet()) {
+        for (Map.Entry<String, String> entry : input.getEnvironmertPropMap().entrySet()) {
             String propertyName = entry.getKey();
             String stringValue = entry.getValue();
 

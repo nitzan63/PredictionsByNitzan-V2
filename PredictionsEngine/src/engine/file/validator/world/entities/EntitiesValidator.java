@@ -1,8 +1,8 @@
 package engine.file.validator.world.entities;
 
 import engine.file.validator.world.entities.entity.EntityValidator;
-import scheme.v1.generated.PRDEntities;
-import scheme.v1.generated.PRDEntity;
+import scheme.generated.PRDEntities;
+import scheme.generated.PRDEntity;
 
 import javax.xml.bind.ValidationException;
 

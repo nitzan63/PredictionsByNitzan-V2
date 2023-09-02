@@ -1,8 +1,8 @@
 package engine.file.mapper.world.rules.rule.action;
 
-import scheme.v1.generated.PRDAction;
-import scheme.v1.generated.PRDElse;
-import scheme.v1.generated.PRDThen;
+import scheme.generated.PRDAction;
+import scheme.generated.PRDElse;
+import scheme.generated.PRDThen;
 import world.entities.EntitiesDefinition;
 import world.rules.rule.action.api.Action;
 import world.rules.rule.action.impl.KillAction;

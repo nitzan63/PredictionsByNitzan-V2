@@ -1,7 +1,7 @@
 package engine.file.validator.world.rules.rule.action;
 
 import engine.file.validator.world.WorldValidator;
-import scheme.v1.generated.PRDAction;
+import scheme.generated.PRDAction;
 
 import javax.xml.bind.ValidationException;
 import java.util.Arrays;

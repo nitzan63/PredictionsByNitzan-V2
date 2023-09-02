@@ -45,7 +45,7 @@ public class DTOUIInterface {
         return engineInterface.getEnvironmentProperties();
     }
 
-    public void setEnvironmentProperties(UserEnvironmentInputDTO input) {
+    public void setEnvironmentProperties(UserInputDTO input) {
         engineInterface.setEnvironmentProperties(input);
     }
 

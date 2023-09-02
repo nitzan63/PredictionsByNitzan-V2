@@ -1,6 +1,6 @@
 package engine.file.validator.world.utils;
 
-import scheme.v1.generated.PRDRange;
+import scheme.generated.PRDRange;
 
 import javax.xml.bind.ValidationException;
 

@@ -1,7 +1,7 @@
 package engine.file.mapper.world.entities.entity.properties.property;
 
 import engine.file.mapper.world.utils.range.RangeMapper;
-import scheme.v1.generated.PRDProperty;
+import scheme.generated.PRDProperty;
 import world.entities.entity.properties.property.api.EntityProperty;
 import world.property.impl.PropertyBool;
 import world.property.impl.PropertyDecimal;

@@ -2,9 +2,9 @@ package engine.file.mapper.world.rules.rule;
 
 import engine.file.mapper.world.rules.rule.action.ActionMapper;
 import engine.file.mapper.world.rules.rule.activation.ActivationMapper;
-import scheme.v1.generated.PRDAction;
-import scheme.v1.generated.PRDActions;
-import scheme.v1.generated.PRDRule;
+import scheme.generated.PRDAction;
+import scheme.generated.PRDActions;
+import scheme.generated.PRDRule;
 import world.entities.EntitiesDefinition;
 import world.rules.rule.action.api.Action;
 import world.rules.rule.activation.Activation;

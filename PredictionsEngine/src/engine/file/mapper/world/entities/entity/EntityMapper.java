@@ -1,7 +1,7 @@
 package engine.file.mapper.world.entities.entity;
 
 import engine.file.mapper.world.entities.entity.properties.EntityPropertiesMapper;
-import scheme.v1.generated.PRDEntity;
+import scheme.generated.PRDEntity;
 import world.entities.entity.EntityInstance;
 import world.entities.entity.properties.EntityProperties;
 
@@ -9,6 +9,6 @@ public class EntityMapper {
     public static EntityInstance mapEntity(PRDEntity jaxbEntity, Integer serialNumber) {
         String name = jaxbEntity.getName();
         EntityProperties entityProperties = EntityPropertiesMapper.mapProperties(jaxbEntity.getPRDProperties());
-        return new EntityInstance(serialNumber, entityProperties);
+        return new EntityInstance(serialNumber, entityProperties, 0, 0);
     }
 }

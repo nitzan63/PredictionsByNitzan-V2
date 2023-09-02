@@ -1,7 +1,7 @@
 package engine.file.validator;
 
 import engine.file.validator.world.WorldValidator;
-import scheme.v1.generated.PRDWorld;
+import scheme.generated.PRDWorld;
 
 import javax.xml.bind.ValidationException;
 

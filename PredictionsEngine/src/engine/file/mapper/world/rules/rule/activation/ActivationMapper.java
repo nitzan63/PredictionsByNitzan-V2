@@ -1,6 +1,6 @@
 package engine.file.mapper.world.rules.rule.activation;
 
-import scheme.v1.generated.PRDActivation;
+import scheme.generated.PRDActivation;
 import world.rules.rule.activation.Activation;
 
 public class ActivationMapper {
