@@ -1,5 +1,6 @@
 package world.rules.rule.action.impl;
 
+import world.ActionContext;
 import world.entities.EntitiesDefinition;
 import world.entities.entity.EntityInstance;
 import world.environment.Environment;
@@ -12,14 +13,15 @@ public class SetAction extends AbstractAction {
     private final String propertyName;
     private final String expression;
 
-    public SetAction(Map<String,EntitiesDefinition> allEntitiesDefinition, String propertyName, String expression, String entityName) {
-        super(ActionType.SET, allEntitiesDefinition, entityName);
+    public SetAction(String propertyName, String expression, String entityName) {
+        super(ActionType.SET, entityName);
         this.propertyName = propertyName;
         this.expression = expression;
     }
 
     @Override
-    public void invoke(EntityInstance entityInstance, Environment environment) {
+    public void invoke(EntityInstance entityInstance, ActionContext actionContext) {
+        Environment environment = actionContext.getEnvironment();
         Object value = evaluateExpression(expression, entityInstance, environment);
         if (value instanceof Double){ // handle the cases when trying to set value out of range.
             if ((double) value < entityInstance.getProperty(propertyName).getRange().getFrom().doubleValue()){

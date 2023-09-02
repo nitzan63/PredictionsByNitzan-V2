@@ -1,6 +1,5 @@
 package world.generator;
 
-import world.entities.EntitiesDefinition;
 import world.entities.entity.EntityInstance;
 import world.entities.entity.properties.EntityProperties;
 import world.entities.entity.properties.property.api.EntityProperty;
@@ -27,8 +26,54 @@ public class EntityGenerator {
     }
 
     public EntityInstance generateNewInstance(EntityInstance prototypeEntity, Grid grid, int serialNumber) {
+        // generate new properties:
+        EntityProperties newProperties = generatePropertiesFromPrototype(prototypeEntity.getProperties());
+
+        // find empty cell for the entity:
+        int [] emptyCell = findEmptyCell(grid);
+        int row = emptyCell[0];
+        int col = emptyCell[1];
+
+        // generate the new entity!
+        EntityInstance newInstance = new EntityInstance(serialNumber, newProperties, row, col);
+
+        //place the entity on the grid:
+        grid.addEntityToGrid(newInstance);
+
+        return newInstance;
+
+    }
+
+    public EntityInstance replaceFromScratch(EntityInstance prototypeEntity, EntityInstance baseInstance){
+        // generate properties:
+        EntityProperties newProperties = generatePropertiesFromPrototype(prototypeEntity.getProperties());
+        // create with temp serial number and previous location on the grid:
+        int row = baseInstance.getRow();
+        int col = baseInstance.getCol();
+        return new EntityInstance(999, newProperties, row, col);
+
+    }
+
+    public EntityInstance replaceDerived (EntityInstance prototypeEntity, EntityInstance baseInstance){
+        // generate new properties:
+        EntityProperties newProperties = generatePropertiesFromPrototype(prototypeEntity.getProperties());
+
+        // derive property values:
+        for (EntityProperty baseProperty : baseInstance.getProperties().getProperties()){
+            EntityProperty newProperty = newProperties.getProperty(baseProperty.getName());
+            if (newProperty != null) // if the property exists - change its value:
+                newProperty.setValue(baseProperty.getValue());
+        }
+
+        int row = baseInstance.getRow();
+        int col = baseInstance.getCol();
+        return new EntityInstance(999, newProperties, row, col);
+    }
+
+    public EntityProperties generatePropertiesFromPrototype(EntityProperties prototypeProperties){
         EntityProperties newProperties = new EntityProperties();
-        for (EntityProperty prototypeProperty : prototypeEntity.getProperties().getProperties()) {
+
+        for (EntityProperty prototypeProperty : prototypeProperties.getProperties()) {
 
             // create new property template:
             EntityProperty newProperty = null;
@@ -59,30 +104,6 @@ public class EntityGenerator {
             // add the new property to the entity instance property list:
             newProperties.addProperty(newProperty);
         }
-
-        // find empty cell for the entity:
-        int [] emptyCell = findEmptyCell(grid);
-        int row = emptyCell[0];
-        int col = emptyCell[1];
-
-        // generate the new entity!
-        EntityInstance newInstance = new EntityInstance(serialNumber, newProperties, row, col);
-
-        //place the entity on the grid:
-        grid.addEntityToGrid(newInstance);
-
-        return newInstance;
-
-    }
-
-    public EntityInstance replaceFromScratch(EntityInstance prototypeInstance, EntityInstance baseInstance){
-        int row = baseInstance.getRow();
-        int col = baseInstance.getCol();
-
-
-    }
-
-    public EntityInstance replaceDerived (EntityInstance prototypeInstance, EntityInstance baseInstance){
-
+        return newProperties;
     }
 }

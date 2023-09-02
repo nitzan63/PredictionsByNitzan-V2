@@ -1,9 +1,11 @@
 package world.rules.rule.action.impl;
 
+import world.ActionContext;
 import world.entities.EntitiesDefinition;
 import world.entities.entity.EntityInstance;
 import world.environment.Environment;
 import world.generator.EntityGenerator;
+import world.grid.Grid;
 import world.rules.rule.action.api.AbstractAction;
 import world.rules.rule.action.api.ActionType;
 
@@ -15,22 +17,28 @@ public class ReplaceAction extends AbstractAction{
     private final String mode;
 
 
-    public ReplaceAction(Map<String,EntitiesDefinition> allEntitiesDefinition, String killEntityName, String createEntityName, String mode) {
-        super(ActionType.REPLACE, allEntitiesDefinition, killEntityName);
+    public ReplaceAction(String killEntityName, String createEntityName, String mode) {
+        super(ActionType.REPLACE, killEntityName);
         this.killEntityName = killEntityName;
         this.createEntityName = createEntityName;
         this.mode = mode;
     }
 
     @Override
-    public void invoke(EntityInstance entityInstance, Environment environment) {
+    public void invoke(EntityInstance entityInstance, ActionContext actionContext) {
 
+        // get the data from context:
+        Map<String, EntitiesDefinition> allEntitiesDefinitionMap = actionContext.getEntitiesMap();
+        Grid grid = actionContext.getGrid();
+
+        // get relevant entities:
         EntitiesDefinition entityDefinitionToKill = allEntitiesDefinitionMap.get(killEntityName);
         EntitiesDefinition entitiesDefinitionToCreate = allEntitiesDefinitionMap.get(createEntityName);
 
-        // Step 1: Kill the target entity
+        // Step 1: Kill the target entity and remove from grid
         entityDefinitionToKill.removeEntityInstance(entityInstance.getSerialNumber());
         entityDefinitionToKill.setPopulation(entityDefinitionToKill.getPopulation() - 1);
+        grid.removeEntityFromGrid(entityInstance);
 
         EntityGenerator entityGenerator = new EntityGenerator();
 
@@ -44,9 +52,19 @@ public class ReplaceAction extends AbstractAction{
             throw new IllegalArgumentException("Invalid mode: " + mode);
         }
 
-        // Step 3: Add the new entity instance to the entities:
+
+        // find available serial number:
+        int newSerialNumber = 0;
+        while (entitiesDefinitionToCreate.getEntity(newSerialNumber) != null){
+            newSerialNumber ++;
+        } // set new serial number:
+        newInstance.setSerialNumber(newSerialNumber);
+
+        // Step 3: Add the new entity instance to the entities and add to the grid:
         entitiesDefinitionToCreate.addEntity(newInstance, newInstance.getSerialNumber());
         entitiesDefinitionToCreate.setPopulation(entitiesDefinitionToCreate.getPopulation() + 1);
+        grid.addEntityToGrid(newInstance);
+
 
     }
 

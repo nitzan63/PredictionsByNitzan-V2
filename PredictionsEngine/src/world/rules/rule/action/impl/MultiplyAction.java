@@ -1,5 +1,6 @@
 package world.rules.rule.action.impl;
 
+import world.ActionContext;
 import world.entities.EntitiesDefinition;
 import world.entities.entity.EntityInstance;
 import world.environment.Environment;
@@ -9,13 +10,13 @@ import java.util.Map;
 
 public class MultiplyAction extends CalculationAction {
 
-    public MultiplyAction(Map<String,EntitiesDefinition> allEntitiesDefinition, String entityName, String resultProp, String s1, String s2) {
-        super(allEntitiesDefinition, entityName, resultProp, s1, s2);
+    public MultiplyAction(String entityName, String resultProp, String s1, String s2) {
+        super(entityName, resultProp, s1, s2);
     }
 
     @Override
-    public void invoke(EntityInstance entityInstance, Environment environment) {
-
+    public void invoke(EntityInstance entityInstance, ActionContext actionContext) {
+        Environment environment = actionContext.getEnvironment();
         Double num1 = (Double) evaluateExpression(args1, entityInstance, environment);
         Double num2 = (Double) evaluateExpression(args2, entityInstance, environment);
         double newValue = num1 * num2;

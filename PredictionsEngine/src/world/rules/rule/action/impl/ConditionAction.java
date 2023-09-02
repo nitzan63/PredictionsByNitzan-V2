@@ -1,5 +1,6 @@
 package world.rules.rule.action.impl;
 
+import world.ActionContext;
 import world.entities.EntitiesDefinition;
 import world.entities.entity.EntityInstance;
 import world.environment.Environment;
@@ -14,19 +15,20 @@ public class ConditionAction extends AbstractAction {
     private final Condition condition;
     private final List<Action> thenActions;
     private final List<Action> elseActions;
-    public ConditionAction (Map<String,EntitiesDefinition> allEntitiesDefinition, String entityName, List<Action> thenActions, List<Action> elseActions, Condition condition){
-        super(ActionType.CONDITION, allEntitiesDefinition, entityName);
+    public ConditionAction (String entityName, List<Action> thenActions, List<Action> elseActions, Condition condition){
+        super(ActionType.CONDITION, entityName);
         this.elseActions = elseActions;
         this.thenActions = thenActions;
         this.condition = condition;
     }
 
     @Override
-    public void invoke(EntityInstance entityInstance, Environment environment) {
+    public void invoke(EntityInstance entityInstance, ActionContext actionContext) {
+        Environment environment = actionContext.getEnvironment();
         if (condition.evaluate(entityInstance, environment)) {
-            performActions(thenActions, entityInstance, environment);
+            performActions(thenActions, entityInstance, actionContext);
         } else if (elseActions != null){
-            performActions(elseActions, entityInstance, environment);
+            performActions(elseActions, entityInstance, actionContext);
         }
     }
 
@@ -41,9 +43,9 @@ public class ConditionAction extends AbstractAction {
         return null;
     }
 
-    private void performActions(List<Action> actions, EntityInstance entityInstance, Environment environment){
+    private void performActions(List<Action> actions, EntityInstance entityInstance, ActionContext actionContext){
         for (Action action : actions)
-            action.invoke(entityInstance, environment);
+            action.invoke(entityInstance, actionContext);
     }
 
     public List<Action> getThenActions() {

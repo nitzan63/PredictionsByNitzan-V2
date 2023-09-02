@@ -4,7 +4,7 @@ import world.entities.entity.properties.EntityProperties;
 import world.entities.entity.properties.property.api.EntityProperty;
 
 public class EntityInstance {
-    private final Integer serialNumber;
+    private Integer serialNumber;
     private final EntityProperties properties;
     private int row;
     private int col;
@@ -15,6 +15,10 @@ public class EntityInstance {
         this.properties = properties;
         this.row = row;
         this.col = col;
+    }
+
+    public void setSerialNumber(Integer serialNumber) {
+        this.serialNumber = serialNumber;
     }
 
     public EntityProperties getProperties (){

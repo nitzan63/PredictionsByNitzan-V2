@@ -1,5 +1,6 @@
 package world.rules.rule.api;
 
+import world.ActionContext;
 import world.entities.EntitiesDefinition;
 import world.environment.Environment;
 import world.environment.properties.EnvProperties;
@@ -14,5 +15,5 @@ public interface Rule {
     Activation getActivation();
     List<Action> getActionsToPerform();
     void addAction (Action action);
-    public void performActions(Map<String, EntitiesDefinition> entitiesMap, int tickNumber, Environment environment) throws Exception;
+    public void performActions(int tickNumber, ActionContext actionContext) throws Exception;
 }

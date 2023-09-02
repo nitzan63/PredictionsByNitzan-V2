@@ -5,6 +5,7 @@ import world.entities.entity.EntityInstance;
 import world.environment.Environment;
 import world.grid.Grid;
 import world.rules.Rules;
+import world.rules.rule.action.api.Action;
 import world.termination.api.Termination;
 
 import java.util.*;
@@ -17,8 +18,9 @@ public class World {
     private Grid grid;
 
     public void simulateThisTick(int tickNumber) throws Exception {
+        ActionContext actionContext = new ActionContext(this, tickNumber);
         try {
-            rules.simulateRules(entitiesMap, tickNumber, environment);
+            rules.simulateRules(tickNumber, actionContext);
             moveEntities();
         } catch (Exception e) {
             throw new Exception("In Tick Number: " + tickNumber + " Error: " + e.getMessage(), e);

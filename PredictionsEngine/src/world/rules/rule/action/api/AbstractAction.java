@@ -9,12 +9,11 @@ import java.util.Map;
 
 public abstract class AbstractAction implements Action {
     protected final ActionType actionType;
-    protected final Map<String, EntitiesDefinition> allEntitiesDefinitionMap;
+
     protected final String entityName;
 
-    protected AbstractAction(ActionType actionType, Map<String, EntitiesDefinition> allEntitiesDefinition, String entityName) {
+    protected AbstractAction(ActionType actionType, String entityName) {
         this.actionType = actionType;
-        this.allEntitiesDefinitionMap = allEntitiesDefinition;
         this.entityName = entityName;
     }
 
@@ -29,10 +28,6 @@ public abstract class AbstractAction implements Action {
 
     public String getEntityName() {
         return entityName;
-    }
-
-    public Map<String, EntitiesDefinition> getAllEntitiesDefinitionMap() {
-        return this.allEntitiesDefinitionMap;
     }
 
 

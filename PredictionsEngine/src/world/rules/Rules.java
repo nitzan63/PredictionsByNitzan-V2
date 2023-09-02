@@ -1,5 +1,6 @@
 package world.rules;
 
+import world.ActionContext;
 import world.World;
 import world.entities.EntitiesDefinition;
 import world.environment.Environment;
@@ -26,9 +27,9 @@ public class Rules {
         return rules;
     }
 
-    public void simulateRules(Map<String,EntitiesDefinition> entitiesMap, int tickNumber, Environment environment) throws Exception{
+    public void simulateRules(int tickNumber, ActionContext actionContext) throws Exception{
             for (Rule rule : rules) {
-                rule.performActions(entitiesMap, tickNumber, environment);
+                rule.performActions(tickNumber, actionContext);
             }
 
     }

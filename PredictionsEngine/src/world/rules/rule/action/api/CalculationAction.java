@@ -9,8 +9,8 @@ public abstract class CalculationAction extends AbstractAction {
     protected final String args1;
     protected final String args2;
 
-    public CalculationAction(Map<String,EntitiesDefinition> allEntitiesDefinition, String entityName, String resultProp, String s1, String s2){
-        super(ActionType.CALCULATION , allEntitiesDefinition, entityName);
+    public CalculationAction(String entityName, String resultProp, String s1, String s2){
+        super(ActionType.CALCULATION , entityName);
         this.resProp = resultProp;
         this.args1 = s1;
         this.args2 = s2;

@@ -1,6 +1,7 @@
 package world.rules.rule.impl;
 
 import com.sun.xml.internal.ws.api.ha.StickyFeature;
+import world.ActionContext;
 import world.entities.EntitiesDefinition;
 import world.entities.entity.EntityInstance;
 import world.environment.Environment;
@@ -44,11 +45,11 @@ public class RuleImpl implements Rule {
         actionsToPerform.add(action);
     }
 
-    public void performActions(Map<String, EntitiesDefinition> entitiesMap, int tickNumber, Environment environment) throws Exception {
+    public void performActions(int tickNumber, ActionContext actionContext) throws Exception {
         try {
             // Check if rule is active:
             if (activation.isActive(tickNumber)) {
-
+                Map<String, EntitiesDefinition> entitiesMap = actionContext.getEntitiesMap();
                 // Iterate over all entity types:
                 for (Map.Entry<String, EntitiesDefinition> entry : entitiesMap.entrySet()) {
 
@@ -65,7 +66,7 @@ public class RuleImpl implements Rule {
                             // check if the action is related to this entity:
                             if (action.getEntityName().equals(entityName)) {
                                 // invoke the action on the entity instance.
-                                action.invoke(entity, environment);
+                                action.invoke(entity, actionContext);
                             }
                         }
                     }

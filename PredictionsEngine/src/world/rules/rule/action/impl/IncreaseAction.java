@@ -1,5 +1,6 @@
 package world.rules.rule.action.impl;
 
+import world.ActionContext;
 import world.entities.EntitiesDefinition;
 import world.entities.entity.EntityInstance;
 import world.entities.entity.properties.property.api.EntityProperty;
@@ -14,13 +15,14 @@ public class IncreaseAction extends AbstractAction {
     private final String byExpression;
 
     public IncreaseAction(Map<String,EntitiesDefinition> allEntitiesDefinition, String property, String byExpression, String entityName) {
-        super(ActionType.INCREASE, allEntitiesDefinition, entityName);
+        super(ActionType.INCREASE, entityName);
         this.propertyName = property;
         this.byExpression = byExpression;
     }
 
-    public void invoke(EntityInstance entityInstance, Environment environment) {
+    public void invoke(EntityInstance entityInstance, ActionContext actionContext) {
         double newValue;
+        Environment environment = actionContext.getEnvironment();
         EntityProperty property = entityInstance.getProperty(propertyName);
         Object valueObject = property.getValue();
         Double value;
