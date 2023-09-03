@@ -15,10 +15,12 @@ public class SingleCondition implements Condition {
     private final String propertyName;
     private final Operator operator;
     private final String rawValue;
+    private final String entityName;
 
-    public SingleCondition(String property, String rawOperator, String rawValue){
+    public SingleCondition(String property, String rawOperator, String rawValue, String entityName){
         this.rawValue = rawValue;
         this.propertyName = property;
+        this.entityName = entityName;
         switch (rawOperator){
             case "=":
                 this.operator = Operator.EQUAL;
@@ -38,7 +40,16 @@ public class SingleCondition implements Condition {
     }
 
 
-    public boolean evaluate(EntityInstance entityInstance, Environment environment) {
+    public boolean evaluate(EntityInstance entityInstance, EntityInstance secondaryInstance, String secondaryName, Environment environment) {
+        if (secondaryInstance != null){
+            if (entityName.equals(secondaryName)){
+                return performEvaluation(secondaryInstance, environment);
+            } else return performEvaluation(entityInstance, environment);
+        } else return performEvaluation(entityInstance, environment);
+
+    }
+
+    private boolean performEvaluation (EntityInstance entityInstance, Environment environment){
         Object propertyValue = entityInstance.getProperty(propertyName).getValue();
         Object value = ExpressionEvaluator.evaluateExpression(rawValue, entityInstance, environment);
 
@@ -67,7 +78,6 @@ public class SingleCondition implements Condition {
                 return false;
         }
     }
-
     @Override
     public String toString() {
         return "SingleCondition{" +

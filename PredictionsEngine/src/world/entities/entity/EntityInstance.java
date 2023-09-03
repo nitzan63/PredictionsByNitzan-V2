@@ -10,6 +10,7 @@ public class EntityInstance {
     private int col;
 
 
+
     public EntityInstance(Integer serialNumber, EntityProperties properties, int row, int col){
         this.serialNumber = serialNumber;
         this.properties = properties;

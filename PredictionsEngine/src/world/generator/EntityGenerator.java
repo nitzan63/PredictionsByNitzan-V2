@@ -1,5 +1,6 @@
 package world.generator;
 
+import world.entities.EntitiesDefinition;
 import world.entities.entity.EntityInstance;
 import world.entities.entity.properties.EntityProperties;
 import world.entities.entity.properties.property.api.EntityProperty;
@@ -14,6 +15,7 @@ import java.util.Random;
 
 public class EntityGenerator {
     private Random rand = new Random();
+
 
     // Helper function to find an empty cell on the grid.
     private int[] findEmptyCell(Grid grid) {

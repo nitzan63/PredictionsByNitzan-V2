@@ -7,6 +7,7 @@ import world.generator.EntityGenerator;
 import world.grid.Grid;
 import world.rules.rule.action.api.AbstractAction;
 import world.rules.rule.action.api.ActionType;
+import world.rules.rule.action.secondary.SecondaryEntity;
 
 import java.util.Map;
 
@@ -16,8 +17,8 @@ public class ReplaceAction extends AbstractAction{
     private final String mode;
 
 
-    public ReplaceAction(String killEntityName, String createEntityName, String mode) {
-        super(ActionType.REPLACE, killEntityName);
+    public ReplaceAction(String killEntityName, String createEntityName, String mode , SecondaryEntity secondaryEntity) {
+        super(ActionType.REPLACE, killEntityName, secondaryEntity);
         this.killEntityName = killEntityName;
         this.createEntityName = createEntityName;
         this.mode = mode;
@@ -25,7 +26,23 @@ public class ReplaceAction extends AbstractAction{
 
     @Override
     public void invoke(EntityInstance entityInstance, ActionContext actionContext) {
+        // check if there is a secondary entity:
+        if (secondaryEntity != null){
+            // if yes, check if the intended action is in the context of the secondary entity:
+            if (secondaryEntity.getDefinitionEntityName().equals(entityName)){
+                // if yes, get the map of the selected entities:
+                Map<Integer, EntityInstance> secondaryEntities = secondaryEntity.getSelectedSecondaryInstancesMap(actionContext);
+                // iterate over them and perform actions
+                for (EntityInstance secondaryEntity : secondaryEntities.values()){
+                    performAction(secondaryEntity, actionContext);
+                }
+                // if there is a secondary entity, but the action is performed on the primary entity:
+            } else performAction(entityInstance, actionContext);
+            // if there is no secondaryEntity, perform on the main entity.
+        } else performAction(entityInstance, actionContext);
+    }
 
+    private void performAction (EntityInstance entityInstance, ActionContext actionContext){
         // get the data from context:
         Map<String, EntitiesDefinition> allEntitiesDefinitionMap = actionContext.getEntitiesMap();
         Grid grid = actionContext.getGrid();

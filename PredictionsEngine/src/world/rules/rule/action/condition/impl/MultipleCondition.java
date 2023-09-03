@@ -31,13 +31,13 @@ public class MultipleCondition implements Condition {
     }
 
     @Override
-    public boolean evaluate(EntityInstance entityInstance, Environment environment) {
+    public boolean evaluate(EntityInstance entityInstance, EntityInstance secondaryInstance, String secondaryName, Environment environment) {
         if (logicalOperator != null) {
             switch (logicalOperator) {
                 case AND:
-                    return conditionList.stream().allMatch(condition -> condition.evaluate(entityInstance, environment));
+                    return conditionList.stream().allMatch(condition -> condition.evaluate(entityInstance, secondaryInstance, secondaryName, environment));
                 case OR:
-                    return conditionList.stream().anyMatch(condition -> condition.evaluate(entityInstance, environment));
+                    return conditionList.stream().anyMatch(condition -> condition.evaluate(entityInstance, secondaryInstance, secondaryName, environment));
                 default:
                     return false;
             }

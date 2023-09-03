@@ -3,6 +3,7 @@ package world.rules.rule.action.api;
 import world.entities.EntitiesDefinition;
 import world.entities.entity.EntityInstance;
 import world.environment.Environment;
+import world.rules.rule.action.secondary.SecondaryEntity;
 import world.utils.expression.ExpressionEvaluator;
 
 import java.util.Map;
@@ -12,9 +13,14 @@ public abstract class AbstractAction implements Action {
 
     protected final String entityName;
 
-    protected AbstractAction(ActionType actionType, String entityName) {
+    protected final SecondaryEntity secondaryEntity;
+
+
+
+    protected AbstractAction(ActionType actionType, String entityName, SecondaryEntity secondaryEntity) {
         this.actionType = actionType;
         this.entityName = entityName;
+        this.secondaryEntity = secondaryEntity;
     }
 
     @Override

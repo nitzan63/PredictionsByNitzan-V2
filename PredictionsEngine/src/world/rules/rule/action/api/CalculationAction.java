@@ -1,6 +1,7 @@
 package world.rules.rule.action.api;
 
 import world.entities.EntitiesDefinition;
+import world.rules.rule.action.secondary.SecondaryEntity;
 
 import java.util.Map;
 
@@ -9,8 +10,8 @@ public abstract class CalculationAction extends AbstractAction {
     protected final String args1;
     protected final String args2;
 
-    public CalculationAction(String entityName, String resultProp, String s1, String s2){
-        super(ActionType.CALCULATION , entityName);
+    public CalculationAction(String entityName, String resultProp, String s1, String s2, SecondaryEntity secondaryEntity){
+        super(ActionType.CALCULATION , entityName, secondaryEntity);
         this.resProp = resultProp;
         this.args1 = s1;
         this.args2 = s2;

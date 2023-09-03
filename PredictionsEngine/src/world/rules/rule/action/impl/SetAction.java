@@ -5,19 +5,39 @@ import world.entities.entity.EntityInstance;
 import world.environment.Environment;
 import world.rules.rule.action.api.AbstractAction;
 import world.rules.rule.action.api.ActionType;
+import world.rules.rule.action.secondary.SecondaryEntity;
+
+import java.util.Map;
 
 public class SetAction extends AbstractAction {
     private final String propertyName;
     private final String expression;
 
-    public SetAction(String propertyName, String expression, String entityName) {
-        super(ActionType.SET, entityName);
+    public SetAction(String propertyName, String expression, String entityName, SecondaryEntity secondaryEntity) {
+        super(ActionType.SET, entityName, secondaryEntity);
         this.propertyName = propertyName;
         this.expression = expression;
     }
 
     @Override
     public void invoke(EntityInstance entityInstance, ActionContext actionContext) {
+        // check if there is a secondary entity:
+        if (secondaryEntity != null){
+            // if yes, check if the intended action is in the context of the secondary entity:
+            if (secondaryEntity.getDefinitionEntityName().equals(entityName)){
+                // if yes, get the map of the selected entities:
+                Map<Integer, EntityInstance> secondaryEntities = secondaryEntity.getSelectedSecondaryInstancesMap(actionContext);
+                // iterate over them and perform actions
+                for (EntityInstance secondaryEntity : secondaryEntities.values()){
+                    performAction(secondaryEntity, actionContext);
+                }
+                // if there is a secondary entity, but the action is performed on the primary entity:
+            } else performAction(entityInstance, actionContext);
+            // if there is no secondaryEntity, perform on the main entity.
+        } else performAction(entityInstance, actionContext);
+    }
+
+    public void performAction (EntityInstance entityInstance, ActionContext actionContext){
         Environment environment = actionContext.getEnvironment();
         Object value = evaluateExpression(expression, entityInstance, environment);
         if (value instanceof Double){ // handle the cases when trying to set value out of range.

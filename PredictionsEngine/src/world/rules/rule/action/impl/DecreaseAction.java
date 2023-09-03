@@ -6,13 +6,14 @@ import world.entities.entity.properties.property.api.EntityProperty;
 import world.environment.Environment;
 import world.rules.rule.action.api.AbstractAction;
 import world.rules.rule.action.api.ActionType;
+import world.rules.rule.action.secondary.SecondaryEntity;
 
 public class DecreaseAction extends AbstractAction {
     private final String propertyName;
     private final String byExpression;
 
-    public DecreaseAction(String property, String byExpression, String entityName){
-        super(ActionType.DECREASE,  entityName);
+    public DecreaseAction(String property, String byExpression, String entityName, SecondaryEntity secondaryEntity){
+        super(ActionType.DECREASE,  entityName, secondaryEntity);
         this.propertyName = property;
         this.byExpression = byExpression;
     }

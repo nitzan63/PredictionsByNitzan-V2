@@ -13,11 +13,13 @@ public class SecondaryEntity {
     private final String count;
     private final Condition condition;
     private final EntitiesDefinition entitiesDefinition;
+    private final String entityName;
 
     public SecondaryEntity(String count, Condition condition, EntitiesDefinition entitiesDefinition) {
         this.count = count;
         this.condition = condition;
         this.entitiesDefinition = entitiesDefinition;
+        this.entityName = entitiesDefinition.getEntityName();
     }
 
     public Map<Integer, EntityInstance> getSelectedSecondaryInstancesMap(ActionContext actionContext) {
@@ -82,6 +84,10 @@ public class SecondaryEntity {
     private boolean isInstanceFitConditions (EntityInstance instance, ActionContext actionContext){
         if (condition == null)
             return true;
-        return condition.evaluate(instance, actionContext.getEnvironment());
+        return condition.evaluate(instance,null, null, actionContext.getEnvironment());
+    }
+
+    public String getDefinitionEntityName() {
+        return entityName;
     }
 }

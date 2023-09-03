@@ -4,6 +4,6 @@ import world.entities.entity.EntityInstance;
 import world.environment.Environment;
 
 public interface Condition {
-    boolean evaluate(EntityInstance entityInstance, Environment environment);
+    boolean evaluate(EntityInstance primaryInstance, EntityInstance secondaryInstance, String secondaryName, Environment environment);
 
 }
