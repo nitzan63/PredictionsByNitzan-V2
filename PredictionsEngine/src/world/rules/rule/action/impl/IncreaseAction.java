@@ -70,10 +70,10 @@ public class IncreaseAction extends AbstractAction {
         // Check if the new value would go beyond the defined range for this property
         if (newValue < property.getRange().getTo().doubleValue()) {
             // If it's within the range, set the new value
-            property.setValue(newValue);
+            property.setValue(newValue, actionContext.getTick());
         } else {
             // If it exceeds the maximum allowed value, set it to the maximum
-            entityInstance.getProperty(propertyName).setValue(entityInstance.getProperty(propertyName).getRange().getTo().doubleValue());
+            entityInstance.getProperty(propertyName).setValue(entityInstance.getProperty(propertyName).getRange().getTo().doubleValue(), actionContext.getTick());
         }
     }
 

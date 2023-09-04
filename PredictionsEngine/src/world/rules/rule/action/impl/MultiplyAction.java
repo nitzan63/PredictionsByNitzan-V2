@@ -37,9 +37,9 @@ public class MultiplyAction extends CalculationAction {
         Double num2 = (Double) evaluateExpression(args2, entityInstance, actionContext);
         double newValue = num1 * num2;
         if (entityInstance.getProperty(resProp).getRange().getTo().doubleValue() > newValue)
-            entityInstance.getProperty(resProp).setValue(num1 * num2);
+            entityInstance.getProperty(resProp).setValue(num1 * num2, actionContext.getTick());
         else {
-            entityInstance.getProperty(resProp).setValue(entityInstance.getProperty(resProp).getRange().getTo().doubleValue());
+            entityInstance.getProperty(resProp).setValue(entityInstance.getProperty(resProp).getRange().getTo().doubleValue(), actionContext.getTick());
         }
     }
 

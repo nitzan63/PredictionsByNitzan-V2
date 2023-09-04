@@ -77,4 +77,32 @@ public class AuxiliaryMethods {
         else throw new IllegalArgumentException("Arguments must be numbers: " + Arrays.toString(args));
 
     }
+
+    public static Integer tickAuxMethod(String argument, EntityInstance entityInstance, ActionContext actionContext){
+        String[] parts = argument.split("\\.");
+        if (parts.length != 2)
+            throw new IllegalArgumentException("Illegal argument in tick function: " + argument + " should be <entity>.<property>");
+
+        String entityName = parts[0];
+        String propertyName = parts[1];
+
+        EntityProperty property;
+
+        if (entityInstance.getEntityName().equals(entityName)){
+            property = entityInstance.getProperty(propertyName);
+            if (property != null)
+                return actionContext.getTick() - property.getLastChangedTick();
+            else throw new IllegalArgumentException("Entity " + entityName + " has no property " + propertyName);
+        } else {
+            EntityInstance secondaryInstance = actionContext.getSecondaryEntityInContext();
+            if (secondaryInstance != null){
+                if (secondaryInstance.getEntityName().equals(entityName)){
+                    property = secondaryInstance.getProperty(propertyName);
+                    if (property != null)
+                        return actionContext.getTick() - property.getLastChangedTick();
+                    else throw new IllegalArgumentException("Entity " + secondaryInstance.getEntityName() + " has no property " + propertyName);
+                }
+            } throw new IllegalArgumentException("Failed to get entity in context: " + entityName);
+        }
+    }
 }

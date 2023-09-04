@@ -26,9 +26,9 @@ public class DecreaseAction extends AbstractAction {
         Double expression = (Double) evaluateExpression(byExpression, entityInstance, actionContext);
         newValue = value - expression;
         if (newValue > property.getRange().getFrom().doubleValue())
-            property.setValue(value - expression);
+            property.setValue(value - expression, actionContext.getTick());
         else {
-            entityInstance.getProperty(propertyName).setValue(entityInstance.getProperty(propertyName).getRange().getFrom().doubleValue());
+            entityInstance.getProperty(propertyName).setValue(entityInstance.getProperty(propertyName).getRange().getFrom().doubleValue() , actionContext.getTick());
         }
 
     }

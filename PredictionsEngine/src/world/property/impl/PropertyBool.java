@@ -13,6 +13,7 @@ public class PropertyBool implements EntityProperty, EnvProperty {
     private String name;
     private boolean isRandom;
     private Boolean value;
+    int lastChangeTick;
 
 
     public PropertyBool(String name, Boolean isRandom, Boolean init) {
@@ -22,6 +23,7 @@ public class PropertyBool implements EntityProperty, EnvProperty {
             Random random = new Random();
             this.value = random.nextBoolean();
         } else this.value = init;
+        lastChangeTick = 0;
     }
 
     public PropertyBool(String name) {
@@ -66,9 +68,22 @@ public class PropertyBool implements EntityProperty, EnvProperty {
         this.name = newName;
     }
 
+
+
+    @Override
+    public int getLastChangedTick() {
+        return lastChangeTick;
+    }
+
     @Override
     public void setValue(Object newValue) {
         this.value = (boolean) newValue;
+    }
+
+    @Override
+    public void setValue(Object newValue, int currentTick) {
+        this.value = (boolean) newValue;
+        this.lastChangeTick = currentTick;
     }
 
     @Override
@@ -83,6 +98,8 @@ public class PropertyBool implements EntityProperty, EnvProperty {
     public int hashCode() {
         return Objects.hash(name, isRandom, value);
     }
+
+
 
     @Override
     public String toString() {

@@ -64,7 +64,7 @@ public class EntityGenerator {
         for (EntityProperty baseProperty : baseInstance.getProperties().getProperties()){
             EntityProperty newProperty = newProperties.getProperty(baseProperty.getName());
             if (newProperty != null) // if the property exists - change its value:
-                newProperty.setValue(baseProperty.getValue());
+                newProperty.setValue(baseProperty.getValue(), baseProperty.getLastChangedTick());
         }
 
         int row = baseInstance.getRow();

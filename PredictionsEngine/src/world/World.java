@@ -20,8 +20,9 @@ public class World {
     public void simulateThisTick(int tickNumber) throws Exception {
         ActionContext actionContext = new ActionContext(this, tickNumber);
         try {
-            rules.simulateRules(tickNumber, actionContext);
+            actionContext.setTick(tickNumber);
             moveEntities();
+            rules.simulateRules(tickNumber, actionContext);
         } catch (Exception e) {
             throw new Exception("In Tick Number: " + tickNumber + " Error: " + e.getMessage(), e);
         }

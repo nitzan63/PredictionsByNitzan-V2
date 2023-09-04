@@ -41,9 +41,9 @@ public class DivideAction extends CalculationAction {
         } else {
             double newValue = num1 / num2;
             if (entityInstance.getProperty(resProp).getRange().getFrom().doubleValue() < newValue)
-                entityInstance.getProperty(resProp).setValue(num1 / num2);
+                entityInstance.getProperty(resProp).setValue(num1 / num2, actionContext.getTick());
             else {
-                entityInstance.getProperty(resProp).setValue(entityInstance.getProperty(resProp).getRange().getFrom().doubleValue());
+                entityInstance.getProperty(resProp).setValue(entityInstance.getProperty(resProp).getRange().getFrom().doubleValue(), actionContext.getTick());
             }
         }
     }

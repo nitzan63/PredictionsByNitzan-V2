@@ -12,6 +12,7 @@ public class PropertyDecimal implements EntityProperty, EnvProperty {
     private boolean isRandom;
     private Integer value;
     private Range<Integer> range;
+    int lastChangedTick;
 
     // ctor that gets all the data members, checks if random, and assigning accordingly the data members
     public PropertyDecimal(String name, Boolean isRandom, Integer init, Range<Integer> range) {
@@ -21,6 +22,7 @@ public class PropertyDecimal implements EntityProperty, EnvProperty {
             Random random = new Random();
             this.value = random.nextInt(range.getTo() - range.getFrom() + 1) + range.getFrom();
         } else this.value = init;
+        this.lastChangedTick = 0;
     }
 
     // ctor that gets name, init and range, and sets the data members.
@@ -77,11 +79,24 @@ public class PropertyDecimal implements EntityProperty, EnvProperty {
     }
 
     @Override
-    public void setValue(Object newValue) {
+    public void setValue(Object newValue, int currentTick) {
         if (newValue instanceof Double){
             value = ((Double) newValue).intValue();
         }else
-        value = (Integer) newValue;
+            value = (Integer) newValue;
+        this.lastChangedTick = currentTick;
+    }
+
+    @Override
+    public int getLastChangedTick() {
+        return lastChangedTick;
+    }
+
+    @Override
+    public void setValue(Object newValue) {
+        if (newValue instanceof Double){
+            value = ((Double) newValue).intValue();
+        }else value = (Integer) newValue;
     }
 
     @Override

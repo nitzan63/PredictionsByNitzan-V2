@@ -7,8 +7,8 @@ import world.rules.rule.action.api.ActionContext;
 public class ExpressionEvaluator {
     public static Object evaluateExpression (String expression, EntityInstance entityInstance, ActionContext actionContext){
         // check if the expression is in a format of auxiliary method:
-        if (expression.matches("\\w+\\(.+\\)")){
-            String[] parts = expression.split("\\(");
+        if (expression.matches("^[a-zA-Z_][a-zA-Z_0-9]*\\((.*)\\)$")){
+            String[] parts = expression.split("\\(", 2);
             String methodName = parts[0];
             String argument = parts[1].substring(0, parts[1].length() - 1);
             return evaluateAuxMethod(methodName, argument, actionContext, entityInstance);
@@ -25,10 +25,12 @@ public class ExpressionEvaluator {
                 return AuxiliaryMethods.randomAuxMethod(argument);
             case "evaluate":
                 return AuxiliaryMethods.evaluateAuxMethod(argument, entityInstance, actionContext);
-            case "precent":
+            case "percent":
                 return AuxiliaryMethods.percentAuxMethod(argument, entityInstance, actionContext);
+            case "tick":
+                return AuxiliaryMethods.tickAuxMethod(argument, entityInstance, actionContext);
             default:
-                throw new IllegalArgumentException("Unknown Auxiliary Method!");
+                throw new IllegalArgumentException("Unknown Auxiliary Method: " + argument);
         }
     }
 

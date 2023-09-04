@@ -12,6 +12,7 @@ public class PropertyFloat implements EntityProperty, EnvProperty {
     private Float value;
     private Boolean isRandom;
     private Range<Float> range;
+    private int lastChangedTick;
 
     // ctor that gets all the data members, checks if random, and assigning accordingly the data members
     public PropertyFloat(String name, Boolean isRandom, Float init, Range<Float> range) {
@@ -21,6 +22,7 @@ public class PropertyFloat implements EntityProperty, EnvProperty {
             Random random = new Random();
             this.value = range.getFrom() + random.nextFloat() * (range.getTo() - range.getFrom());
         } else this.value = init;
+        this.lastChangedTick = 0;
     }
 
     // ctor that gets name, init and range, and sets the data members.
@@ -74,6 +76,17 @@ public class PropertyFloat implements EntityProperty, EnvProperty {
     @Override
     public void setName(String newName) {
         this.name = name;
+    }
+
+    @Override
+    public void setValue(Object newValue, int currentTick) {
+        this.value = (Float) newValue;
+        this.lastChangedTick = currentTick;
+    }
+
+    @Override
+    public int getLastChangedTick() {
+        return lastChangedTick;
     }
 
     @Override

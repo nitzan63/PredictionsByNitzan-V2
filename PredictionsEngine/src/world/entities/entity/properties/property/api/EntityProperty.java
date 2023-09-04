@@ -11,7 +11,8 @@ public interface EntityProperty {
     Object getValue();
     void setRange(Number a, Number b);
     void setName(String newName);
-    void setValue(Object newValue);
+    void setValue(Object newValue, int currentTick);
+    int getLastChangedTick();
 
     public String toString();
 }

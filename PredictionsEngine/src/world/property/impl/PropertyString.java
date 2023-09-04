@@ -12,6 +12,7 @@ public class PropertyString implements EntityProperty, EnvProperty {
     private String name;
     private String value;
     private Boolean isRandom;
+    int lastChangedTick;
 
 
     public PropertyString(String name, Boolean isRandom, String value) {
@@ -21,6 +22,7 @@ public class PropertyString implements EntityProperty, EnvProperty {
             RandomStringGenerator random = new RandomStringGenerator();
             this.value = random.generateRandomString();
         } else this.value = value;
+        this.lastChangedTick = 0;
     }
 
     public PropertyString(String name) {
@@ -69,6 +71,17 @@ public class PropertyString implements EntityProperty, EnvProperty {
     @Override
     public void setName(String newName) {
         this.name = name;
+    }
+
+    @Override
+    public void setValue(Object newValue, int currentTick) {
+        this.value = (String) newValue;
+        this.lastChangedTick = currentTick;
+    }
+
+    @Override
+    public int getLastChangedTick() {
+        return 0;
     }
 
     @Override
