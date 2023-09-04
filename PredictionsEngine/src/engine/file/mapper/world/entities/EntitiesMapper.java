@@ -21,7 +21,7 @@ public class EntitiesMapper {
             // create prototype entity definition with population 0 (the user chooses the population
             EntitiesDefinition entityDefinition = new EntitiesDefinition(name, 0);
             // map a prototype entity instance:
-            EntityInstance entityInstancePrototype = EntityMapper.mapEntity(jaxbEntity, 0);
+            EntityInstance entityInstancePrototype = EntityMapper.mapEntity(jaxbEntity, 0, name);
             // add the prototype instance to the definition:
             entityDefinition.addEntity(entityInstancePrototype, 0);
             // put the entity definition in the map of entities:

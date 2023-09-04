@@ -13,9 +13,10 @@ import world.rules.rule.impl.RuleImpl;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 public class RuleMapper {
-    public static Rule mapRule(PRDRule jaxbRule, EntitiesDefinition entitiesContext){
+    public static Rule mapRule(PRDRule jaxbRule, Map<String, EntitiesDefinition> entitiesContext){
         String name = jaxbRule.getName();
         Rule rule;
         if (jaxbRule.getPRDActivation() != null) { // if there is an activation section:

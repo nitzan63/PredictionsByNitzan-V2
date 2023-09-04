@@ -23,6 +23,11 @@ public class WorldGenerator {
         newWorld.setGrid(new Grid(prototypeWorld.getGrid()));
         // populate world:
         newWorld.setEntitiesMap(populateWorld(userInput, newWorld));
+        // Set environment
+        newWorld.setEnvironment(generateEnvironment(userInput));
+        // Set Rules:
+
+        // Set termination:
 
         return newWorld;
     }

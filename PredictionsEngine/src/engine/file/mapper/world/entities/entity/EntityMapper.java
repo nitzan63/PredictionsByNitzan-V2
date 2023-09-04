@@ -6,9 +6,9 @@ import world.entities.entity.EntityInstance;
 import world.entities.entity.properties.EntityProperties;
 
 public class EntityMapper {
-    public static EntityInstance mapEntity(PRDEntity jaxbEntity, Integer serialNumber) {
+    public static EntityInstance mapEntity(PRDEntity jaxbEntity, Integer serialNumber, String entityName) {
         String name = jaxbEntity.getName();
         EntityProperties entityProperties = EntityPropertiesMapper.mapProperties(jaxbEntity.getPRDProperties());
-        return new EntityInstance(serialNumber, entityProperties, 0, 0);
+        return new EntityInstance(serialNumber, entityProperties, 0, 0, entityName);
     }
 }

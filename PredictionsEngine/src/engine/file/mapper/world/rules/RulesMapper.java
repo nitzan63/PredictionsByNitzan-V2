@@ -7,8 +7,10 @@ import world.entities.EntitiesDefinition;
 import world.rules.Rules;
 import world.rules.rule.api.Rule;
 
+import java.util.Map;
+
 public class RulesMapper {
-    public static Rules mapRules(PRDRules jaxbRules, EntitiesDefinition entitiesContext) {
+    public static Rules mapRules(PRDRules jaxbRules, Map<String, EntitiesDefinition> entitiesContext) {
         Rules rules = new Rules();
         for (PRDRule jaxbRule: jaxbRules.getPRDRule()){
             Rule rule = RuleMapper.mapRule(jaxbRule ,entitiesContext);

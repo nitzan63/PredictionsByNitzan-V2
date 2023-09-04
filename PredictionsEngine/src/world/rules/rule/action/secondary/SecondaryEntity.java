@@ -12,17 +12,18 @@ import java.util.Random;
 public class SecondaryEntity {
     private final String count;
     private final Condition condition;
-    private final EntitiesDefinition entitiesDefinition;
     private final String entityName;
 
-    public SecondaryEntity(String count, Condition condition, EntitiesDefinition entitiesDefinition) {
+    public SecondaryEntity(String count, Condition condition, String entityName) {
         this.count = count;
         this.condition = condition;
-        this.entitiesDefinition = entitiesDefinition;
-        this.entityName = entitiesDefinition.getEntityName();
+        this.entityName = entityName;
     }
 
     public Map<Integer, EntityInstance> getSelectedSecondaryInstancesMap(ActionContext actionContext) {
+
+        EntitiesDefinition entitiesDefinition = actionContext.getEntitiesMap().get(entityName);
+
         // if count is all - return all the entities that fit the conditions:
         if (count.equals("ALL"))
             return buildEntitiesMapByConditions(entitiesDefinition, actionContext);
