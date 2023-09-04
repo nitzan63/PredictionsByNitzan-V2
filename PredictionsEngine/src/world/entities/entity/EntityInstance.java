@@ -8,14 +8,15 @@ public class EntityInstance {
     private final EntityProperties properties;
     private int row;
     private int col;
+    private final String entityName;
 
 
-
-    public EntityInstance(Integer serialNumber, EntityProperties properties, int row, int col){
+    public EntityInstance(Integer serialNumber, EntityProperties properties, int row, int col, String entityName){
         this.serialNumber = serialNumber;
         this.properties = properties;
         this.row = row;
         this.col = col;
+        this.entityName = entityName;
     }
 
     public void setSerialNumber(Integer serialNumber) {
@@ -54,6 +55,10 @@ public class EntityInstance {
     public void setPosition(int row, int col) {
         this.row = row;
         this.col = col;
+    }
+
+    public String getEntityName() {
+        return entityName;
     }
 
     @Override

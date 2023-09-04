@@ -2,26 +2,31 @@ package world.utils.expression;
 
 import world.entities.entity.EntityInstance;
 import world.environment.Environment;
+import world.rules.rule.action.api.ActionContext;
 
 public class ExpressionEvaluator {
-    public static Object evaluateExpression (String expression, EntityInstance entityInstance, Environment environment){
+    public static Object evaluateExpression (String expression, EntityInstance entityInstance, ActionContext actionContext){
         // check if the expression is in a format of auxiliary method:
         if (expression.matches("\\w+\\(.+\\)")){
             String[] parts = expression.split("\\(");
             String methodName = parts[0];
             String argument = parts[1].substring(0, parts[1].length() - 1);
-            return evaluateAuxMethod(methodName, argument, environment);
+            return evaluateAuxMethod(methodName, argument, actionContext, entityInstance);
         } else if (entityInstance.getProperty(expression) != null){ //check if the expression is a property
             return entityInstance.getProperty(expression).getValue();
         } else return parseFreeValue(expression); // the expression is free value, parse it.
     }
 
-    private static Object evaluateAuxMethod (String methodName, String argument, Environment environment){
+    private static Object evaluateAuxMethod (String methodName, String argument, ActionContext actionContext, EntityInstance entityInstance){
         switch (methodName){
             case "environment":
-                return AuxiliaryMethods.environmentAuxMethod(argument, environment);
+                return AuxiliaryMethods.environmentAuxMethod(argument, actionContext.getEnvironment());
             case "random":
                 return AuxiliaryMethods.randomAuxMethod(argument);
+            case "evaluate":
+                return AuxiliaryMethods.evaluateAuxMethod(argument, entityInstance, actionContext);
+            case "precent":
+                return AuxiliaryMethods.percentAuxMethod(argument, entityInstance, actionContext);
             default:
                 throw new IllegalArgumentException("Unknown Auxiliary Method!");
         }

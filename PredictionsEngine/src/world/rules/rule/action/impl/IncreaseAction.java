@@ -42,9 +42,6 @@ public class IncreaseAction extends AbstractAction {
         // Initialize the new value which will eventually store the increased property value
         double newValue;
 
-        // Fetch the environment details from the action context
-        Environment environment = actionContext.getEnvironment();
-
         // Retrieve the property of the entity instance that we wish to modify
         EntityProperty property = entityInstance.getProperty(propertyName);
 
@@ -65,7 +62,7 @@ public class IncreaseAction extends AbstractAction {
         }
 
         // Evaluate the expression to find out how much to increase the property by
-        Double expression = (Double) evaluateExpression(byExpression, entityInstance, environment);
+        Double expression = (Double) evaluateExpression(byExpression, entityInstance, actionContext);
 
         // Perform the actual increase
         newValue = value + expression;

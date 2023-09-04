@@ -5,6 +5,7 @@ import world.entities.EntitiesDefinition;
 import world.entities.entity.EntityInstance;
 import world.environment.Environment;
 import world.rules.rule.action.api.Action;
+import world.rules.rule.action.api.ActionContext;
 import world.rules.rule.action.condition.api.Condition;
 import world.rules.rule.action.condition.api.Operator;
 import world.utils.expression.ExpressionEvaluator;
@@ -40,18 +41,18 @@ public class SingleCondition implements Condition {
     }
 
 
-    public boolean evaluate(EntityInstance entityInstance, EntityInstance secondaryInstance, String secondaryName, Environment environment) {
+    public boolean evaluate(EntityInstance entityInstance, EntityInstance secondaryInstance, String secondaryName, ActionContext actionContext) {
         if (secondaryInstance != null){
             if (entityName.equals(secondaryName)){
-                return performEvaluation(secondaryInstance, environment);
-            } else return performEvaluation(entityInstance, environment);
-        } else return performEvaluation(entityInstance, environment);
+                return performEvaluation(secondaryInstance, actionContext);
+            } else return performEvaluation(entityInstance, actionContext);
+        } else return performEvaluation(entityInstance, actionContext);
 
     }
 
-    private boolean performEvaluation (EntityInstance entityInstance, Environment environment){
+    private boolean performEvaluation (EntityInstance entityInstance, ActionContext actionContext){
         Object propertyValue = entityInstance.getProperty(propertyName).getValue();
-        Object value = ExpressionEvaluator.evaluateExpression(rawValue, entityInstance, environment);
+        Object value = ExpressionEvaluator.evaluateExpression(rawValue, entityInstance, actionContext);
 
         if (operator == null || value == null || propertyValue == null)
             return false;

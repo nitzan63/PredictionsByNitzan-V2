@@ -33,9 +33,9 @@ public class DivideAction extends CalculationAction {
     }
 
     private void performAction(EntityInstance entityInstance, ActionContext actionContext){
-        Environment environment = actionContext.getEnvironment();
-        Double num1 = (Double) evaluateExpression(args1, entityInstance, environment);
-        Double num2 = (Double) evaluateExpression(args2, entityInstance, environment);
+
+        Double num1 = (Double) evaluateExpression(args1, entityInstance, actionContext);
+        Double num2 = (Double) evaluateExpression(args2, entityInstance, actionContext);
         if (num2 == 0) {
             throw new ArithmeticException("can't divide by zero! in Entity number: " + entityInstance.getSerialNumber() + ", args2 is " + args2 + " that means number: " + num2);
         } else {

@@ -2,6 +2,7 @@ package world.rules.rule.action.api;
 
 import world.World;
 import world.entities.EntitiesDefinition;
+import world.entities.entity.EntityInstance;
 import world.environment.Environment;
 import world.grid.Grid;
 
@@ -13,12 +14,13 @@ public class ActionContext {
     private Map<String, EntitiesDefinition> entitiesMap;
     private Grid grid;
     private int tick;
-
+    private EntityInstance secondaryEntityInContext;
     public ActionContext(World world, int tick) {
         this.entitiesMap = world.getEntitiesMap();
         this.environment = world.getEnvironment();
         this.grid = world.getGrid();
         this.tick = tick;
+        secondaryEntityInContext = null;
     }
 
     public Environment getEnvironment() {
@@ -40,4 +42,13 @@ public class ActionContext {
     public void setTick(int tick) {
         this.tick = tick;
     }
+
+    public void setSecondaryEntityInContext(EntityInstance secondaryEntityInContext) {
+        this.secondaryEntityInContext = secondaryEntityInContext;
+    }
+
+    public EntityInstance getSecondaryEntityInContext() {
+        return secondaryEntityInContext;
+    }
+
 }

@@ -28,8 +28,8 @@ public abstract class AbstractAction implements Action {
         return actionType;
     }
 
-    protected Object evaluateExpression(String expression, EntityInstance entityInstance, Environment environment) {
-        return ExpressionEvaluator.evaluateExpression(expression, entityInstance, environment);
+    protected Object evaluateExpression(String expression, EntityInstance entityInstance, ActionContext actionContext) {
+        return ExpressionEvaluator.evaluateExpression(expression, entityInstance, actionContext);
     }
 
     public String getEntityName() {

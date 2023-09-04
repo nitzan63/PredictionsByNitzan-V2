@@ -27,21 +27,19 @@ public class ConditionAction extends AbstractAction {
     @Override
     public void invoke(EntityInstance entityInstance, ActionContext actionContext) {
 
-        Environment environment = actionContext.getEnvironment();
-
         Map <Integer, EntityInstance> secondaryInstances = null;
         if (secondaryEntity != null){
             secondaryInstances = secondaryEntity.getSelectedSecondaryInstancesMap(actionContext);
 
             for (EntityInstance secondaryInstance : secondaryInstances.values()){
-                if (condition.evaluate(entityInstance, secondaryInstance, secondaryEntity.getDefinitionEntityName(), environment)) {
+                if (condition.evaluate(entityInstance, secondaryInstance, secondaryEntity.getDefinitionEntityName(), actionContext)) {
                     performActions(thenActions, entityInstance, actionContext);
                 } else if (elseActions != null){
                     performActions(elseActions, entityInstance, actionContext);
                 }
             }
         } else {
-            if (condition.evaluate(entityInstance,null, null, environment)) {
+            if (condition.evaluate(entityInstance,null, null, actionContext)) {
                 performActions(thenActions, entityInstance, actionContext);
             } else if (elseActions != null){
                 performActions(elseActions, entityInstance, actionContext);

@@ -20,10 +20,10 @@ public class DecreaseAction extends AbstractAction {
 
     public void invoke (EntityInstance entityInstance, ActionContext actionContext){
         double newValue;
-        Environment environment = actionContext.getEnvironment();
+
         EntityProperty property = entityInstance.getProperty(propertyName);
         Double value = (Double) property.getValue();
-        Double expression = (Double) evaluateExpression(byExpression, entityInstance, environment);
+        Double expression = (Double) evaluateExpression(byExpression, entityInstance, actionContext);
         newValue = value - expression;
         if (newValue > property.getRange().getFrom().doubleValue())
             property.setValue(value - expression);

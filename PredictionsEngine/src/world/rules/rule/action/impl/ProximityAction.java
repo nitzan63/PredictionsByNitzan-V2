@@ -46,17 +46,16 @@ public class ProximityAction extends AbstractAction {
     private void performAction(EntityInstance entityInstance, ActionContext actionContext) {
 
         // get relevant objects from context:
-        Environment environment = actionContext.getEnvironment();
         Grid grid = actionContext.getGrid();
         EntitiesDefinition targetEntityDefinition = actionContext.getEntitiesMap().get(targetEntityName);
 
         // evaluate "of" expression:
-        Double of = (Double) evaluateExpression(ofExpression, entityInstance, environment);
+        Double of = (Double) evaluateExpression(ofExpression, entityInstance, actionContext);
 
         // iterate over all target entities and check proximity:
         for (EntityInstance targetEntity : targetEntityDefinition.getEntities().values()) {
             if (isWithinProximity(entityInstance, targetEntity, grid, of)) {
-                performActions(actionsToPerform, entityInstance, actionContext);
+                performActions(actionsToPerform, entityInstance, targetEntity, targetEntityName, actionContext);
             }
         }
     }
@@ -80,9 +79,16 @@ public class ProximityAction extends AbstractAction {
 
     }
 
-    private void performActions(List<Action> actions, EntityInstance entityInstance, ActionContext actionContext) {
-        for (Action action : actions)
-            action.invoke(entityInstance, actionContext);
+    private void performActions(List<Action> actions, EntityInstance sourceEntity, EntityInstance targetEntity, String targetEntityName, ActionContext actionContext) {
+        // set target entity instance in context.
+        actionContext.setSecondaryEntityInContext(targetEntity);
+        for (Action action : actions) {
+            if (action.getEntityName().equals(targetEntityName))
+                action.invoke(targetEntity, actionContext);
+            else action.invoke(sourceEntity, actionContext);
+        }
+        // reset target entity in context to null.
+        actionContext.setSecondaryEntityInContext(null);
     }
 
     @Override

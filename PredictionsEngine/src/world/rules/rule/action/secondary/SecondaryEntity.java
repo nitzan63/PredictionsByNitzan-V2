@@ -84,7 +84,7 @@ public class SecondaryEntity {
     private boolean isInstanceFitConditions (EntityInstance instance, ActionContext actionContext){
         if (condition == null)
             return true;
-        return condition.evaluate(instance,null, null, actionContext.getEnvironment());
+        return condition.evaluate(instance,null, null, actionContext);
     }
 
     public String getDefinitionEntityName() {

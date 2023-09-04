@@ -38,8 +38,7 @@ public class SetAction extends AbstractAction {
     }
 
     public void performAction (EntityInstance entityInstance, ActionContext actionContext){
-        Environment environment = actionContext.getEnvironment();
-        Object value = evaluateExpression(expression, entityInstance, environment);
+        Object value = evaluateExpression(expression, entityInstance, actionContext);
         if (value instanceof Double){ // handle the cases when trying to set value out of range.
             if ((double) value < entityInstance.getProperty(propertyName).getRange().getFrom().doubleValue()){
                 entityInstance.getProperty(propertyName).setValue(entityInstance.getProperty(propertyName).getRange().getFrom().doubleValue());

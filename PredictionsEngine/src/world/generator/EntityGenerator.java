@@ -37,7 +37,7 @@ public class EntityGenerator {
         int col = emptyCell[1];
 
         // generate the new entity!
-        EntityInstance newInstance = new EntityInstance(serialNumber, newProperties, row, col);
+        EntityInstance newInstance = new EntityInstance(serialNumber, newProperties, row, col, prototypeEntity.getEntityName());
 
         //place the entity on the grid:
         grid.addEntityToGrid(newInstance);
@@ -52,7 +52,7 @@ public class EntityGenerator {
         // create with temp serial number and previous location on the grid:
         int row = baseInstance.getRow();
         int col = baseInstance.getCol();
-        return new EntityInstance(999, newProperties, row, col);
+        return new EntityInstance(999, newProperties, row, col, prototypeEntity.getEntityName());
 
     }
 
@@ -69,7 +69,7 @@ public class EntityGenerator {
 
         int row = baseInstance.getRow();
         int col = baseInstance.getCol();
-        return new EntityInstance(999, newProperties, row, col);
+        return new EntityInstance(999, newProperties, row, col, prototypeEntity.getEntityName());
     }
 
     public EntityProperties generatePropertiesFromPrototype(EntityProperties prototypeProperties){
