@@ -51,7 +51,9 @@ public class SingleCondition implements Condition {
     }
 
     private boolean performEvaluation (EntityInstance entityInstance, ActionContext actionContext){
-        Object propertyValue = entityInstance.getProperty(propertyName).getValue();
+        // property value can be either a property or an expression:
+        Object propertyValue = ExpressionEvaluator.evaluateExpression(propertyName, entityInstance, actionContext);
+        // get value as expression:
         Object value = ExpressionEvaluator.evaluateExpression(rawValue, entityInstance, actionContext);
 
         if (operator == null || value == null || propertyValue == null)
@@ -79,6 +81,9 @@ public class SingleCondition implements Condition {
                 return false;
         }
     }
+
+
+
     @Override
     public String toString() {
         return "SingleCondition{" +

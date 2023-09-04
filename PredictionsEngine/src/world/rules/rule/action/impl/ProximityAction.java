@@ -98,6 +98,6 @@ public class ProximityAction extends AbstractAction {
 
     @Override
     public String getByExpression() {
-        return null;
+        return ofExpression;
     }
 }

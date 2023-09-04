@@ -17,7 +17,7 @@ public class ActionValidator {
         }
 
         // Check if action type value is in the list of accepted values
-        List<String> validActionTypes = Arrays.asList("calculation", "condition", "decrease", "increase", "kill", "set");
+        List<String> validActionTypes = Arrays.asList("calculation", "condition", "decrease", "increase", "kill", "set", "proximity", "replace");
         if (!validActionTypes.contains(action.getType().toLowerCase())) {
             throw new ValidationException("Invalid action type: " + action.getType());
         }
@@ -49,6 +49,15 @@ public class ActionValidator {
                 if (action.getBy() == null)
                     throw new ValidationException("Action has missing 'byExpression' value");
                 break;
+            case "replace":
+                String mode = action.getMode();
+                if (mode == null)
+                    throw new ValidationException("Replace Action has missing 'mode'");
+                if (!(mode.equalsIgnoreCase("scratch") || mode.equalsIgnoreCase("derived") )){
+                    throw new ValidationException("Mode in replace action is not a valid mode: " + mode);
+                }
+                break;
+
         }
 
         // Check if action's entity exists

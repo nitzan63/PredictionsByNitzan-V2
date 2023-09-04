@@ -8,15 +8,15 @@ import javax.xml.bind.ValidationException;
 
 public class TerminationValidator {
     public static void validateTermination(PRDTermination termination) throws ValidationException {
-        if (termination.getPRDByTicksOrPRDBySecond().isEmpty()) {
+        if (termination.getPRDBySecondOrPRDByTicks().isEmpty()) {
             throw new ValidationException("Termination should have at least one child: PRD-by-ticks or PRD-by-second.");
         }
 
-        if (termination.getPRDByTicksOrPRDBySecond().size() > 2) {
+        if (termination.getPRDBySecondOrPRDByTicks().size() > 2) {
             throw new ValidationException("Termination can have at most 2 children: PRD-by-ticks or PRD-by-second.");
         }
 
-        for (Object termType : termination.getPRDByTicksOrPRDBySecond()) {
+        for (Object termType : termination.getPRDBySecondOrPRDByTicks()) {
             if (termType instanceof PRDByTicks) {
                 validateByTicks((PRDByTicks) termType);
             } else if (termType instanceof PRDBySecond) {
