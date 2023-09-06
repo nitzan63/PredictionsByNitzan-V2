@@ -4,7 +4,7 @@ import api.DTOUIInterface;
 import commands.api.Command;
 import dto.PopulationStatisticsDTO;
 import dto.PropertyHistogramDTO;
-import dto.SimulationRunResultsDTO;
+import dto.SimulationExecutionDetailsDTO;
 import input.UserInputHandler;
 
 import java.util.ArrayList;
@@ -16,7 +16,7 @@ import java.util.*;
 public class DisplayPastActivationCommand implements Command {
     private final DTOUIInterface simulationInterface;
     private final UserInputHandler inputHandler;
-    private List<SimulationRunResultsDTO> sortedSimulations;
+    private List<SimulationExecutionDetailsDTO> sortedSimulations;
 
 
 
@@ -42,9 +42,9 @@ public class DisplayPastActivationCommand implements Command {
     }
 
     private void displayListOfSimulations() {
-        Map<String, SimulationRunResultsDTO> allSimulations = simulationInterface.getAllSimulationResults();
+        Map<String, SimulationExecutionDetailsDTO> allSimulations = simulationInterface.getAllSimulationResults();
         sortedSimulations = new ArrayList<>(allSimulations.values());
-        sortedSimulations.sort(Comparator.comparing(SimulationRunResultsDTO::getDateTime));
+        sortedSimulations.sort(Comparator.comparing(SimulationExecutionDetailsDTO::getDateTime));
         for (int i = 0; i < sortedSimulations.size(); i++) {
             System.out.println((i + 1) + ". Date and Time: " + sortedSimulations.get(i).getDateTime() + " | Simulation ID: " + sortedSimulations.get(i).getRunIdentifier());
         }
@@ -52,7 +52,7 @@ public class DisplayPastActivationCommand implements Command {
 
 
     private void displaySimulationResults(String runIdentifier) {
-        SimulationRunResultsDTO results = simulationInterface.getSimulationResults(runIdentifier);
+        SimulationExecutionDetailsDTO results = simulationInterface.getSimulationResults(runIdentifier);
         if (results == null) {
             System.out.println("Invalid simulation ID. Please try again.");
             return;

@@ -52,8 +52,7 @@ public class ReplaceAction extends AbstractAction{
         EntitiesDefinition entitiesDefinitionToCreate = allEntitiesDefinitionMap.get(createEntityName);
 
         // Step 1: Kill the target entity and remove from grid
-        entityDefinitionToKill.removeEntityInstance(entityInstance.getSerialNumber());
-        entityDefinitionToKill.setPopulation(entityDefinitionToKill.getPopulation() - 1);
+        entityDefinitionToKill.removeEntityInstance(entityInstance.getSerialNumber(), actionContext.getTick());
         grid.removeEntityFromGrid(entityInstance);
 
         EntityGenerator entityGenerator = new EntityGenerator();

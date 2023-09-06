@@ -53,7 +53,18 @@ What data should be in the DTO?
 4. Display Simulation output - Both Engine and UI.
 5. Only (or at least mostly) in the UI.
 
+----------------------------------------------------
+
 ## Task 2
 
-* 
+### Simulation Objects and Run:
+* Simulation Manager: 
+
+### UI-Engine interface in Screen num 3:
+1. use pull logic from the ui to the engine.
+   1. the ui requests SED every 200 ms from the engine.
+   2. new thread (not the JAT) in the UI who manages the sleep/pull loop.
+      * pull - get from the engine the propertyHistogram and populationStatistics to show.
+   3. use javaFX task - optional.
+   
 

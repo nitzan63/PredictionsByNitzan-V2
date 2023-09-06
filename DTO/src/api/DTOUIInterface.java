@@ -58,11 +58,11 @@ public class DTOUIInterface {
         return result;
     }
 
-    public SimulationRunResultsDTO getSimulationResults(String runIdentifier) {
+    public SimulationExecutionDetailsDTO getSimulationResults(String runIdentifier) {
         return engineInterface.getSimulationResults(runIdentifier);
     }
 
-    public Map<String, SimulationRunResultsDTO> getAllSimulationResults() {
+    public Map<String, SimulationExecutionDetailsDTO> getAllSimulationResults() {
         return engineInterface.getAllSimulationResults();
     }
 

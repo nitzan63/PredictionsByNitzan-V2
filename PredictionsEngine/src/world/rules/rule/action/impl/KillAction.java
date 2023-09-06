@@ -42,8 +42,7 @@ public class KillAction extends AbstractAction {
         EntitiesDefinition entityDefinitionToKill = allEntitiesDefinitionMap.get(entityName);
 
         // remove entity instance from instances:
-        entityDefinitionToKill.removeEntityInstance(entityInstance.getSerialNumber());
-        entityDefinitionToKill.setPopulation(entityDefinitionToKill.getPopulation() - 1);
+        entityDefinitionToKill.removeEntityInstance(entityInstance.getSerialNumber(), actionContext.getTick());
 
         // remove from grid:
         grid.removeEntityFromGrid(entityInstance);

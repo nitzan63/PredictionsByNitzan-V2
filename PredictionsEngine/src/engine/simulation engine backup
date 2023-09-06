@@ -1,0 +1,331 @@
+package engine;
+
+import api.DTOEngineInterface;
+import dto.*;
+import engine.file.XMLProcessor;
+import engine.file.exceptions.XMLProcessingException;
+import engine.input.validator.EnvironmentInputValidator;
+import engine.simulation.SimulationRunner;
+import world.World;
+import world.entities.EntitiesDefinition;
+import world.entities.entity.properties.property.api.EntityProperty;
+import world.environment.properties.EnvProperties;
+import world.environment.properties.property.api.EnvProperty;
+import world.rules.rule.action.api.Action;
+import world.rules.rule.api.Rule;
+import world.termination.api.Termination;
+import world.termination.impl.TerminationByTicks;
+import world.termination.impl.TerminationByTime;
+import world.termination.impl.TerminationCombined;
+
+import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
+
+public class SimulationEngine implements DTOEngineInterface {
+    private World prototypeWorld;
+    private final List<ErrorDTO> errorList = new ArrayList<>();
+    private SimulationRunner simulationRunner;
+    private String xmlFilePath;
+    private ExecutorService executorService;
+
+
+    @Override
+    public void loadXmlFile(String filePath) throws Exception {
+        this.xmlFilePath = filePath;
+        try {
+            XMLProcessor processor = new XMLProcessor();
+            this.prototypeWorld = processor.processXML(filePath);
+            // Set the thread-pool
+            int numberOfThreads = processor.getNumberOfThreads();
+            executorService = Executors.newFixedThreadPool(numberOfThreads);
+
+        } catch (XMLProcessingException e) {
+            ErrorDTO errorDTO = new ErrorDTO(e.getMessage(), e.getClass().getName(), LocalDateTime.now());
+            errorList.add(errorDTO);
+            throw new Exception("Error processing XML file: " + e.getMessage(), e);
+        }
+    }
+
+    public Map<String, EntitiesDefinitionDTO> getEntitiesDefinition() {
+        Map<String, EntitiesDefinition> entities = prototypeWorld.getEntitiesMap();
+        Map<String, EntitiesDefinitionDTO> entitiesDTO = new HashMap<>();
+        for (EntitiesDefinition entitiesDefinition : entities.values()) {
+            String name = entitiesDefinition.getEntityName();
+            int population = entitiesDefinition.getPopulation();
+            List<EntityProperty> properties = entitiesDefinition.getPrototypeEntity().getProperties().getProperties();
+            List<PropertyDTO> propertyDTOList = new ArrayList<>();
+            for (EntityProperty property : properties) {
+                propertyDTOList.add(new PropertyDTO(property.getName(), property.getType(), property.getRange().getFromDouble(), property.getRange().getToDouble(), property.isRandomInitialize(), property.getValue()));
+            }
+            EntitiesDefinitionDTO dto = new EntitiesDefinitionDTO(name, population, propertyDTOList);
+            entitiesDTO.put(name, dto);
+        }
+        return entitiesDTO;
+    }
+
+    @Override
+    public List<RuleDTO> getRules() {
+        List<RuleDTO> ruleDTOList = new ArrayList<>();
+        for (Rule rule : prototypeWorld.getRules().getRules()) {
+            String name = rule.getName();
+            int ticks = rule.getActivation().getTicksToActivate();
+            double probability = rule.getActivation().getProbability();
+
+            List<String> actionNames = new ArrayList<>();
+            for (Action action : rule.getActionsToPerform()) {
+                actionNames.add(action.getActionType().name());
+            }
+
+            int numberOfActions = actionNames.size();
+            ruleDTOList.add(new RuleDTO(name, ticks, probability, numberOfActions, actionNames));
+        }
+        return ruleDTOList;
+    }
+
+    @Override
+    public TerminationDTO getTermination() {
+        Termination termination = prototypeWorld.getTermination();
+        if (termination instanceof TerminationCombined) {
+            TerminationCombined terminationCombined = (TerminationCombined) termination;
+            return new TerminationDTO(terminationCombined.getByTicks().getMaxTicks(), terminationCombined.getByTime().getMaxTime());
+        } else if (termination instanceof TerminationByTime) {
+            TerminationByTime terminationByTime = (TerminationByTime) termination;
+            return new TerminationDTO(null, terminationByTime.getMaxTime());
+        } else if (termination instanceof TerminationByTicks) {
+            TerminationByTicks terminationByTicks = (TerminationByTicks) termination;
+            return new TerminationDTO(terminationByTicks.getMaxTicks(), null);
+        } else {
+            return new TerminationDTO(0, 0);
+        }
+
+        //TODO remember returning null as ticks or time...
+    }
+
+    @Override
+    public EnvironmentDTO getEnvironmentProperties() {
+        EnvironmentDTO environmentDTO = new EnvironmentDTO();
+        EnvProperties properties = prototypeWorld.getEnvironment().getProperties();
+        for (EnvProperty property : properties.getProperties()) {
+            PropertyDTO propertyDTO = new PropertyDTO(property.getName(), property.getType(), property.getRange().getFromDouble(), property.getRange().getToDouble(), false, property.getValue());
+            environmentDTO.addEnvironmentProperty(property.getName(), propertyDTO);
+        }
+        return environmentDTO;
+    }
+
+    @Override
+    public void setEnvironmentProperties(UserInputDTO input) {
+        // Validate the user input
+        EnvProperties properties = prototypeWorld.getEnvironment().getProperties();
+        try {
+            EnvironmentInputValidator.validateInput(input, properties);
+        } catch (IllegalArgumentException e) {
+            ErrorDTO errorDTO = new ErrorDTO(e.getMessage(), e.getClass().getName(), LocalDateTime.now());
+            errorList.add(errorDTO);
+            return;
+        }
+
+        // Apply the changes to the environment properties
+        for (Map.Entry<String, String> entry : input.getEnvironmertPropMap().entrySet()) {
+            String propertyName = entry.getKey();
+            String stringValue = entry.getValue();
+
+            EnvProperty property = properties.getProperty(propertyName);
+            if (property != null) {
+                String expectedType = property.getType();
+                Object value = EnvironmentInputValidator.parseValue(stringValue, expectedType);  // Use the public method
+                property.setValue(value);
+            }
+        }
+    }
+
+    public SimulationRunMetadataDTO RunSimulation() {
+        if (world != null) {
+            executorService.execute(simulationRunner);
+            SimulationRunMetadataDTO resultMetaData = simulationRunner.getRunMetadataDTO();
+            resetEntities();
+            return resultMetaData;
+        } else {
+            throw new IllegalStateException("World has not been initialized yet.");
+        }
+    }
+
+    public SimulationRunResultsDTO getSimulationResults(String runIdentifier) {
+        if (simulationRunner != null) {
+            return simulationRunner.getResultsByID(runIdentifier);
+        } else {
+            throw new IllegalStateException("Simulation has not been run yet.");
+        }
+    }
+
+    public Map<String, SimulationRunResultsDTO> getAllSimulationResults() {
+        if (simulationRunner != null) {
+            return simulationRunner.getAllSimulationResults();
+        } else {
+            throw new IllegalStateException("Simulation has not been run yet.");
+        }
+    }
+
+    public void exit() {
+        executorService.shutdown();
+    }
+
+    private void resetEntities() {
+        try {
+            // Process the XML file to get the initial entities:
+            XMLProcessor processor = new XMLProcessor();
+
+            // Reset the  world object:
+            prototypeWorld = processor.processXML(xmlFilePath);
+
+            // Set the new World to the Simulation Runner:
+            simulationRunner.setWorld(prototypeWorld);
+        } catch (XMLProcessingException ignore) {
+
+        }
+    }
+}
+
+
+
+
+
+package engine.simulation;
+
+import dto.*;
+import world.World;
+import world.entities.entity.EntityInstance;
+import world.entities.entity.properties.EntityProperties;
+import world.entities.entity.properties.property.api.EntityProperty;
+import world.termination.api.Termination;
+
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
+import java.util.*;
+
+public class SimulationRunner implements Runnable {
+    private World world;
+    private final Termination termination;
+    private int tickNumber;
+    private long startTime;
+    private String runIdentifier;
+    private final Map<String, SimulationRunMetadataDTO> simulationData = new HashMap<>();
+    private final Map<String, SimulationRunResultsDTO> simulationResults = new HashMap<>();
+    private final List<ErrorDTO> errorList = new ArrayList<>();
+    private SimulationRunMetadataDTO runMetadataDTO;
+
+
+
+    public SimulationRunner(World world) {
+        this.world = world;
+        this.termination = world.getTermination();
+        this.tickNumber = 0;
+        this.startTime = System.currentTimeMillis();
+        this.runIdentifier =null;
+    }
+
+    public SimulationRunMetadataDTO runSimulation() {
+        runIdentifier = generateRunIdentifier();
+        SimulationRunResultsDTO resultsDTO = new SimulationRunResultsDTO(runIdentifier , LocalDateTime.now().format(DateTimeFormatter.ofPattern("dd-MM-yyyy | HH:mm:ss")));
+        PopulationStatisticsDTO populationStatistics = new PopulationStatisticsDTO(world.getEntitiesMap().getEntityName(), world.getEntitiesMap().getPopulation(), 0);
+        simulationResults.put(runIdentifier, resultsDTO);
+        tickNumber = 0;
+        startTime = System.currentTimeMillis();
+        while (shouldContinue()) {
+            tickNumber++;
+            int elapsedSeconds = getElapsedSeconds();
+            if (!termination.isNotTerminated(tickNumber, elapsedSeconds)) {
+                break;
+            }
+            try {
+                world.simulateThisTick(tickNumber);
+            } catch (Exception e) {
+                ErrorDTO errorDTO = new ErrorDTO(e.getMessage(), e.getClass().getName() , LocalDateTime.now());
+                errorList.add(errorDTO);
+            }
+        }
+        populationStatistics.setFinalPopulation(world.getEntitiesMap().getPopulation());
+        resultsDTO.setPopulationStatistics(populationStatistics);
+        for (EntityInstance entityInstance : world.getEntitiesMap().getEntities().values()){
+            EntityProperties entityProperties= entityInstance.getProperties();
+            for (EntityProperty property:entityProperties.getProperties()){
+                String propName = property.getName();
+                String value = String.valueOf(property.getValue());
+
+                Map<String, PropertyHistogramDTO> propertyHistogram = resultsDTO.getPropertyHistograms();
+                PropertyHistogramDTO histogram = propertyHistogram.get(propName);
+                if (histogram == null){
+                    histogram = new PropertyHistogramDTO(propName);
+                    propertyHistogram.put(propName, histogram);
+                }
+                histogram.addValue(value);
+            }
+        }
+
+        SimulationRunMetadataDTO metadataDTO = new SimulationRunMetadataDTO(runIdentifier, LocalDateTime.now().toString(), termination.getTerminationMessage());
+        simulationData.put(runIdentifier, metadataDTO);
+        // set the env properties to random after simulation run!
+        world.getEnvironment().getProperties().generateRandomEnvPropertiesValues();
+        return metadataDTO;
+    }
+
+    private boolean shouldContinue() {
+        // Add any other conditions to check before each tick
+        return true;
+    }
+
+    private int getElapsedSeconds() {
+        long elapsedTime = System.currentTimeMillis() - startTime;
+        return (int) (elapsedTime / 1000);
+    }
+
+    private String generateRunIdentifier() {
+        LocalDateTime now = LocalDateTime.now();
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("ddMMyyyy");
+        String datePart = now.format(formatter);
+        return datePart + "-" + (simulationData.size() + 1);
+    }
+
+    public String getRunIdentifier() {
+        return runIdentifier;
+    }
+
+    public SimulationRunResultsDTO getResultsByID(String runIdentifier){
+        return  simulationResults.get(runIdentifier);
+    }
+
+    public Map<String, SimulationRunResultsDTO> getAllSimulationResults(){
+        return new HashMap<>(simulationResults);
+    }
+
+    public SimulationRunMetadataDTO getSimulationMetadata(String runIdentifier) {
+        return simulationData.get(runIdentifier);
+    }
+
+    public Map<String, SimulationRunMetadataDTO> getAllSimulationMetadata() {
+        return new HashMap<>(simulationData);
+    }
+
+    public List<ErrorDTO> getErrorList() {
+        return errorList;
+    }
+
+
+    public void setWorld(World world) {
+        this.world = world;
+    }
+
+    @Override
+    public void run() {
+        runMetadataDTO = runSimulation();
+    }
+
+    public SimulationRunMetadataDTO getRunMetadataDTO() {
+        return runMetadataDTO;
+    }
+}
+

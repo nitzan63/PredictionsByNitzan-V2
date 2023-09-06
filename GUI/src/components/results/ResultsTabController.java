@@ -3,7 +3,7 @@ package components.results;
 import api.DTOUIInterface;
 import components.SharedResources;
 import dto.PropertyHistogramDTO;
-import dto.SimulationRunResultsDTO;
+import dto.SimulationExecutionDetailsDTO;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
@@ -46,7 +46,7 @@ public class ResultsTabController {
     private Tab populationStatisticsTab;
     // DTO - UI interface:
     private DTOUIInterface simulationInterface;
-    private Map<String, SimulationRunResultsDTO> allResults;
+    private Map<String, SimulationExecutionDetailsDTO> allResults;
     //private ObservableList<String> pastSimulationsObservable;
 
 
@@ -92,7 +92,7 @@ public class ResultsTabController {
     }
 
     private void updateHistogramChart(String runIdentifier, String propertyName) {
-        SimulationRunResultsDTO selectedRun = simulationInterface.getSimulationResults(runIdentifier);
+        SimulationExecutionDetailsDTO selectedRun = simulationInterface.getSimulationResults(runIdentifier);
         if (selectedRun != null) {
             PropertyHistogramDTO histogram = selectedRun.getPropertyHistograms().get(propertyName);
             if (histogram != null) {
@@ -112,7 +112,7 @@ public class ResultsTabController {
     }
 
     private void loadPropertyChoices(String runIdentifier) {
-        SimulationRunResultsDTO selectedRun = simulationInterface.getSimulationResults(runIdentifier);
+        SimulationExecutionDetailsDTO selectedRun = simulationInterface.getSimulationResults(runIdentifier);
         if (selectedRun != null) {
             ObservableList<String> propertyNames = FXCollections.observableArrayList(selectedRun.getPropertyHistograms().keySet());
             propertyChooser.setItems(propertyNames);
@@ -128,7 +128,7 @@ public class ResultsTabController {
         // Create an ObservableList for the ListView
         ObservableList<String> pastSimulationsObservable = FXCollections.observableArrayList();
         // Populate the ObservableList with simulation IDs
-        for (SimulationRunResultsDTO dto : allResults.values()) {
+        for (SimulationExecutionDetailsDTO dto : allResults.values()) {
             pastSimulationsObservable.add(dto.getRunIdentifier());
         }
         // Assign the ObservableList to the ListView

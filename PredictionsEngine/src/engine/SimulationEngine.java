@@ -5,7 +5,7 @@ import dto.*;
 import engine.file.XMLProcessor;
 import engine.file.exceptions.XMLProcessingException;
 import engine.input.validator.EnvironmentInputValidator;
-import engine.simulation.SimulationRunner;
+import engine.simulation.SimulationManager;
 import world.World;
 import world.entities.EntitiesDefinition;
 import world.entities.entity.properties.property.api.EntityProperty;
@@ -22,28 +22,26 @@ import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
-import java.util.concurrent.ExecutorService;
-import java.util.concurrent.Executors;
 
 public class SimulationEngine implements DTOEngineInterface {
-    private World world;
+    private World prototypeWorld;
     private final List<ErrorDTO> errorList = new ArrayList<>();
-    private SimulationRunner simulationRunner;
     private String xmlFilePath;
-    private ExecutorService executorService;
+    SimulationManager simulationManager;
+
 
 
     @Override
     public void loadXmlFile(String filePath) throws Exception {
         this.xmlFilePath = filePath;
         try {
-            XMLProcessor processor = new XMLProcessor();
-            this.world = processor.processXML(filePath);
-            this.simulationRunner = new SimulationRunner(world);
 
-            // change this when implementing the number of threads getter:
-            int numberOfThreads = 1;
-            executorService = Executors.newFixedThreadPool(numberOfThreads);
+            // process and validate the xml file, and create a prototype world:
+            XMLProcessor processor = new XMLProcessor();
+            this.prototypeWorld = processor.processXML(filePath);
+
+            // create new simulation manager
+            simulationManager = new SimulationManager(prototypeWorld, processor.getNumberOfThreads());
 
         } catch (XMLProcessingException e) {
             ErrorDTO errorDTO = new ErrorDTO(e.getMessage(), e.getClass().getName(), LocalDateTime.now());
@@ -53,7 +51,7 @@ public class SimulationEngine implements DTOEngineInterface {
     }
 
     public EntitiesDefinitionDTO getEntitiesDefinition() {
-        EntitiesDefinition entities = world.getEntitiesMap();
+        EntitiesDefinition entities = prototypeWorld.getEntitiesMap();
         String name = entities.getEntityName();
         int population = entities.getPopulation();
         List<EntityProperty> properties = entities.getEntity(1).getProperties().getProperties();
@@ -67,7 +65,7 @@ public class SimulationEngine implements DTOEngineInterface {
     @Override
     public List<RuleDTO> getRules() {
         List<RuleDTO> ruleDTOList = new ArrayList<>();
-        for (Rule rule : world.getRules().getRules()) {
+        for (Rule rule : prototypeWorld.getRules().getRules()) {
             String name = rule.getName();
             int ticks = rule.getActivation().getTicksToActivate();
             double probability = rule.getActivation().getProbability();
@@ -85,7 +83,7 @@ public class SimulationEngine implements DTOEngineInterface {
 
     @Override
     public TerminationDTO getTermination() {
-        Termination termination = world.getTermination();
+        Termination termination = prototypeWorld.getTermination();
         if (termination instanceof TerminationCombined) {
             TerminationCombined terminationCombined = (TerminationCombined) termination;
             return new TerminationDTO(terminationCombined.getByTicks().getMaxTicks(), terminationCombined.getByTime().getMaxTime());
@@ -105,7 +103,7 @@ public class SimulationEngine implements DTOEngineInterface {
     @Override
     public EnvironmentDTO getEnvironmentProperties() {
         EnvironmentDTO environmentDTO = new EnvironmentDTO();
-        EnvProperties properties = world.getEnvironment().getProperties();
+        EnvProperties properties = prototypeWorld.getEnvironment().getProperties();
         for (EnvProperty property : properties.getProperties()) {
             PropertyDTO propertyDTO = new PropertyDTO(property.getName(), property.getType(), property.getRange().getFromDouble(), property.getRange().getToDouble(), false, property.getValue());
             environmentDTO.addEnvironmentProperty(property.getName(), propertyDTO);
@@ -116,7 +114,7 @@ public class SimulationEngine implements DTOEngineInterface {
     @Override
     public void setEnvironmentProperties(UserInputDTO input) {
         // Validate the user input
-        EnvProperties properties = world.getEnvironment().getProperties();
+        EnvProperties properties = prototypeWorld.getEnvironment().getProperties();
         try {
             EnvironmentInputValidator.validateInput(input, properties);
         } catch (IllegalArgumentException e) {
@@ -140,7 +138,7 @@ public class SimulationEngine implements DTOEngineInterface {
     }
 
     public SimulationRunMetadataDTO RunSimulation() {
-        if (world != null) {
+        if (prototypeWorld != null) {
             executorService.execute(simulationRunner);
             SimulationRunMetadataDTO resultMetaData = simulationRunner.getRunMetadataDTO();
             resetEntities();
@@ -150,7 +148,7 @@ public class SimulationEngine implements DTOEngineInterface {
         }
     }
 
-    public SimulationRunResultsDTO getSimulationResults(String runIdentifier) {
+    public SimulationExecutionDetailsDTO getSimulationResults(String runIdentifier) {
         if (simulationRunner != null) {
             return simulationRunner.getResultsByID(runIdentifier);
         } else {
@@ -158,7 +156,7 @@ public class SimulationEngine implements DTOEngineInterface {
         }
     }
 
-    public Map<String, SimulationRunResultsDTO> getAllSimulationResults() {
+    public Map<String, SimulationExecutionDetailsDTO> getAllSimulationResults() {
         if (simulationRunner != null) {
             return simulationRunner.getAllSimulationResults();
         } else {
@@ -176,10 +174,10 @@ public class SimulationEngine implements DTOEngineInterface {
             XMLProcessor processor = new XMLProcessor();
 
             // Reset the  world object:
-            world = processor.processXML(xmlFilePath);
+            prototypeWorld = processor.processXML(xmlFilePath);
 
             // Set the new World to the Simulation Runner:
-            simulationRunner.setWorld(world);
+            simulationRunner.setWorld(prototypeWorld);
         } catch (XMLProcessingException ignore) {
 
         }

@@ -1,44 +1,32 @@
 package dto;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 public class PopulationStatisticsDTO {
-    private int initialPopulation;
-    private int finalPopulation;
+    private Map<Integer, Integer> ticksToPopulationMap = new HashMap<>();
     private String EntityName;
 
-    public PopulationStatisticsDTO(String entityName , int initialPopulation, int finalPopulation) {
-        this.initialPopulation = initialPopulation;
-        this.finalPopulation = finalPopulation;
+    public PopulationStatisticsDTO(String entityName , Map<Integer, Integer> ticksToPopulationMap) {
         this.EntityName = entityName;
-    }
-
-    public int getInitialPopulation() {
-        return initialPopulation;
+        this.ticksToPopulationMap = ticksToPopulationMap;
     }
 
     public String getEntityName() {
         return EntityName;
     }
 
-    public void setInitialPopulation(int initialPopulation) {
-        this.initialPopulation = initialPopulation;
-    }
-
-    public int getFinalPopulation() {
-        return finalPopulation;
-    }
-
-    public void setFinalPopulation(int finalPopulation) {
-        this.finalPopulation = finalPopulation;
+    public Map<Integer, Integer> getTicksToPopulationMap (){
+        return ticksToPopulationMap;
     }
 
     @Override
     public String toString() {
         return "PopulationStatisticsDTO{" +
-                "initialPopulation=" + initialPopulation +
-                ", finalPopulation=" + finalPopulation +
+                "ticksToPopulationMap=" + ticksToPopulationMap +
+                ", EntityName='" + EntityName + '\'' +
                 '}';
     }
 }

@@ -16,9 +16,11 @@ public class World {
     private Rules rules;
     private Termination termination;
     private Grid grid;
+    private int currTick = 0;
 
     public void simulateThisTick(int tickNumber) throws Exception {
         ActionContext actionContext = new ActionContext(this, tickNumber);
+        currTick = tickNumber;
         try {
             actionContext.setTick(tickNumber);
             moveEntities();
@@ -108,6 +110,10 @@ public class World {
 
     public void setGrid(Grid grid) {
         this.grid = grid;
+    }
+
+    public int getCurrTick() {
+        return currTick;
     }
 
     @Override
