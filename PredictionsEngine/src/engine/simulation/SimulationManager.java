@@ -13,6 +13,7 @@ import java.time.format.DateTimeFormatter;
 import java.util.*;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
+import java.util.concurrent.ThreadPoolExecutor;
 
 public class SimulationManager {
 
@@ -25,6 +26,7 @@ public class SimulationManager {
     private final List<ErrorDTO> sharedErrorList = Collections.synchronizedList(new ArrayList<>());
 
     private ExecutorService executorService;
+    private final ThreadCountManager threadCountManager;
 
     public SimulationManager(World prototypeWorld, int numberOfThreads) {
         // set Data members
@@ -37,9 +39,13 @@ public class SimulationManager {
         // create thread pool
         executorService = Executors.newFixedThreadPool(numberOfThreads);
 
+        this.threadCountManager = new ThreadCountManager((ThreadPoolExecutor) executorService);
+
     }
 
-    public SimulationRunMetadataDTO runSimulation(UserInputDTO userInputDTO) {
+    public void runSimulation(UserInputDTO userInputDTO) {
+        // Increment queued simulations count
+        threadCountManager.incrementQueuedSimulations();
         // generate world instance
         World worldInstance = worldGenerator.generateWorld(userInputDTO);
         // create run id's and allocate to world instance:
@@ -53,11 +59,14 @@ public class SimulationManager {
         // create runner
         SimulationRunner simulationRunner = new SimulationRunner(worldInstance, sharedErrorList);
         // run simulation
-        executorService.execute(simulationRunner);
-        //gather and store run results
-        processSimulationExecutionDetails(worldInstance, runID);
-        // return metadata:
-        return runMetadataDTO;
+        executorService.execute(() -> {
+            threadCountManager.decrementQueuedSimulations();
+            simulationRunner.run();
+            //gather and store run results
+            processSimulationExecutionDetails(worldInstance, runID);
+            threadCountManager.incrementTotalSimulations();
+        });
+
     }
 
     private void prepareSimulationData(World worldInstance, String runID){
@@ -92,6 +101,10 @@ public class SimulationManager {
         // set termination message if the simulation ended:
         if (world.getTermination().getTerminationMessage() != null)
             simulationsMetadataMap.get(runID).setTerminationReason(world.getTermination().getTerminationMessage());
+    }
+
+    public ThreadInfoDTO getThreadInfo() {
+        return threadCountManager.getThreadInfoDTO();
     }
 
     private Map<String, EntityPropertiesHistogramDTO> createEntitiesPropertiesHistogramMap(Map<String, EntitiesDefinition> entitiesDefinitionMap ){

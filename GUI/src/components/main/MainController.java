@@ -3,7 +3,10 @@ package components.main;
 import api.DTOUIInterface;
 import components.SharedResources;
 import components.execution.ExecutionTabController;
+import dto.ThreadInfoDTO;
 import engine.SimulationEngine;
+import javafx.animation.KeyFrame;
+import javafx.animation.Timeline;
 import javafx.beans.property.SimpleBooleanProperty;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.fxml.FXML;
@@ -11,6 +14,7 @@ import javafx.scene.control.*;
 import javafx.scene.text.Text;
 import javafx.stage.FileChooser;
 import javafx.stage.Stage;
+import javafx.util.Duration;
 
 
 import java.io.File;
@@ -33,6 +37,8 @@ public class MainController {
     private Label activeThreadsLabel;
     @FXML
     private Label simulationsEndedLabel;
+    @FXML
+    private TabPane mainTabPane;
 
 
     // DTO Interface:
@@ -50,8 +56,12 @@ public class MainController {
 
     // Constructor:
     public MainController() {
+
+        // Initialize DTO interface and shared resources
         this.simulationInterface = new DTOUIInterface(new SimulationEngine());
         SharedResources.getInstance().setDTOUIInterface(this.simulationInterface);
+
+        // Initialize properties
         isFileSelected = new SimpleBooleanProperty(false);
         selectedFileProperty = new SimpleStringProperty();
         activeThreadCount = new SimpleStringProperty("0/0");
@@ -59,12 +69,27 @@ public class MainController {
     }
 
     public void initialize() {
+        // Bind properties to UI elements:
         filePathTextField.textProperty().bind(selectedFileProperty);
         executionTabTitle.disableProperty().bind(isFileSelected.not());
         detailsTabTitle.disableProperty().bind(isFileSelected.not());
         resultsTabTitle.disableProperty().bind(isFileSelected.not());
         activeThreadsLabel.textProperty().bind(activeThreadCount);
         simulationsEndedLabel.textProperty().bind(simulationsEndedCount);
+
+        // Start updating thread information when a file is selected
+        isFileSelected.addListener((observable, oldValue, newValue) -> {
+            if (newValue) {
+                // Setup a timeline to call updateThreadInfo() every second
+                Timeline timeline = new Timeline(new KeyFrame(
+                        Duration.millis(200),
+                        ae -> updateThreadInfo()));
+                timeline.setCycleCount(Timeline.INDEFINITE);
+                timeline.play();
+            }
+        });
+
+        SharedResources.getInstance().setMainController(this);
     }
 
     public void setPrimaryStage(Stage primaryStage) {
@@ -74,12 +99,15 @@ public class MainController {
     @FXML
     public void loadFileButtonListener() {
         try {
+            // Open file dialog
             FileChooser fileChooser = new FileChooser();
             fileChooser.setTitle("Select XML file");
             fileChooser.getExtensionFilters().add(new FileChooser.ExtensionFilter("XML files", "*.xml"));
             File selectedFile = fileChooser.showOpenDialog(primaryStage);
+
             if (selectedFile == null)
                 return;
+
             String filePath = selectedFile.getAbsolutePath();
             simulationInterface.loadXmlFile(filePath);
             selectedFileProperty.set(filePath);
@@ -109,6 +137,16 @@ public class MainController {
             alert.setContentText(e.getMessage());
             alert.showAndWait();
         }
+    }
+
+    private void updateThreadInfo() {
+        ThreadInfoDTO threadInfo = simulationInterface.getThreadInfo();
+        activeThreadCount.set(threadInfo.getActiveThreads() + "/" + threadInfo.getTotalThreads());
+        simulationsEndedCount.set(String.valueOf(threadInfo.getTotalSimulations()));
+    }
+
+    public void switchToResultsTab() {
+        mainTabPane.getSelectionModel().select(resultsTabTitle); // use the ID of the Results tab
     }
 
 }

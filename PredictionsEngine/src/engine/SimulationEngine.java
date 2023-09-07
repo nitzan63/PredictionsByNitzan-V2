@@ -142,9 +142,9 @@ public class SimulationEngine implements DTOEngineInterface {
 //        }
 //    }
 
-    public SimulationRunMetadataDTO RunSimulation(UserInputDTO userInputDTO) {
+    public void RunSimulation(UserInputDTO userInputDTO) {
         if (prototypeWorld != null) {
-            return simulationManager.runSimulation(userInputDTO);
+            simulationManager.runSimulation(userInputDTO);
         } else {
             throw new IllegalStateException("World has not been initialized yet.");
         }
@@ -171,8 +171,22 @@ public class SimulationEngine implements DTOEngineInterface {
         return errorList;
     }
 
+    @Override
+    public ThreadInfoDTO getThreadInfo() {
+        return simulationManager.getThreadInfo();
+    }
+
+    @Override
+    public GridDTO getGridDTO() {
+        return new GridDTO(prototypeWorld.getGrid().getRows(), prototypeWorld.getGrid().getCols());
+    }
+
     public void exit() {
     }
+
+
+
+
 
 
 

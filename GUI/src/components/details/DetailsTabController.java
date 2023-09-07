@@ -1,15 +1,16 @@
 package components.details;
 
-import api.DTOEngineInterface;
 import api.DTOUIInterface;
 import components.SharedResources;
 import dto.*;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
-import javafx.scene.control.Button;
+import javafx.scene.Parent;
 import javafx.scene.control.Label;
-import javafx.scene.control.ListView;
 import javafx.scene.layout.FlowPane;
+import javafx.scene.control.TreeItem;
+import javafx.scene.control.TreeView;
+import javafx.util.Pair;
 
 import java.io.IOException;
 import java.util.List;
@@ -19,42 +20,116 @@ public class DetailsTabController {
     @FXML
     private FlowPane detailsFlowPane;
     @FXML
-    private ListView<String> factorsListView;
+    private TreeView<String> factorsTreeView;
     @FXML
     private Label chosenFactorLabel;
 
     //
     private DTOUIInterface simulationInterface;
-    private String[] factors = {"Environment Properties", "Rules", "Entity", "Termination", "Grid"};
 
-    public DetailsTabController() {
-
+    public enum SimulationFactor {
+        ENVIRONMENT, RULES, ENTITIES, TERMINATION, GRID
     }
 
     public void initialize() {
         this.simulationInterface = SharedResources.getInstance().getDTOUIInterface();
-        factorsListView.getItems().addAll(factors);
-        factorsListView.getSelectionModel().selectedItemProperty().addListener((observable, oldValue, newValue)
-                -> {
-            showDetails(newValue);
-            System.out.println(newValue);
-        });
+        initializeFactorsTreeView();
+        addTreeSelectionListener();
+    }
 
+    private void initializeFactorsTreeView(){
+        // Initialize TreeView
+        TreeItem<String> rootItem = new TreeItem<>("Simulation Factors");
+        rootItem.setExpanded(true);
+
+        // For Environment Properties
+        TreeItem<String> envPropertiesItem = new TreeItem<>("Environment");
+        Map<String, PropertyDTO> envProperties = simulationInterface.getEnvironmentProperties().getEnvironmentProperties();
+        for (String propName : envProperties.keySet()) {
+            envPropertiesItem.getChildren().add(new TreeItem<>(propName));
+        }
+        rootItem.getChildren().add(envPropertiesItem);
+
+        // For Rules
+        TreeItem<String> rulesItem = new TreeItem<>("Rules");
+        List<RuleDTO> rules = simulationInterface.getRules();
+        for (RuleDTO rule : rules) {
+            TreeItem<String> ruleItem = new TreeItem<>(rule.getName());
+            TreeItem<String> actionsItem = new TreeItem<>("Actions");
+            for (String actionName : rule.getActionNames()) {
+                actionsItem.getChildren().add(new TreeItem<>(actionName));
+            }
+            ruleItem.getChildren().add(actionsItem);
+            ruleItem.getChildren().add(new TreeItem<>("Activation"));
+            rulesItem.getChildren().add(ruleItem);
+        }
+        rootItem.getChildren().add(rulesItem);
+
+        // For Entities
+        TreeItem<String> entitiesItem = new TreeItem<>("Entities");
+        Map<String, EntitiesDefinitionDTO> entities = simulationInterface.getEntitiesDefinition();
+        for (String entityName : entities.keySet()) {
+            TreeItem<String> entityItem = new TreeItem<>(entityName);
+            EntitiesDefinitionDTO entity = entities.get(entityName);
+            for (PropertyDTO prop : entity.getProperties()) {
+                entityItem.getChildren().add(new TreeItem<>(prop.getName()));
+            }
+            entitiesItem.getChildren().add(entityItem);
+        }
+        rootItem.getChildren().add(entitiesItem);
+
+        // For Grid and Termination
+        rootItem.getChildren().add(new TreeItem<>("Grid"));
+        rootItem.getChildren().add(new TreeItem<>("Termination"));
+
+        factorsTreeView.setRoot(rootItem);
+    }
+
+    private void addTreeSelectionListener(){
+        // Listen for changes in selection and update the display accordingly
+        factorsTreeView.getSelectionModel().selectedItemProperty().addListener((observable, oldValue, newValue) -> {
+            if (newValue != null && !newValue.equals(oldValue)) {
+                showDetails(newValue.getValue());
+            }
+        });
     }
 
     public void showDetails(String factor) {
-        if ("Environment Properties".equals(factor)) {
+        detailsFlowPane.getChildren().clear();
+        if (factor.startsWith("Environment")) {
             displayEnvironmentProperties();
-        } else if ("Rules".equals(factor)) {
+        } else if (factor.startsWith("Rules")) {
             displayRules();
-        } else if ("Entity".equals(factor)) {
-            displayEntities();
-        } else if ("Termination".equals(factor)) {
+        } else if (factor.startsWith("Entities")) {
+            // The factor string could contain the name of the specific entity
+            // e.g., "Entities: Human"
+            String[] parts = factor.split(": ");
+            if (parts.length > 1) {
+                displaySpecificEntity(parts[1]);
+            } else {
+                displayEntities();
+            }
+        } else if (factor.startsWith("Termination")) {
             displayTerminationConditions();
-        } else if ("Grid".equals(factor)){
+        } else if (factor.startsWith("Grid")) {
             displayGrid();
         }
     }
+
+    private void displaySpecificEntity(String entityName) {
+        detailsFlowPane.getChildren().clear();
+        Map<String, EntitiesDefinitionDTO> entities = simulationInterface.getEntitiesDefinition();
+        EntitiesDefinitionDTO specificEntity = entities.get(entityName);
+
+        if (specificEntity == null) {
+            return;
+        }
+
+        for (PropertyDTO property : specificEntity.getProperties()) {
+            addPropertyDetailToFlowPane(property);
+        }
+    }
+
 
     private void displayRules(){
         detailsFlowPane.getChildren().clear();
@@ -66,19 +141,42 @@ public class DetailsTabController {
 
     private void displayGrid(){
         detailsFlowPane.getChildren().clear();
+        GridDTO gridDTO = simulationInterface.getGridDTO();
+        addGridToFlowPane(gridDTO);
+    }
+
+    private void addGridToFlowPane(GridDTO gridDTO){
+        // Initialize the controller and FXML loader here
+        Pair<SingleDetailController, Parent> loadedComponent = loadFXMLComponent("SingleDetailComponent.fxml");
+        if (loadedComponent == null) {
+            return;
+        }
+
+        SingleDetailController singleDetailController = loadedComponent.getKey();
+        Parent root = loadedComponent.getValue();
+
+        // Populate the component's fields
+        StringBuilder gridDetails = new StringBuilder();
+        gridDetails.append("Grid Rows: ").append(gridDTO.getRows()).append("\n");
+        gridDetails.append("Grid Cols: ").append(gridDTO.getCols());
+
+        singleDetailController.getDataLabel().setText(gridDetails.toString());
+
+        // Add the pane to the FlowPane
+        detailsFlowPane.getChildren().add(root);
     }
 
 
     private void addRuleToFlowPane(RuleDTO rule) {
         // Initialize the controller and FXML loader here
-        FXMLLoader loader = new FXMLLoader(getClass().getResource("SingleDetailComponent.fxml"));
-        try {
-            loader.load(); // Load the component
-        } catch (IOException e) {
-            e.printStackTrace();
+        Pair<SingleDetailController, Parent> loadedComponent = loadFXMLComponent("SingleDetailComponent.fxml");
+        if (loadedComponent == null) {
+            return;
         }
 
-        SingleDetailController singleDetailController = loader.getController();
+        SingleDetailController singleDetailController = loadedComponent.getKey();
+        Parent root = loadedComponent.getValue();
+
 
         // Populate the component's fields
         StringBuilder ruleDetails = new StringBuilder();
@@ -94,7 +192,7 @@ public class DetailsTabController {
         singleDetailController.getDataLabel().setText(ruleDetails.toString());
 
         // Add the pane to the FlowPane
-        detailsFlowPane.getChildren().add(loader.getRoot());
+        detailsFlowPane.getChildren().add(root);
     }
 
 
@@ -106,14 +204,15 @@ public class DetailsTabController {
 
     public void addTerminationConditionToFlowPane(TerminationDTO termination){
         // Initialize the controller and FXML loader here
-        FXMLLoader loader = new FXMLLoader(getClass().getResource("SingleDetailComponent.fxml"));
-        try {
-            loader.load(); // Load the component
-        } catch (IOException e) {
-            e.printStackTrace();
+        Pair<SingleDetailController, Parent> loadedComponent = loadFXMLComponent("SingleDetailComponent.fxml");
+        if (loadedComponent == null) {
+            return;
         }
 
-        SingleDetailController singleDetailController = loader.getController();
+        SingleDetailController singleDetailController = loadedComponent.getKey();
+        Parent root = loadedComponent.getValue();
+
+
         StringBuilder terminationDetails = new StringBuilder();
 
         if (termination.getMaxTicks() != null && termination.getMaxTicks() > 0) {
@@ -132,7 +231,7 @@ public class DetailsTabController {
         singleDetailController.getDataLabel().setText(terminationDetails.toString());
 
         // Add the pane to the FlowPane
-        detailsFlowPane.getChildren().add(loader.getRoot());
+        detailsFlowPane.getChildren().add(root);
     }
 
     private void displayEnvironmentProperties() {
@@ -147,22 +246,25 @@ public class DetailsTabController {
 
     private void displayEntities() {
         detailsFlowPane.getChildren().clear();
-        EntitiesDefinitionDTO entity = simulationInterface.getEntitiesDefinition();
+        Map<String, EntitiesDefinitionDTO> entities = simulationInterface.getEntitiesDefinition();
 
-        for (PropertyDTO property : entity.getProperties()) {
-            addPropertyDetailToFlowPane(property);
+        for (EntitiesDefinitionDTO entity : entities.values()) {
+            for (PropertyDTO property : entity.getProperties()) {
+                addPropertyDetailToFlowPane(property);
+            }
         }
     }
 
     private void addPropertyDetailToFlowPane(PropertyDTO property) {
         // Initialize the controller and FXML loader here
-        FXMLLoader loader = new FXMLLoader(getClass().getResource("SingleDetailComponent.fxml"));
-        try {
-            loader.load();
-        } catch (IOException e) {
-            e.printStackTrace();
+        Pair<SingleDetailController, Parent> loadedComponent = loadFXMLComponent("SingleDetailComponent.fxml");
+        if (loadedComponent == null) {
+            return;
         }
-        SingleDetailController singleDetailController = loader.getController();
+
+        SingleDetailController singleDetailController = loadedComponent.getKey();
+        Parent root = loadedComponent.getValue();
+
 
         // Build the custom string
         StringBuilder sb = new StringBuilder();
@@ -179,18 +281,17 @@ public class DetailsTabController {
         singleDetailController.getDataLabel().setText(sb.toString());
 
         // Add the pane to the FlowPane
-        detailsFlowPane.getChildren().add(loader.getRoot());
+        detailsFlowPane.getChildren().add(root);
     }
 
-    public SingleDetailController loadSingleDetailComponent() {
-        FXMLLoader loader = new FXMLLoader(getClass().getResource("SingleDetailComponent.fxml"));
+    private <T> Pair<T, Parent> loadFXMLComponent(String fxmlPath) {
+        FXMLLoader loader = new FXMLLoader(getClass().getResource(fxmlPath));
+        Parent root;
         try {
-            loader.load(); // Load the component
+            root = loader.load();
         } catch (IOException e) {
-            e.printStackTrace();
             return null;
         }
-        return loader.getController();
+        return new Pair<>(loader.getController(), root);
     }
-
 }

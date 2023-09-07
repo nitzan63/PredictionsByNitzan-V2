@@ -1,6 +1,7 @@
 package components;
 
 import api.DTOUIInterface;
+import components.main.MainController;
 import javafx.beans.property.SimpleBooleanProperty;
 
 public class SharedResources {
@@ -8,9 +9,14 @@ public class SharedResources {
 
     private DTOUIInterface simulationInterface;
     private SimpleBooleanProperty isFileSelected = new SimpleBooleanProperty(false);
+    private MainController mainController;
 
+    public void setMainController(MainController mainController) {
+        this.mainController = mainController;
+    }
 
-    private SharedResources() {
+    public MainController getMainController() {
+        return mainController;
     }
 
     public static SharedResources getInstance() {

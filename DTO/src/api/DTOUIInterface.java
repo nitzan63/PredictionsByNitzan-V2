@@ -34,6 +34,10 @@ public class DTOUIInterface {
         return engineInterface.getEntitiesDefinition();
     }
 
+    public GridDTO getGridDTO(){
+        return engineInterface.getGridDTO();
+    }
+
     public List<RuleDTO> getRules() {
         return engineInterface.getRules();
     }
@@ -50,13 +54,12 @@ public class DTOUIInterface {
 //        engineInterface.setEnvironmentProperties(input);
 //    }
 
-    public SimulationRunMetadataDTO runSimulation(UserInputDTO userInputDTO) {
-        SimulationRunMetadataDTO result = engineInterface.RunSimulation(userInputDTO);
+    public void runSimulation(UserInputDTO userInputDTO) {
+        engineInterface.RunSimulation(userInputDTO);
         // Notify listeners
         for (Runnable listener : simulationRunListeners) {
             listener.run();
         }
-        return result;
     }
 
     public SimulationExecutionDetailsDTO getSimulationResults(String runIdentifier) {
@@ -77,6 +80,10 @@ public class DTOUIInterface {
 
     public void removeSimulationRunListener(Runnable listener) {
         simulationRunListeners.remove(listener);
+    }
+
+    public ThreadInfoDTO getThreadInfo() {
+        return engineInterface.getThreadInfo();
     }
 
 

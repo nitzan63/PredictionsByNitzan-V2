@@ -4,6 +4,7 @@ public class ThreadInfoDTO {
     private int totalThreads;
     private int activeThreads;
     private int simulationsInQueue;
+    private int totalSimulations;
 
     public int getTotalThreads() {
         return totalThreads;
@@ -27,5 +28,17 @@ public class ThreadInfoDTO {
 
     public void setSimulationsInQueue(int simulationsInQueue) {
         this.simulationsInQueue = simulationsInQueue;
+    }
+
+    public int getTotalSimulations() {
+        return totalSimulations;
+    }
+
+    public void setTotalSimulations(int totalSimulations) {
+        this.totalSimulations = totalSimulations;
+    }
+
+    public void incrementTotalSimulation(){
+        this.totalSimulations ++;
     }
 }

@@ -2,6 +2,7 @@ package components.execution;
 
 import api.DTOUIInterface;
 import components.SharedResources;
+import components.main.MainController;
 import dto.*;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
@@ -40,14 +41,17 @@ public class ExecutionTabController {
     @FXML
     private Button clearButton;
 
-
     private DTOUIInterface simulationInterface;
     private static ExecutionTabController instance;
-    private Map<String, String> userInputProperties = new HashMap<>();
+    private Map<String, String> environmentPropertiesInput = new HashMap<>();
+    private Map<String, Integer> entityPopulationInput = new HashMap<>();
+
 
     public static ExecutionTabController getInstance() {
         return instance;
     }
+
+    private int gridSize;
 
 
     public void initialize() {
@@ -60,13 +64,36 @@ public class ExecutionTabController {
         // initialize environment table:
         initializeEnvironmentTable();
 
+        setGridSize();
+    }
+
+    private void setGridSize(){
+        gridSize = simulationInterface.getGridDTO().getGridSize();
     }
 
     private void initializeEntitiesTable() {
         entityNameColumn.setCellValueFactory(new PropertyValueFactory<>("name"));
         populationColumn.setCellValueFactory(new PropertyValueFactory<>("population"));
         populationColumn.setCellFactory(TextFieldTableCell.forTableColumn(new IntegerStringConverter()));
+
+        populationColumn.setOnEditCommit(
+                t -> {
+                    EntitiesDefinitionDTO entity = t.getTableView().getItems().get(t.getTablePosition().getRow());
+                    int newPopulation = t.getNewValue();
+                    entityPopulationInput.put(entity.getName(), newPopulation);
+                    // Temporarily update the map to check if the new total is valid
+                    entityPopulationInput.put(entity.getName(), newPopulation);
+
+                    if (!validateTotalPopulation()) {
+                        showAlert("Population Error", "Total population exceeds grid size.");
+                        // Revert the value to the old one if validation fails (optional)
+                        entityPopulationInput.put(entity.getName(), t.getOldValue());
+                        t.getTableView().refresh(); // This should revert the UI to the old value
+                    }
+                }
+        );
     }
+
 
     private void initializeEnvironmentTable() {
         envPropertyName.setCellValueFactory(new PropertyValueFactory<>("name"));
@@ -84,7 +111,7 @@ public class ExecutionTabController {
                         String newValue = t.getNewValue();
 
                         if (isValidNewValue(newValue, property)) {
-                            userInputProperties.put(property.getName(), newValue);
+                            environmentPropertiesInput.put(property.getName(), newValue);
                             property.setValue(newValue);
                         } else {
                             int row = t.getTablePosition().getRow();
@@ -94,6 +121,11 @@ public class ExecutionTabController {
                     }
                 }
         );
+    }
+
+    private boolean validateTotalPopulation() {
+        int totalPopulation = entityPopulationInput.values().stream().mapToInt(Integer::intValue).sum();
+        return totalPopulation <= gridSize; // GRID_SIZE should be the maximum allowed total population
     }
 
     private boolean isValidNewValue(String newValue, PropertyDTO property) {
@@ -137,10 +169,9 @@ public class ExecutionTabController {
     }
 
     private void populateEntitiesTable() {
-        List<EntitiesDefinitionDTO> entities = new ArrayList<>();
-        entities.add(simulationInterface.getEntitiesDefinition());
+        Map<String, EntitiesDefinitionDTO> entitiesMap = simulationInterface.getEntitiesDefinition();
         entitiesTable.getItems().clear();
-        entitiesTable.getItems().addAll(entities);
+        entitiesTable.getItems().addAll(entitiesMap.values());
     }
 
     private List<PropertyDTO> convertMapToList() {
@@ -155,14 +186,14 @@ public class ExecutionTabController {
 
     @FXML
     private void onStartButtonClick(ActionEvent event) {
-        if (!userInputProperties.isEmpty()) {
-            UserInputDTO inputDTO = new UserInputDTO(userInputProperties);
-            simulationInterface.setEnvironmentProperties(inputDTO);
+        UserInputDTO inputDTO = new UserInputDTO(environmentPropertiesInput, entityPopulationInput);
+        simulationInterface.runSimulation(inputDTO);
+
+        // switch to Results tab
+        MainController mainController = SharedResources.getInstance().getMainController();
+        if (mainController != null) {
+            mainController.switchToResultsTab();
         }
-
-        SimulationRunMetadataDTO runMetadataDTO = simulationInterface.runSimulation();
-        successfulRunMessage(runMetadataDTO);
-
     }
 
     private void successfulRunMessage(SimulationRunMetadataDTO metadata){
@@ -181,12 +212,13 @@ public class ExecutionTabController {
     @FXML
     private void onClearButtonClick(ActionEvent event) {
         // Clear the userInputProperties map
-        userInputProperties.clear();
+        environmentPropertiesInput.clear();
+        entityPopulationInput.clear();
 
         // Reset table cells to their default values
         for (PropertyDTO property : envPropertiesTable.getItems()) {
             property.setValue("");
-            userInputProperties.remove(property.getName());
+            environmentPropertiesInput.remove(property.getName());
         }
 
         // Reset entities population to their default values
@@ -198,6 +230,7 @@ public class ExecutionTabController {
         envPropertiesTable.refresh();
         entitiesTable.refresh();
     }
+
 
 
 

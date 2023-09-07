@@ -13,9 +13,11 @@ public interface DTOEngineInterface {
     TerminationDTO getTermination();
     EnvironmentDTO getEnvironmentProperties();
     // void setEnvironmentProperties(UserInputDTO input);
-    SimulationRunMetadataDTO RunSimulation(UserInputDTO userInputDTO);
+    void RunSimulation(UserInputDTO userInputDTO);
     SimulationExecutionDetailsDTO getSimulationResults(String runIdentifier);
     Map<String, SimulationExecutionDetailsDTO> getAllSimulationResults();
     List<ErrorDTO> getErrors();
+    ThreadInfoDTO getThreadInfo();
+    GridDTO getGridDTO();
     void exit();
 }
