@@ -11,12 +11,13 @@ public class SimulationRunner implements Runnable {
     private final Termination termination;
     private int tickNumber;
     private long startTime;
-    private final List<ErrorDTO> errorList = new ArrayList<>();
+    private final List<ErrorDTO> sharedErrorList;
 
 
-    public SimulationRunner(World world) {
+    public SimulationRunner(World world, List<ErrorDTO> sharedErrorList) {
         this.world = world;
         this.termination = world.getTermination();
+        this.sharedErrorList = sharedErrorList;
     }
 
     @Override
@@ -46,8 +47,10 @@ public class SimulationRunner implements Runnable {
     }
 
     private void logError(Exception e) {
-        ErrorDTO errorDTO = new ErrorDTO(e.getMessage(), e.getClass().getName(), LocalDateTime.now());
-        errorList.add(errorDTO);
+        ErrorDTO errorDTO = new ErrorDTO(e.getMessage(), e.getClass().getName(), LocalDateTime.now(), world.getRunID());
+        synchronized (sharedErrorList) {
+            sharedErrorList.add(errorDTO);
+        }
     }
 
     private boolean shouldContinue() {

@@ -50,9 +50,6 @@ public class SimulationExecutionDetailsDTO {
         this.populationStatisticsDTOMap = populationStatisticsDTOMap;
     }
 
-    public void addPropertyHistogram(String propertyName, PropertyHistogramDTO propertyHistogram) {
-        this.propertyHistograms.put(propertyName, propertyHistogram);
-    }
 
     public int getCurrTick() {
         return currTick;

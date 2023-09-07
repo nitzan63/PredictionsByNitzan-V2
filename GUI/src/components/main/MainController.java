@@ -7,10 +7,7 @@ import engine.SimulationEngine;
 import javafx.beans.property.SimpleBooleanProperty;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.fxml.FXML;
-import javafx.scene.control.Alert;
-import javafx.scene.control.Button;
-import javafx.scene.control.Tab;
-import javafx.scene.control.TextField;
+import javafx.scene.control.*;
 import javafx.scene.text.Text;
 import javafx.stage.FileChooser;
 import javafx.stage.Stage;
@@ -32,6 +29,11 @@ public class MainController {
     private TextField filePathTextField;
     @FXML
     private Button loadFileButton;
+    @FXML
+    private Label activeThreadsLabel;
+    @FXML
+    private Label simulationsEndedLabel;
+
 
     // DTO Interface:
     DTOUIInterface simulationInterface;
@@ -39,10 +41,11 @@ public class MainController {
     // Properties:
     private SimpleBooleanProperty isFileSelected;
     private SimpleStringProperty selectedFileProperty;
+    private SimpleStringProperty activeThreadCount;
+    private SimpleStringProperty simulationsEndedCount;
 
     // Stage:
     private Stage primaryStage;
-
 
 
     // Constructor:
@@ -51,6 +54,8 @@ public class MainController {
         SharedResources.getInstance().setDTOUIInterface(this.simulationInterface);
         isFileSelected = new SimpleBooleanProperty(false);
         selectedFileProperty = new SimpleStringProperty();
+        activeThreadCount = new SimpleStringProperty("0/0");
+        simulationsEndedCount = new SimpleStringProperty("0");
     }
 
     public void initialize() {
@@ -58,7 +63,8 @@ public class MainController {
         executionTabTitle.disableProperty().bind(isFileSelected.not());
         detailsTabTitle.disableProperty().bind(isFileSelected.not());
         resultsTabTitle.disableProperty().bind(isFileSelected.not());
-
+        activeThreadsLabel.textProperty().bind(activeThreadCount);
+        simulationsEndedLabel.textProperty().bind(simulationsEndedCount);
     }
 
     public void setPrimaryStage(Stage primaryStage) {

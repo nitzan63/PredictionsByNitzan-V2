@@ -3,12 +3,12 @@ package dto;
 public class SimulationRunMetadataDTO {
     private final String runIdentifier;
     private final String dateTime;
-    private final String terminationReason;
+    private String terminationReason;
 
-    public SimulationRunMetadataDTO(String runIdentifier, String dateTime, String terminationReason) {
+    public SimulationRunMetadataDTO(String runIdentifier, String dateTime) {
         this.runIdentifier = runIdentifier;
         this.dateTime = dateTime;
-        this.terminationReason = terminationReason;
+        this.terminationReason = null;
     }
 
     public String getRunIdentifier() {
@@ -21,6 +21,10 @@ public class SimulationRunMetadataDTO {
 
     public String getTerminationReason() {
         return terminationReason;
+    }
+
+    public void setTerminationReason(String terminationReason) {
+        this.terminationReason = terminationReason;
     }
 
     @Override

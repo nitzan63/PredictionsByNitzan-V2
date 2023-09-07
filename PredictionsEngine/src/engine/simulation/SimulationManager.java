@@ -10,9 +10,7 @@ import world.generator.WorldGenerator;
 
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
@@ -24,6 +22,7 @@ public class SimulationManager {
     private World prototypeWorld;
     private WorldGenerator worldGenerator;
     private int numberOfThreads;
+    private final List<ErrorDTO> sharedErrorList = Collections.synchronizedList(new ArrayList<>());
 
     private ExecutorService executorService;
 
@@ -43,17 +42,19 @@ public class SimulationManager {
     public SimulationRunMetadataDTO runSimulation(UserInputDTO userInputDTO) {
         // generate world instance
         World worldInstance = worldGenerator.generateWorld(userInputDTO);
-        // create run id's
+        // create run id's and allocate to world instance:
         String runID = generateRunIdentifier();
+        worldInstance.setRunID(runID);
+        // generate run metadata:
+        SimulationRunMetadataDTO runMetadataDTO = new SimulationRunMetadataDTO(runID, LocalDateTime.now().toString());
+        simulationsMetadataMap.put(runID, runMetadataDTO);
         // prepare data to be stored: (create new population statistics and save initials
         prepareSimulationData(worldInstance, runID);
         // create runner
-        SimulationRunner simulationRunner = new SimulationRunner(worldInstance);
+        SimulationRunner simulationRunner = new SimulationRunner(worldInstance, sharedErrorList);
         // run simulation
         executorService.execute(simulationRunner);
         //gather and store run results
-        SimulationRunMetadataDTO runMetadataDTO = new SimulationRunMetadataDTO(runID, LocalDateTime.now().toString(), worldInstance.getTermination().getTerminationMessage());
-        simulationsMetadataMap.put(runID, runMetadataDTO);
         processSimulationExecutionDetails(worldInstance, runID);
         // return metadata:
         return runMetadataDTO;
@@ -88,6 +89,9 @@ public class SimulationManager {
         // create property histograms for each entity definition:
         Map <String, EntityPropertiesHistogramDTO> entityPropertiesHistogramDTOMap = createEntitiesPropertiesHistogramMap(world.getEntitiesMap());
         resultsDTO.setEntityPropertiesHistogramDTOMap(entityPropertiesHistogramDTOMap);
+        // set termination message if the simulation ended:
+        if (world.getTermination().getTerminationMessage() != null)
+            simulationsMetadataMap.get(runID).setTerminationReason(world.getTermination().getTerminationMessage());
     }
 
     private Map<String, EntityPropertiesHistogramDTO> createEntitiesPropertiesHistogramMap(Map<String, EntitiesDefinition> entitiesDefinitionMap ){
@@ -159,9 +163,7 @@ public class SimulationManager {
         return new HashMap<>(simulationsMetadataMap);
     }
 
-    public List<ErrorDTO> getErrorList() {
-        return errorList;
+    public List<ErrorDTO> getSharedErrorList() {
+        return sharedErrorList;
     }
-
-
 }

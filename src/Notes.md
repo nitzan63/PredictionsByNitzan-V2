@@ -66,5 +66,8 @@ What data should be in the DTO?
    2. new thread (not the JAT) in the UI who manages the sleep/pull loop.
       * pull - get from the engine the propertyHistogram and populationStatistics to show.
    3. use javaFX task - optional.
+
+### Proximity and Secondary Entity
+1. 
    
 

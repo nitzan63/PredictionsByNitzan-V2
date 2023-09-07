@@ -56,6 +56,7 @@ public class ProximityAction extends AbstractAction {
         for (EntityInstance targetEntity : targetEntityDefinition.getEntities().values()) {
             if (isWithinProximity(entityInstance, targetEntity, grid, of)) {
                 performActions(actionsToPerform, entityInstance, targetEntity, targetEntityName, actionContext);
+                break;
             }
         }
     }

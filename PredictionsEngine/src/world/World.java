@@ -17,6 +17,7 @@ public class World {
     private Termination termination;
     private Grid grid;
     private int currTick = 0;
+    private String runID;
 
     public void simulateThisTick(int tickNumber) throws Exception {
         ActionContext actionContext = new ActionContext(this, tickNumber);
@@ -114,6 +115,14 @@ public class World {
 
     public int getCurrTick() {
         return currTick;
+    }
+
+    public void setRunID(String runID) {
+        this.runID = runID;
+    }
+
+    public String getRunID() {
+        return runID;
     }
 
     @Override

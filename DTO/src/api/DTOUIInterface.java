@@ -2,6 +2,7 @@ package api;
 
 import dto.*;
 
+import javax.jws.soap.SOAPBinding;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
@@ -29,7 +30,7 @@ public class DTOUIInterface {
         engineInterface.loadXmlFile(path);
     }
 
-    public EntitiesDefinitionDTO getEntitiesDefinition() {
+    public Map<String, EntitiesDefinitionDTO> getEntitiesDefinition() {
         return engineInterface.getEntitiesDefinition();
     }
 
@@ -45,12 +46,12 @@ public class DTOUIInterface {
         return engineInterface.getEnvironmentProperties();
     }
 
-    public void setEnvironmentProperties(UserInputDTO input) {
-        engineInterface.setEnvironmentProperties(input);
-    }
+//    public void setEnvironmentProperties(UserInputDTO input) {
+//        engineInterface.setEnvironmentProperties(input);
+//    }
 
-    public SimulationRunMetadataDTO runSimulation() {
-        SimulationRunMetadataDTO result = engineInterface.RunSimulation();
+    public SimulationRunMetadataDTO runSimulation(UserInputDTO userInputDTO) {
+        SimulationRunMetadataDTO result = engineInterface.RunSimulation(userInputDTO);
         // Notify listeners
         for (Runnable listener : simulationRunListeners) {
             listener.run();
