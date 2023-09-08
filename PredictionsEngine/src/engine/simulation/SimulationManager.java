@@ -6,6 +6,8 @@ import world.entities.EntitiesDefinition;
 import world.entities.entity.EntityInstance;
 import world.entities.entity.properties.EntityProperties;
 import world.entities.entity.properties.property.api.EntityProperty;
+import world.environment.Environment;
+import world.environment.properties.property.api.EnvProperty;
 import world.generator.WorldGenerator;
 
 import java.time.LocalDateTime;
@@ -79,10 +81,21 @@ public class SimulationManager {
         SimulationExecutionDetailsDTO sedDTO = new SimulationExecutionDetailsDTO(runID, LocalDateTime.now().format(DateTimeFormatter.ofPattern("dd-MM-yyyy | HH:mm:ss")));
         // create population data map for the SED:
         sedDTO.setEntitiesPopulationMap(createEntitesPopulationMap(worldInstance));
+        // create environment properties values map for the SED:
+        sedDTO.setEnvironmentPropertiesValues(createEnvironmentPropertiesValuesMap(worldInstance));
         // put to the results map
         simulationExecutionDetailsMap.put(runID, sedDTO);
         // put the world instance in the SED map:
         simulationWorldInstancesMap.put(runID, worldInstance);
+    }
+
+    private Map<String, String> createEnvironmentPropertiesValuesMap(World world){
+        Environment environment = world.getEnvironment();
+        Map<String, String> resMap = new HashMap<>();
+        for (EnvProperty envProperty : environment.getProperties().getProperties()){
+            resMap.put(envProperty.getName(), envProperty.getValue().toString());
+        }
+        return  resMap;
     }
 
     private Map<String, Integer> createEntitesPopulationMap(World worldInstance){

@@ -17,6 +17,11 @@ public class PropertyDTO {
         this.value = value.toString();
     }
 
+    public PropertyDTO(String name, Object value){
+        this.name = name;
+        this.value = value.toString();
+    }
+
     public String getValue() {
         return value;
     }

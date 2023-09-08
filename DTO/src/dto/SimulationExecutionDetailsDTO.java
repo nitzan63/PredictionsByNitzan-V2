@@ -9,6 +9,7 @@ public class SimulationExecutionDetailsDTO {
     private Map <String, PopulationStatisticsDTO> populationStatisticsDTOMap;
     private Map<String, EntityPropertiesHistogramDTO> entityPropertiesHistogramDTOMap;
     private Map<String, Integer> entitiesPopulationMap;
+    private Map<String, String> environmentPropertiesValues;
     private boolean isSimulationComplete = false;
 
     private int currTick;
@@ -83,5 +84,13 @@ public class SimulationExecutionDetailsDTO {
 
     public void setSimulationComplete(boolean simulationComplete) {
         isSimulationComplete = simulationComplete;
+    }
+
+    public Map<String, String> getEnvironmentPropertiesValues() {
+        return environmentPropertiesValues;
+    }
+
+    public void setEnvironmentPropertiesValues(Map<String, String> environmentPropertiesValues) {
+        this.environmentPropertiesValues = environmentPropertiesValues;
     }
 }
