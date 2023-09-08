@@ -19,6 +19,7 @@ public class SimulationManager {
 
     private final Map<String, SimulationRunMetadataDTO> simulationsMetadataMap = new HashMap<>();
     private final Map<String, SimulationExecutionDetailsDTO> simulationExecutionDetailsMap = new HashMap<>();
+    private final Map<String, SimulationRunner> simulationRunnerMap = new HashMap<>();
     private final Map<String, World> simulationWorldInstancesMap = new HashMap<>();
     private World prototypeWorld;
     private WorldGenerator worldGenerator;
@@ -56,14 +57,18 @@ public class SimulationManager {
         simulationsMetadataMap.put(runID, runMetadataDTO);
         // prepare data to be stored: (create new population statistics and save initials
         prepareSimulationData(worldInstance, runID);
-        // create runner
+        // create runner and add to map
         SimulationRunner simulationRunner = new SimulationRunner(worldInstance, sharedErrorList);
+        simulationRunnerMap.put(runID, simulationRunner);
         // run simulation
         executorService.execute(() -> {
             threadCountManager.decrementQueuedSimulations();
             simulationRunner.run();
             //gather and store run results
             processSimulationExecutionDetails(worldInstance, runID);
+            // set the simulation status to "completed":
+            simulationExecutionDetailsMap.get(runID).setSimulationComplete(true);
+            // update thread count manager
             threadCountManager.incrementTotalSimulations();
         });
 
@@ -71,11 +76,22 @@ public class SimulationManager {
 
     private void prepareSimulationData(World worldInstance, String runID){
         // create the slot for the results:
-        SimulationExecutionDetailsDTO resultsDTO = new SimulationExecutionDetailsDTO(runID, LocalDateTime.now().format(DateTimeFormatter.ofPattern("dd-MM-yyyy | HH:mm:ss")));
+        SimulationExecutionDetailsDTO sedDTO = new SimulationExecutionDetailsDTO(runID, LocalDateTime.now().format(DateTimeFormatter.ofPattern("dd-MM-yyyy | HH:mm:ss")));
+        // create population data map for the SED:
+        sedDTO.setEntitiesPopulationMap(createEntitesPopulationMap(worldInstance));
         // put to the results map
-        simulationExecutionDetailsMap.put(runID, resultsDTO);
+        simulationExecutionDetailsMap.put(runID, sedDTO);
         // put the world instance in the SED map:
         simulationWorldInstancesMap.put(runID, worldInstance);
+    }
+
+    private Map<String, Integer> createEntitesPopulationMap(World worldInstance){
+        Map<String, EntitiesDefinition> entitiesDefinitionMap = worldInstance.getEntitiesMap();
+        Map<String, Integer> entitiesPopulationMap = new HashMap<>();
+        for (EntitiesDefinition entitiesDefinition : entitiesDefinitionMap.values()){
+            entitiesPopulationMap.put(entitiesDefinition.getEntityName(), entitiesDefinition.getPopulation());
+        }
+        return entitiesPopulationMap;
     }
 
     public SimulationExecutionDetailsDTO getLiveSimulationExecutionDetails (String runID){
@@ -83,21 +99,24 @@ public class SimulationManager {
         World worldInstance = simulationWorldInstancesMap.get(runID);
         // process current world details
         processSimulationExecutionDetails(worldInstance, runID);
-        // set curr tick:
+        // set curr tick and seconds elapsed:
         simulationExecutionDetailsMap.get(runID).setCurrTick(worldInstance.getCurrTick());
+        simulationExecutionDetailsMap.get(runID).setElapsedSeconds(worldInstance.getSecondsElapsed());
         // return the processed simulation data:
         return simulationExecutionDetailsMap.get(runID);
     }
 
     private void processSimulationExecutionDetails(World world, String runID){
         // get the results from the map to update:
-        SimulationExecutionDetailsDTO resultsDTO = simulationExecutionDetailsMap.get(runID);
+        SimulationExecutionDetailsDTO sedDTO = simulationExecutionDetailsMap.get(runID);
         // create population statistics:
         Map <String, PopulationStatisticsDTO> populationStatisticsDTOMap = createPopulationStatisticsMap(world.getEntitiesMap());
-        resultsDTO.setPopulationStatistics(populationStatisticsDTOMap);
+        sedDTO.setPopulationStatistics(populationStatisticsDTOMap);
         // create property histograms for each entity definition:
         Map <String, EntityPropertiesHistogramDTO> entityPropertiesHistogramDTOMap = createEntitiesPropertiesHistogramMap(world.getEntitiesMap());
-        resultsDTO.setEntityPropertiesHistogramDTOMap(entityPropertiesHistogramDTOMap);
+        sedDTO.setEntityPropertiesHistogramDTOMap(entityPropertiesHistogramDTOMap);
+        // update entities population map:
+        sedDTO.setEntitiesPopulationMap(createEntitesPopulationMap(world));
         // set termination message if the simulation ended:
         if (world.getTermination().getTerminationMessage() != null)
             simulationsMetadataMap.get(runID).setTerminationReason(world.getTermination().getTerminationMessage());
@@ -157,6 +176,28 @@ public class SimulationManager {
         String datePart = now.format(formatter);
         return datePart + "-" + (simulationExecutionDetailsMap.size() + 1);
     }
+
+    public void pauseSimulation(String runID) {
+        SimulationRunner runner = simulationRunnerMap.get(runID);
+        if (runner != null) {
+            runner.pause();
+        }
+    }
+
+    public void resumeSimulation(String runID) {
+        SimulationRunner runner = simulationRunnerMap.get(runID);
+        if (runner != null) {
+            runner.resume();
+        }
+    }
+
+    public void stopSimulation(String runID) {
+        SimulationRunner runner = simulationRunnerMap.get(runID);
+        if (runner != null) {
+            runner.stop();
+        }
+    }
+
 
 
     public SimulationExecutionDetailsDTO getResultsByID(String runIdentifier) {

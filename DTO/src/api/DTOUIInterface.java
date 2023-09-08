@@ -86,6 +86,21 @@ public class DTOUIInterface {
         return engineInterface.getThreadInfo();
     }
 
+    public SimulationExecutionDetailsDTO getLiveSimulationExecutionDetails(String runID){
+        return engineInterface.getLiveSimulationExecutionDetails(runID);
+    }
+
+    public void resumeSimulation(String runID){
+        engineInterface.resumeSimulation(runID);
+    }
+
+    public void pauseSimulation(String runID){
+        engineInterface.pauseSimulation(runID);
+    }
+
+    public void stopSimulation(String runID){
+        engineInterface.stopSimulation(runID);
+    }
 
 
 }

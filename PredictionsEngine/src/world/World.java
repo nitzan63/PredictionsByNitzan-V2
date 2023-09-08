@@ -17,6 +17,7 @@ public class World {
     private Termination termination;
     private Grid grid;
     private int currTick = 0;
+    private int secondsElapsed = 0;
     private String runID;
 
     public void simulateThisTick(int tickNumber) throws Exception {
@@ -123,6 +124,18 @@ public class World {
 
     public String getRunID() {
         return runID;
+    }
+
+    public void setCurrTick(int currTick) {
+        this.currTick = currTick;
+    }
+
+    public int getSecondsElapsed() {
+        return secondsElapsed;
+    }
+
+    public void setSecondsElapsed(int secondsElapsed) {
+        this.secondsElapsed = secondsElapsed;
     }
 
     @Override

@@ -6,6 +6,7 @@ import engine.file.XMLProcessor;
 import engine.file.exceptions.XMLProcessingException;
 import engine.input.validator.EnvironmentInputValidator;
 import engine.simulation.SimulationManager;
+import engine.simulation.SimulationRunner;
 import world.World;
 import world.entities.EntitiesDefinition;
 import world.entities.entity.properties.property.api.EntityProperty;
@@ -181,13 +182,29 @@ public class SimulationEngine implements DTOEngineInterface {
         return new GridDTO(prototypeWorld.getGrid().getRows(), prototypeWorld.getGrid().getCols());
     }
 
-    public void exit() {
+    @Override
+    public SimulationExecutionDetailsDTO getLiveSimulationExecutionDetails(String runID) {
+        return simulationManager.getLiveSimulationExecutionDetails(runID);
     }
 
 
+    public void exit() {
+    }
 
+    @Override
+    public void pauseSimulation(String runID) {
+        simulationManager.pauseSimulation(runID);
+    }
 
+    @Override
+    public void resumeSimulation(String runID) {
+        simulationManager.resumeSimulation(runID);
+    }
 
+    @Override
+    public void stopSimulation(String runID) {
+        simulationManager.stopSimulation(runID);
+    }
 
 
 }

@@ -19,5 +19,9 @@ public interface DTOEngineInterface {
     List<ErrorDTO> getErrors();
     ThreadInfoDTO getThreadInfo();
     GridDTO getGridDTO();
+    SimulationExecutionDetailsDTO getLiveSimulationExecutionDetails(String runID);
+    void resumeSimulation(String runId);
+    void pauseSimulation(String runID);
+    void stopSimulation(String runID);
     void exit();
 }

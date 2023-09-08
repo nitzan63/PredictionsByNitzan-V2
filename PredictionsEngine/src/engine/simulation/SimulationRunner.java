@@ -12,6 +12,9 @@ public class SimulationRunner implements Runnable {
     private int tickNumber;
     private long startTime;
     private final List<ErrorDTO> sharedErrorList;
+    private volatile boolean shouldPause = false;
+    private volatile boolean shouldStop = false;
+    private final Object lock = new Object();
 
 
     public SimulationRunner(World world, List<ErrorDTO> sharedErrorList) {
@@ -40,6 +43,7 @@ public class SimulationRunner implements Runnable {
             }
             try {
                 world.simulateThisTick(tickNumber);
+                world.setSecondsElapsed(elapsedSeconds);
             } catch (Exception e) {
                 logError(e);
             }
@@ -54,7 +58,18 @@ public class SimulationRunner implements Runnable {
     }
 
     private boolean shouldContinue() {
-        // Add thread pause / resume logic
+        synchronized (lock) {
+            if (shouldStop) {
+                return false;
+            }
+            while (shouldPause) {
+                try {
+                    lock.wait();
+                } catch (InterruptedException e) {
+                    Thread.currentThread().interrupt();
+                }
+            }
+        }
         return true;
     }
 
@@ -63,50 +78,24 @@ public class SimulationRunner implements Runnable {
         return (int) (elapsedTime / 1000);
     }
 
+    public void pause() {
+        synchronized (lock) {
+            shouldPause = true;
+        }
+    }
 
-//    public SimulationRunMetadataDTO runSimulation() {
-//        runIdentifier = generateRunIdentifier();
-//        SimulationRunResultsDTO resultsDTO = new SimulationRunResultsDTO(runIdentifier , LocalDateTime.now().format(DateTimeFormatter.ofPattern("dd-MM-yyyy | HH:mm:ss")));
-//        PopulationStatisticsDTO populationStatistics = new PopulationStatisticsDTO(world.getEntitiesMap().getEntityName(), world.getEntitiesMap().getPopulation(), 0);
-//        simulationResults.put(runIdentifier, resultsDTO);
-//        tickNumber = 0;
-//        startTime = System.currentTimeMillis();
-//        while (shouldContinue()) {
-//            tickNumber++;
-//            int elapsedSeconds = getElapsedSeconds();
-//            if (!termination.isNotTerminated(tickNumber, elapsedSeconds)) {
-//                break;
-//            }
-//            try {
-//                world.simulateThisTick(tickNumber);
-//            } catch (Exception e) {
-//                ErrorDTO errorDTO = new ErrorDTO(e.getMessage(), e.getClass().getName() , LocalDateTime.now());
-//                errorList.add(errorDTO);
-//            }
-//        }
-//        populationStatistics.setFinalPopulation(world.getEntitiesMap().getPopulation());
-//        resultsDTO.setPopulationStatistics(populationStatistics);
-//        for (EntityInstance entityInstance : world.getEntitiesMap().getEntities().values()){
-//            EntityProperties entityProperties= entityInstance.getProperties();
-//            for (EntityProperty property:entityProperties.getProperties()){
-//                String propName = property.getName();
-//                String value = String.valueOf(property.getValue());
-//
-//                Map<String, PropertyHistogramDTO> propertyHistogram = resultsDTO.getPropertyHistograms();
-//                PropertyHistogramDTO histogram = propertyHistogram.get(propName);
-//                if (histogram == null){
-//                    histogram = new PropertyHistogramDTO(propName);
-//                    propertyHistogram.put(propName, histogram);
-//                }
-//                histogram.addValue(value);
-//            }
-//        }
-//
-//        SimulationRunMetadataDTO metadataDTO = new SimulationRunMetadataDTO(runIdentifier, LocalDateTime.now().toString(), termination.getTerminationMessage());
-//        simulationData.put(runIdentifier, metadataDTO);
-//        // set the env properties to random after simulation run!
-//        world.getEnvironment().getProperties().generateRandomEnvPropertiesValues();
-//        return metadataDTO;
-//    }
+    public void resume() {
+        synchronized (lock) {
+            shouldPause = false;
+            lock.notifyAll();
+        }
+    }
+
+    public void stop() {
+        synchronized (lock) {
+            shouldStop = true;
+            lock.notifyAll();
+        }
+    }
 
 }

@@ -8,6 +8,8 @@ public class SimulationExecutionDetailsDTO {
     private final String dateTime;
     private Map <String, PopulationStatisticsDTO> populationStatisticsDTOMap;
     private Map<String, EntityPropertiesHistogramDTO> entityPropertiesHistogramDTOMap;
+    private Map<String, Integer> entitiesPopulationMap;
+    private boolean isSimulationComplete = false;
 
     private int currTick;
     private int elapsedSeconds;
@@ -65,5 +67,21 @@ public class SimulationExecutionDetailsDTO {
 
     public void setElapsedSeconds(int elapsedSeconds) {
         this.elapsedSeconds = elapsedSeconds;
+    }
+
+    public Map<String, Integer> getEntitiesPopulationMap() {
+        return entitiesPopulationMap;
+    }
+
+    public void setEntitiesPopulationMap(Map<String, Integer> entitiesPopulationMap) {
+        this.entitiesPopulationMap = entitiesPopulationMap;
+    }
+
+    public boolean isSimulationComplete() {
+        return isSimulationComplete;
+    }
+
+    public void setSimulationComplete(boolean simulationComplete) {
+        isSimulationComplete = simulationComplete;
     }
 }
