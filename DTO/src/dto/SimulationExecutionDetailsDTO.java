@@ -4,13 +4,19 @@ import java.util.HashMap;
 import java.util.Map;
 
 public class SimulationExecutionDetailsDTO {
+    public enum SimulationState {
+        LIVE,
+        PAUSED,
+        COMPLETED,
+        QUEUED
+    }
     private final String runIdentifier;
     private final String dateTime;
     private Map <String, PopulationStatisticsDTO> populationStatisticsDTOMap;
     private Map<String, EntityPropertiesHistogramDTO> entityPropertiesHistogramDTOMap;
     private Map<String, Integer> entitiesPopulationMap;
     private Map<String, String> environmentPropertiesValues;
-    private boolean isSimulationComplete = false;
+    private SimulationState simulationState;
 
     private int currTick;
     private int elapsedSeconds;
@@ -19,6 +25,7 @@ public class SimulationExecutionDetailsDTO {
         this.runIdentifier = runIdentifier;
         this.entityPropertiesHistogramDTOMap = new HashMap<>();
         this.dateTime = dateTime;
+        this.simulationState = SimulationState.LIVE;
     }
 
     public String getDateTime() {
@@ -78,19 +85,35 @@ public class SimulationExecutionDetailsDTO {
         this.entitiesPopulationMap = entitiesPopulationMap;
     }
 
-    public boolean isSimulationComplete() {
-        return isSimulationComplete;
-    }
-
-    public void setSimulationComplete(boolean simulationComplete) {
-        isSimulationComplete = simulationComplete;
-    }
-
     public Map<String, String> getEnvironmentPropertiesValues() {
         return environmentPropertiesValues;
     }
 
     public void setEnvironmentPropertiesValues(Map<String, String> environmentPropertiesValues) {
         this.environmentPropertiesValues = environmentPropertiesValues;
+    }
+
+    public SimulationState getSimulationState() {
+        return simulationState;
+    }
+
+    public void setSimulationState(SimulationState simulationState) {
+        this.simulationState = simulationState;
+    }
+
+    public boolean isSimulationCompleted (){
+        return (simulationState == SimulationState.COMPLETED);
+    }
+
+    public boolean isSimulationLive (){
+        return (simulationState == SimulationState.LIVE);
+    }
+
+    public boolean isSimulationPaused (){
+        return (simulationState == SimulationState.PAUSED);
+    }
+
+    public boolean isSimulationQueued (){
+        return (simulationState == SimulationState.QUEUED);
     }
 }

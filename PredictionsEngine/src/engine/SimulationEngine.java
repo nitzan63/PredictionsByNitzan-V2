@@ -18,6 +18,7 @@ import world.termination.api.Termination;
 import world.termination.impl.TerminationByTicks;
 import world.termination.impl.TerminationByTime;
 import world.termination.impl.TerminationCombined;
+import world.utils.range.Range;
 
 import java.time.LocalDateTime;
 import java.util.ArrayList;
@@ -60,7 +61,21 @@ public class SimulationEngine implements DTOEngineInterface {
             List<EntityProperty> properties = entityDefinition.getPrototypeEntity().getProperties().getProperties();
             List<PropertyDTO> propertyDTOList = new ArrayList<>();
             for (EntityProperty property : properties) {
-                propertyDTOList.add(new PropertyDTO(property.getName(), property.getType(), property.getRange().getFromDouble(), property.getRange().getToDouble(), property.isRandomInitialize(), property.getValue()));
+                String propertyName = property.getName();
+                String propertyType = property.getType();
+                boolean isRandom = property.isRandomInitialize();
+                Object value = property.getValue();
+                if (property.getRange() != null) {
+                    Double to = property.getRange().getToDouble();
+                    Double from = property.getRange().getFromDouble();
+                    PropertyDTO propertyDTO = new PropertyDTO(propertyName, propertyType, to, from, isRandom, value);
+                    propertyDTOList.add(propertyDTO);
+                } else {
+                    PropertyDTO propertyDTO = new PropertyDTO(propertyName, propertyType, 0, 0, isRandom, value);
+                    propertyDTOList.add(propertyDTO);
+                }
+
+
             }
             EntitiesDefinitionDTO entitiesDefinitionDTO = new EntitiesDefinitionDTO(name, population, propertyDTOList);
             entitiesDefinitionDTOMap.put(name, entitiesDefinitionDTO);

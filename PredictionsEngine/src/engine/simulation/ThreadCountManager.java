@@ -6,10 +6,13 @@ import java.util.concurrent.ThreadPoolExecutor;
 
 public class ThreadCountManager {
     private final ThreadPoolExecutor executorService;
-    private final ThreadInfoDTO threadInfoDTO = new ThreadInfoDTO();
+    private final ThreadInfoDTO threadInfoDTO;
 
-    public ThreadCountManager(ThreadPoolExecutor executorService) {
+    public ThreadCountManager(ThreadPoolExecutor executorService, SimulationManager simulationManager) {
+
         this.executorService = executorService;
+        this.threadInfoDTO = new ThreadInfoDTO();
+        threadInfoDTO.setTotalThreads(simulationManager.getNumberOfThreads());
     }
 
     public void incrementQueuedSimulations() {

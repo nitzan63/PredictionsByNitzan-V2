@@ -23,7 +23,8 @@ public class EntitiesMapper {
             // map a prototype entity instance:
             EntityInstance entityInstancePrototype = EntityMapper.mapEntity(jaxbEntity, 0, name);
             // add the prototype instance to the definition:
-            entityDefinition.addEntity(entityInstancePrototype, 0);
+            //entityDefinition.addEntity(entityInstancePrototype, 0);
+            entityDefinition.setPrototypeEntity(entityInstancePrototype);
             // put the entity definition in the map of entities:
             entitiesMap.put(name, entityDefinition);
         }

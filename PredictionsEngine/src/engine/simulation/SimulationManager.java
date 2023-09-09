@@ -42,7 +42,7 @@ public class SimulationManager {
         // create thread pool
         executorService = Executors.newFixedThreadPool(numberOfThreads);
 
-        this.threadCountManager = new ThreadCountManager((ThreadPoolExecutor) executorService);
+        this.threadCountManager = new ThreadCountManager((ThreadPoolExecutor) executorService, this);
 
     }
 
@@ -64,12 +64,13 @@ public class SimulationManager {
         simulationRunnerMap.put(runID, simulationRunner);
         // run simulation
         executorService.execute(() -> {
+            simulationExecutionDetailsMap.get(runID).setSimulationState(SimulationExecutionDetailsDTO.SimulationState.LIVE);
             threadCountManager.decrementQueuedSimulations();
             simulationRunner.run();
             //gather and store run results
             processSimulationExecutionDetails(worldInstance, runID);
             // set the simulation status to "completed":
-            simulationExecutionDetailsMap.get(runID).setSimulationComplete(true);
+            simulationExecutionDetailsMap.get(runID).setSimulationState(SimulationExecutionDetailsDTO.SimulationState.COMPLETED);
             // update thread count manager
             threadCountManager.incrementTotalSimulations();
         });
@@ -83,6 +84,8 @@ public class SimulationManager {
         sedDTO.setEntitiesPopulationMap(createEntitesPopulationMap(worldInstance));
         // create environment properties values map for the SED:
         sedDTO.setEnvironmentPropertiesValues(createEnvironmentPropertiesValuesMap(worldInstance));
+        // set the simulation state to QUEUED:
+        sedDTO.setSimulationState(SimulationExecutionDetailsDTO.SimulationState.QUEUED);
         // put to the results map
         simulationExecutionDetailsMap.put(runID, sedDTO);
         // put the world instance in the SED map:
@@ -194,6 +197,7 @@ public class SimulationManager {
         SimulationRunner runner = simulationRunnerMap.get(runID);
         if (runner != null) {
             runner.pause();
+            simulationExecutionDetailsMap.get(runID).setSimulationState(SimulationExecutionDetailsDTO.SimulationState.PAUSED);
         }
     }
 
@@ -201,6 +205,7 @@ public class SimulationManager {
         SimulationRunner runner = simulationRunnerMap.get(runID);
         if (runner != null) {
             runner.resume();
+            simulationExecutionDetailsMap.get(runID).setSimulationState(SimulationExecutionDetailsDTO.SimulationState.LIVE);
         }
     }
 
@@ -208,6 +213,7 @@ public class SimulationManager {
         SimulationRunner runner = simulationRunnerMap.get(runID);
         if (runner != null) {
             runner.stop();
+            simulationExecutionDetailsMap.get(runID).setSimulationState(SimulationExecutionDetailsDTO.SimulationState.COMPLETED);
         }
     }
 
@@ -232,5 +238,9 @@ public class SimulationManager {
 
     public List<ErrorDTO> getSharedErrorList() {
         return sharedErrorList;
+    }
+
+    public int getNumberOfThreads() {
+        return numberOfThreads;
     }
 }

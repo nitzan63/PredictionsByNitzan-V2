@@ -128,8 +128,11 @@ public class MainController {
 
             isFileSelected.set(true);
             SharedResources.getInstance().setIsFileSelected(true);
+            updateThreadInfo();
 
         } catch (Exception e) {
+            System.out.println("Execption " + e.getMessage());
+            e.printStackTrace();
             // Fail Alert:
             Alert alert = new Alert(Alert.AlertType.ERROR);
             alert.setTitle("File Error");

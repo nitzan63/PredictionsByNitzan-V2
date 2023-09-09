@@ -128,24 +128,39 @@ public class ResultsTabController {
             // Populate Environment Properties Table
             populateEnvironmentPropertiesTable(newValue);
 
-            // If the simulation is currently live (running)
             if (isSimulationLive(newValue)) {
-                // Enable the Pause and Stop buttons
+                // The simulation is currently live (running)
+                disablePropertyAndPopulationTabs();
                 pauseButton.setDisable(false);
-                // Disable the Resume button
                 resumeButton.setDisable(true);
-                // Enable the Stop button
                 stopButton.setDisable(false);
                 // Start updating the UI to reflect the live simulation data
                 startPolling(newValue);
-            } else {
-                // Disable all buttons since the simulation is not live
+            } else if (isSimulationPaused(newValue)) {
+                // The simulation is paused
+                enableAllTabs();
+                pauseButton.setDisable(true);
+                resumeButton.setDisable(false);
+                stopButton.setDisable(false);
+                // Update UI with current data but don't continue polling
+                updateEntitiesPopulationTable(newValue);
+            } else if (isSimulationQueued(newValue)){
+                // Simulation is in queue but yet to start
                 pauseButton.setDisable(true);
                 resumeButton.setDisable(true);
                 stopButton.setDisable(true);
-                // Stop updating the UI
+                disablePropertyAndPopulationTabs();
+                updateEntitiesPopulationTable(newValue);
+            }
+
+            else {
+                // The simulation is completed
+                enableAllTabs();
+                pauseButton.setDisable(true);
+                resumeButton.setDisable(true);
+                stopButton.setDisable(true);
+                // Stop updating the UI and populate entities table with final data
                 stopPolling();
-                //populate entities table with final data:
                 updateEntitiesPopulationTable(newValue);
             }
         } else {
@@ -172,9 +187,24 @@ public class ResultsTabController {
     }
 
     // Check if the simulation is live (you'll need to implement this based on your data)
-    private boolean isSimulationLive(String simulationId) {
-        SimulationExecutionDetailsDTO details = simulationInterface.getLiveSimulationExecutionDetails(simulationId);
-        return !details.isSimulationComplete();
+    private boolean isSimulationLive(String runId) {
+        SimulationExecutionDetailsDTO details = simulationInterface.getLiveSimulationExecutionDetails(runId);
+        return details.isSimulationLive();
+    }
+
+    private boolean isSimulationPaused(String runID){
+        SimulationExecutionDetailsDTO details = simulationInterface.getLiveSimulationExecutionDetails(runID);
+        return details.isSimulationPaused();
+    }
+
+    private boolean isSimulationCompleted (String runID){
+        SimulationExecutionDetailsDTO detailsDTO = simulationInterface.getLiveSimulationExecutionDetails(runID);
+        return detailsDTO.isSimulationCompleted();
+    }
+
+    private boolean isSimulationQueued(String runID){
+        SimulationExecutionDetailsDTO detailsDTO = simulationInterface.getLiveSimulationExecutionDetails(runID);
+        return detailsDTO.isSimulationQueued();
     }
 
     public void startPolling(String simulationId) {
@@ -187,9 +217,6 @@ public class ResultsTabController {
         scheduler.shutdownNow();  // This will cancel currently executing tasks
         scheduler = Executors.newScheduledThreadPool(1);  // Create a new scheduler for future tasks
     }
-
-
-
 
 
     private void initializeSimulationList() {
@@ -239,7 +266,7 @@ public class ResultsTabController {
 
 
             // Update Status Label and ProgressBar:
-            if (details.isSimulationComplete()) {
+            if (details.isSimulationCompleted()) {
                 simulationStatusLabel.setText("Simulation " + details.getRunIdentifier() + " Completed!");
                 simulationStatusLabel.setStyle("-fx-text-fill: green;");
                 progressBar.setProgress(1);
@@ -265,36 +292,32 @@ public class ResultsTabController {
 
     @FXML
     private void onPauseButtonClicked() {
-        // Get the currently selected simulation from the simulation list
         String selectedSimulation = simulationList.getSelectionModel().getSelectedItem();
-        // Check if a simulation is actually selected
         if (selectedSimulation != null) {
-            // Use the DTOUIInterface to pause the selected simulation
             simulationInterface.pauseSimulation(selectedSimulation);
-            // Disable the Pause button since the simulation is now paused
             pauseButton.setDisable(true);
-            // Enable the Resume and Stop buttons
             resumeButton.setDisable(false);
             stopButton.setDisable(false);
+            // Stop updating the UI for the paused simulation but update UI with current data
+            stopPolling();
+            updateEntitiesPopulationTable(selectedSimulation);
         }
     }
 
+
     @FXML
     private void onResumeButtonClicked() {
-        // Get the currently selected simulation from the simulation list
         String selectedSimulation = simulationList.getSelectionModel().getSelectedItem();
-        // Check if a simulation is actually selected
         if (selectedSimulation != null) {
-            // Use the DTOUIInterface to resume the selected simulation
             simulationInterface.resumeSimulation(selectedSimulation);
-            // Enable the Pause button since the simulation is now running
             pauseButton.setDisable(false);
-            // Disable the Resume button
             resumeButton.setDisable(true);
-            // Enable the Stop button
             stopButton.setDisable(false);
+            // Restart updating the UI to reflect the live simulation data
+            startPolling(selectedSimulation);
         }
     }
+
 
     @FXML
     private void onStopButtonClicked() {
@@ -351,6 +374,18 @@ public class ResultsTabController {
             ObservableList<Map.Entry<String, String>> data = FXCollections.observableArrayList(details.getEnvironmentPropertiesValues().entrySet());
             environmentPropertiesTable.setItems(data);
         }
+    }
+
+    private void enableAllTabs() {
+        propertyHistogramTab.setDisable(false);
+        populationStatisticsTab.setDisable(false);
+        simulationDetailsTab.setDisable(false);
+    }
+
+    private void disablePropertyAndPopulationTabs() {
+        propertyHistogramTab.setDisable(true);
+        populationStatisticsTab.setDisable(true);
+        simulationDetailsTab.setDisable(false);
     }
 
 

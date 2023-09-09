@@ -23,9 +23,9 @@ public class ActionValidator {
         }
 
         // Check if entity is present, as it's required
-        if (action.getEntity() == null || action.getEntity().isEmpty()) {
+/*        if (action.getEntity() == null || action.getEntity().isEmpty()) {
             throw new ValidationException("Action entity field is missing");
-        }
+        }*/
 
         // Based on action type, perform specific validation
         switch (action.getType()) {
@@ -61,8 +61,10 @@ public class ActionValidator {
         }
 
         // Check if action's entity exists
-        if (!WorldValidator.entityExists(action.getEntity())) {
-            throw new ValidationException("Entity '" + action.getEntity() + "' does not exist in world metadata");
+        if (action.getEntity() != null) {
+            if (!WorldValidator.entityExists(action.getEntity())) {
+                throw new ValidationException("Entity '" + action.getEntity() + "' does not exist in world metadata");
+            }
         }
 
         // Check if action's property (if any) exists

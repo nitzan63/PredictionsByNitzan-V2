@@ -27,17 +27,25 @@ public class DetailsTabController {
     //
     private DTOUIInterface simulationInterface;
 
-    public enum SimulationFactor {
-        ENVIRONMENT, RULES, ENTITIES, TERMINATION, GRID
-    }
-
     public void initialize() {
         this.simulationInterface = SharedResources.getInstance().getDTOUIInterface();
-        initializeFactorsTreeView();
-        addTreeSelectionListener();
+        // Listen to changes on isFileSelected property
+        SharedResources.getInstance().getIsFileSelected().addListener((observable, oldValue, newValue) -> {
+            if (newValue) {
+                // Only run these methods if a file has been selected.
+                initializeFactorsTreeView();
+                addTreeSelectionListener();
+            }
+        });
+
+        // If isFileSelected is already true (e.g. during a re-initialization)
+        if (SharedResources.getInstance().getIsFileSelected().get()) {
+            initializeFactorsTreeView();
+            addTreeSelectionListener();
+        }
     }
 
-    private void initializeFactorsTreeView(){
+    private void initializeFactorsTreeView() {
         // Initialize TreeView
         TreeItem<String> rootItem = new TreeItem<>("Simulation Factors");
         rootItem.setExpanded(true);
@@ -85,67 +93,100 @@ public class DetailsTabController {
         factorsTreeView.setRoot(rootItem);
     }
 
-    private void addTreeSelectionListener(){
-        // Listen for changes in selection and update the display accordingly
+    private void addTreeSelectionListener() {
+        System.out.println("Registering tree selection listener");
         factorsTreeView.getSelectionModel().selectedItemProperty().addListener((observable, oldValue, newValue) -> {
+            System.out.println("Tree item selected");
             if (newValue != null && !newValue.equals(oldValue)) {
-                showDetails(newValue.getValue());
+                showDetails(newValue);
             }
         });
     }
 
-    public void showDetails(String factor) {
+    public void showDetails(TreeItem<String> selectedNode) {
         detailsFlowPane.getChildren().clear();
-        if (factor.startsWith("Environment")) {
-            displayEnvironmentProperties();
-        } else if (factor.startsWith("Rules")) {
-            displayRules();
-        } else if (factor.startsWith("Entities")) {
-            // The factor string could contain the name of the specific entity
-            // e.g., "Entities: Human"
-            String[] parts = factor.split(": ");
-            if (parts.length > 1) {
-                displaySpecificEntity(parts[1]);
-            } else {
-                displayEntities();
-            }
-        } else if (factor.startsWith("Termination")) {
-            displayTerminationConditions();
-        } else if (factor.startsWith("Grid")) {
-            displayGrid();
-        }
-    }
+        String factor = selectedNode.getValue();
+        TreeItem<String> parent = selectedNode.getParent();
+        TreeItem<String> grandParent = parent != null ? parent.getParent() : null;
 
-    private void displaySpecificEntity(String entityName) {
-        detailsFlowPane.getChildren().clear();
-        Map<String, EntitiesDefinitionDTO> entities = simulationInterface.getEntitiesDefinition();
-        EntitiesDefinitionDTO specificEntity = entities.get(entityName);
+        // Debugging statements
+        System.out.println("Selected Node: " + factor);  // Log selected node
+        System.out.println("Parent Node: " + (parent != null ? parent.getValue() : "None"));  // Log parent node
+        System.out.println("GrandParent Node: " + (grandParent != null ? grandParent.getValue() : "None"));  // Log grandparent node
 
-        if (specificEntity == null) {
+        if (parent == null) {
             return;
         }
 
-        for (PropertyDTO property : specificEntity.getProperties()) {
+        String parentValue = parent.getValue();
+
+        if (parentValue.equals("Environment")) {
+            displayEnvironmentProperty(factor);
+        } else if (parentValue.equals("Actions")) {
+            if (grandParent != null) {
+                displayActionDetail(grandParent.getValue(), parentValue, factor);
+            }
+        } else if (factor.equals("Activation")) {
+            displayActivationDetail(parentValue);
+        } else if (grandParent.getValue().equals("Entities")) {
+            System.out.println("Going to call displayEntityProperty");
+            displayEntityProperty(parent.getValue(), factor);
+        } else if (factor.equals("Grid")) {
+            displayGrid();
+        } else if (factor.equals("Termination")) {
+            displayTerminationConditions();
+        }
+    }
+
+
+    private void displayEnvironmentProperty(String propertyName) {
+        PropertyDTO property = simulationInterface.getEnvironmentProperties().getEnvironmentProperties().get(propertyName);
+        if (property != null) {
             addPropertyDetailToFlowPane(property);
         }
     }
 
-
-    private void displayRules(){
-        detailsFlowPane.getChildren().clear();
+    private void displayActionDetail(String ruleName, String type, String factor) {
+        // Here you can call the appropriate method to get the RuleDTO object
         List<RuleDTO> rules = simulationInterface.getRules();
-        for (RuleDTO rule : rules){
-            addRuleToFlowPane(rule);
+        for (RuleDTO ruleDTO : rules) {
+            if (ruleDTO.getName().equals(ruleName)) {
+                if ("Actions".equals(type)) {
+                    addActionToFlowPane(ruleDTO);
+                } else if ("Activation".equals(type)) {
+                    addActivationToFlowPane(ruleDTO);
+                }
+            }
         }
     }
 
-    private void displayGrid(){
+    private void displayActivationDetail (String ruleName){
+        List<RuleDTO> rules = simulationInterface.getRules();
+        for (RuleDTO ruleDTO : rules) {
+            if (ruleDTO.getName().equals(ruleName))
+                addActivationToFlowPane(ruleDTO);
+        }
+    }
+
+    private void displayEntityProperty(String entityName, String propertyName) {
+        System.out.println("Inside displayEntityProperty: " + entityName + ", " + propertyName);
+        // logic to find the PropertyDTO object based on propertyName and display its details
+        List<PropertyDTO> properties = simulationInterface.getEntitiesDefinition().get(entityName).getProperties();
+        System.out.println(properties);
+        for (PropertyDTO property : properties) {
+            if (property.getName().equalsIgnoreCase(propertyName)) {
+                addPropertyDetailToFlowPane(property);
+            }
+        }
+    }
+
+    private void displayGrid() {
         detailsFlowPane.getChildren().clear();
         GridDTO gridDTO = simulationInterface.getGridDTO();
         addGridToFlowPane(gridDTO);
     }
 
-    private void addGridToFlowPane(GridDTO gridDTO){
+    private void addGridToFlowPane(GridDTO gridDTO) {
         // Initialize the controller and FXML loader here
         Pair<SingleDetailController, Parent> loadedComponent = loadFXMLComponent("SingleDetailComponent.fxml");
         if (loadedComponent == null) {
@@ -167,7 +208,7 @@ public class DetailsTabController {
     }
 
 
-    private void addRuleToFlowPane(RuleDTO rule) {
+    private void addActivationToFlowPane(RuleDTO ruleDTO) {
         // Initialize the controller and FXML loader here
         Pair<SingleDetailController, Parent> loadedComponent = loadFXMLComponent("SingleDetailComponent.fxml");
         if (loadedComponent == null) {
@@ -176,33 +217,37 @@ public class DetailsTabController {
 
         SingleDetailController singleDetailController = loadedComponent.getKey();
         Parent root = loadedComponent.getValue();
+        String activationDetails = "Activation Ticks: " + ruleDTO.getActivationTicks() +
+                " | Activation Probability: " + ruleDTO.getActivationProbability();
 
+        singleDetailController.getDataLabel().setText(activationDetails);
 
-        // Populate the component's fields
-        StringBuilder ruleDetails = new StringBuilder();
-        ruleDetails.append("Rule Name: ").append(rule.getName()).append("\n");
-        ruleDetails.append("Activation Ticks: ").append(rule.getActivationTicks());
-        ruleDetails.append(" | Activation Probability: ").append(rule.getActivationProbability());
-        ruleDetails.append("\nNumber of Actions: ").append(rule.getNumberOfActions());
-
-        if (rule.getActionNames() != null && !rule.getActionNames().isEmpty()) {
-            ruleDetails.append("\nActions: ").append(String.join(", ", rule.getActionNames()));
-        }
-
-        singleDetailController.getDataLabel().setText(ruleDetails.toString());
-
-        // Add the pane to the FlowPane
         detailsFlowPane.getChildren().add(root);
     }
 
+    private void addActionToFlowPane(RuleDTO ruleDTO) {
+        // Initialize the controller and FXML loader here
+        Pair<SingleDetailController, Parent> loadedComponent = loadFXMLComponent("SingleDetailComponent.fxml");
+        if (loadedComponent == null) {
+            return;
+        }
 
-    public void displayTerminationConditions(){
+        SingleDetailController singleDetailController = loadedComponent.getKey();
+        Parent root = loadedComponent.getValue();
+        String actionDetails = "Action information to be implemented....";
+
+        singleDetailController.getDataLabel().setText(actionDetails);
+
+        detailsFlowPane.getChildren().add(root);
+    }
+
+    public void displayTerminationConditions() {
         detailsFlowPane.getChildren().clear();
         TerminationDTO termination = simulationInterface.getTermination();
         addTerminationConditionToFlowPane(termination);
     }
 
-    public void addTerminationConditionToFlowPane(TerminationDTO termination){
+    public void addTerminationConditionToFlowPane(TerminationDTO termination) {
         // Initialize the controller and FXML loader here
         Pair<SingleDetailController, Parent> loadedComponent = loadFXMLComponent("SingleDetailComponent.fxml");
         if (loadedComponent == null) {
@@ -225,34 +270,13 @@ public class DetailsTabController {
 
         // No termination conditions
         if (terminationDetails.length() == 0) {
-            terminationDetails.append("No termination conditions specified.");
+            terminationDetails.append("Termination By User.");
         }
 
         singleDetailController.getDataLabel().setText(terminationDetails.toString());
 
         // Add the pane to the FlowPane
         detailsFlowPane.getChildren().add(root);
-    }
-
-    private void displayEnvironmentProperties() {
-        detailsFlowPane.getChildren().clear();
-        EnvironmentDTO environmentDTO = simulationInterface.getEnvironmentProperties();
-        Map<String, PropertyDTO> properties = environmentDTO.getEnvironmentProperties();
-
-        for (PropertyDTO property : properties.values()){
-            addPropertyDetailToFlowPane(property);
-        }
-    }
-
-    private void displayEntities() {
-        detailsFlowPane.getChildren().clear();
-        Map<String, EntitiesDefinitionDTO> entities = simulationInterface.getEntitiesDefinition();
-
-        for (EntitiesDefinitionDTO entity : entities.values()) {
-            for (PropertyDTO property : entity.getProperties()) {
-                addPropertyDetailToFlowPane(property);
-            }
-        }
     }
 
     private void addPropertyDetailToFlowPane(PropertyDTO property) {

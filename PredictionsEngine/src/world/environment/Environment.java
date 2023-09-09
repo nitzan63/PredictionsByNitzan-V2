@@ -23,10 +23,12 @@ public class Environment {
         Object value = properties.getProperty(propertyName).getValue();
         if (value instanceof Integer) {
             return ((Integer) value).doubleValue();
+        } else if (value instanceof Float) {
+            return ((Float) value).doubleValue();
         } else if (value instanceof Double) {
             return (Double) value;
         } else {
-            throw new ClassCastException("The property value is neither an Integer nor a Double.");
+            throw new ClassCastException("The property " + propertyName + " value is neither an Integer, Float, nor a Double.");
         }
     }
 

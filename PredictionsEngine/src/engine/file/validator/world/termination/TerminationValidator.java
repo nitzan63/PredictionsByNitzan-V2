@@ -9,7 +9,8 @@ import javax.xml.bind.ValidationException;
 public class TerminationValidator {
     public static void validateTermination(PRDTermination termination) throws ValidationException {
         if (termination.getPRDBySecondOrPRDByTicks().isEmpty()) {
-            throw new ValidationException("Termination should have at least one child: PRD-by-ticks or PRD-by-second.");
+            if (termination.getPRDByUser() == null)
+                throw new ValidationException("Termination should have at least one child: PRD-by-ticks or PRD-by-second.");
         }
 
         if (termination.getPRDBySecondOrPRDByTicks().size() > 2) {

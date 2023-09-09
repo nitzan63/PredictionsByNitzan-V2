@@ -58,13 +58,25 @@ public class ExecutionTabController {
         instance = this;
         this.simulationInterface = SharedResources.getInstance().getDTOUIInterface();
 
-        // initialize entities table:
-        initializeEntitiesTable();
+        // Listen to changes on isFileSelected property
+        SharedResources.getInstance().getIsFileSelected().addListener((observable, oldValue, newValue) -> {
+            if (newValue) {
+                // Only initialize these methods if a file has been selected.
+                initializeEntitiesTable();
+                initializeEnvironmentTable();
+                setGridSize();
+                // Optionally, you can also update other UI elements based on the loaded XML here.
+                //updateOnXMLLoad();
+            }
+        });
 
-        // initialize environment table:
-        initializeEnvironmentTable();
-
-        setGridSize();
+        // Check if isFileSelected is already true at the time of this tab's initialization,
+        // and if so, run the initialization methods.
+        if (SharedResources.getInstance().getIsFileSelected().get()) {
+            initializeEntitiesTable();
+            initializeEnvironmentTable();
+            setGridSize();
+        }
     }
 
     private void setGridSize(){
