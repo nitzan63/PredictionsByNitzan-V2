@@ -123,6 +123,10 @@ public class ResultsTabController {
         if (newValue != null) {
             // Enable all related tabs
             enableTabs();
+            // Fetch details about the selected simulation
+            SimulationExecutionDetailsDTO details = allResults.get(newValue); // Assuming allResults is a Map keyed by simulation IDs
+            // Update the progress section based on the selected simulation
+            updateProgressSection(details);
             // Load properties related to the selected simulation
             loadPropertyChoices(newValue);
             // Populate Environment Properties Table
@@ -254,7 +258,7 @@ public class ResultsTabController {
 
             // set the progress:
             TerminationDTO terminationDTO = simulationInterface.getTermination();
-            int maxTicks = terminationDTO.getMaxTicks();
+            Integer maxTicks = terminationDTO.getMaxTicks();
             if (terminationDTO.getMaxTicks() != null) {
                 progress = (double) currTick / maxTicks;
             } else if (terminationDTO.getMaxTime() != null) {
@@ -271,11 +275,21 @@ public class ResultsTabController {
                 simulationStatusLabel.setStyle("-fx-text-fill: green;");
                 progressBar.setProgress(1);
                 progressPercentLabel.setText("100%");
-            } else {
+            } else if (details.isSimulationLive()) {
                 simulationStatusLabel.setText("Simulation " + details.getRunIdentifier() + " Ongoing...");
                 simulationStatusLabel.setStyle("-fx-text-fill: #4a63e8");
                 progressBar.setProgress(progress);
                 progressPercentLabel.setText((progress * 100) + "%");
+            } else if (details.isSimulationPaused()){
+                simulationStatusLabel.setText("Simulation " + details.getRunIdentifier() + " Paused!");
+                simulationStatusLabel.setStyle("-fx-text-fill: #e79f20");
+                progressBar.setProgress(progress);
+                progressPercentLabel.setText((progress * 100) + "%");
+            } else if (details.isSimulationQueued()){
+                simulationStatusLabel.setText("Simulation " + details.getRunIdentifier() + " Queued");
+                simulationStatusLabel.setStyle("-fx-text-fill: #c914bf");
+                progressBar.setProgress(0);
+                progressPercentLabel.setText((0 * 100) + "%");
             }
 
             // update ticks count:

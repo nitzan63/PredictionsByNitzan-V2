@@ -1,34 +1,30 @@
-# To-Do List for Code Refactoring
+# To-Do List
 
-## Immediate Tasks
+## Main Controller
+* Add Queue size
+* Update queue section when stopping simulation
 
-1. **Thread Safety**
-    - Make a deep copy of the `World` object for each simulation.
+## Details Tab
+* Action view to flow pane - edit DTO, add to flow pane.
+* Fix grid and termination view in flow pane
+* 
 
-2. **Shared Data Structures**
-    - Research thread-safe data structures in Java.
-    - Implement these structures into the code.
+## Execution Tab
+* after running simulation and moving to the results tab - auto select the running simulation
 
-3. **Immutable Objects**
-    - Identify parameters that should not change during simulation.
-    - Make these parameters immutable.
+## Results Tab
+* after stopping simulation - update simulation status label.
+* implement population Statistics view
+* implement property histogram view
+* update progress bar to the selected simulation from the list
+* add "rerun" button
 
-4. **Thread-Local Storage**
-    - Identify which variables each thread should independently keep track of.
-    - Implement `ThreadLocal` for these variables.
+## UI
+* Deal with window resizing
 
-5. **Environment Properties**
-    - Make environment properties non-static.
-    - Pass them as parameters.
+## Bonuses
+* Skins
+* Animations
+* grid
 
-6. **Executor Service**
-    - Reevaluate the usage of fixed-size thread pool, explore if it's the best choice for your case.
-
-## Deferred Tasks
-
-1. **Error Handling**
-    - Review and improve error-handling mechanisms.
-
-2. **Resource Cleanup**
-    - Implement resource cleanup measures like shutting down `executorService`.
 

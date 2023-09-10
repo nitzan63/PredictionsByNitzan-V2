@@ -48,7 +48,8 @@ public class MainController {
     private SimpleBooleanProperty isFileSelected;
     private SimpleStringProperty selectedFileProperty;
     private SimpleStringProperty activeThreadCount;
-    private SimpleStringProperty simulationsEndedCount;
+    private SimpleStringProperty simulationsEndedAndQueuedCount;
+
 
     // Stage:
     private Stage primaryStage;
@@ -65,7 +66,9 @@ public class MainController {
         isFileSelected = new SimpleBooleanProperty(false);
         selectedFileProperty = new SimpleStringProperty();
         activeThreadCount = new SimpleStringProperty("0/0");
-        simulationsEndedCount = new SimpleStringProperty("0");
+        simulationsEndedAndQueuedCount = new SimpleStringProperty("0/0");
+
+
     }
 
     public void initialize() {
@@ -75,7 +78,7 @@ public class MainController {
         detailsTabTitle.disableProperty().bind(isFileSelected.not());
         resultsTabTitle.disableProperty().bind(isFileSelected.not());
         activeThreadsLabel.textProperty().bind(activeThreadCount);
-        simulationsEndedLabel.textProperty().bind(simulationsEndedCount);
+        simulationsEndedLabel.textProperty().bind(simulationsEndedAndQueuedCount);
 
         // Start updating thread information when a file is selected
         isFileSelected.addListener((observable, oldValue, newValue) -> {
@@ -145,7 +148,8 @@ public class MainController {
     private void updateThreadInfo() {
         ThreadInfoDTO threadInfo = simulationInterface.getThreadInfo();
         activeThreadCount.set(threadInfo.getActiveThreads() + "/" + threadInfo.getTotalThreads());
-        simulationsEndedCount.set(String.valueOf(threadInfo.getTotalSimulations()));
+        String queueAndEnded = String.format("%d/%d", threadInfo.getSimulationsInQueue(), threadInfo.getTotalSimulations());
+        simulationsEndedAndQueuedCount.set(queueAndEnded);
     }
 
     public void switchToResultsTab() {

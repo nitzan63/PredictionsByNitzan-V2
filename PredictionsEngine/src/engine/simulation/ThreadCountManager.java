@@ -33,6 +33,12 @@ public class ThreadCountManager {
         threadInfoDTO.setActiveThreads(executorService.getActiveCount());
     }
 
+    public void decrementActiveThreads(){
+        threadInfoDTO.decrementActiveThreads();
+    }
+
+
+
     public ThreadInfoDTO getThreadInfoDTO() {
         updateThreadInfoDTO();
         return threadInfoDTO;

@@ -1,5 +1,6 @@
 package dto;
 
+import javax.jws.soap.SOAPBinding;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -17,7 +18,7 @@ public class SimulationExecutionDetailsDTO {
     private Map<String, Integer> entitiesPopulationMap;
     private Map<String, String> environmentPropertiesValues;
     private SimulationState simulationState;
-
+    private UserInputDTO userInputDTO;
     private int currTick;
     private int elapsedSeconds;
 
@@ -115,5 +116,13 @@ public class SimulationExecutionDetailsDTO {
 
     public boolean isSimulationQueued (){
         return (simulationState == SimulationState.QUEUED);
+    }
+
+    public UserInputDTO getUserInputDTO() {
+        return userInputDTO;
+    }
+
+    public void setUserInputDTO(UserInputDTO userInputDTO) {
+        this.userInputDTO = userInputDTO;
     }
 }

@@ -41,4 +41,8 @@ public class ThreadInfoDTO {
     public void incrementTotalSimulation(){
         this.totalSimulations ++;
     }
+
+    public void decrementActiveThreads(){
+        this.activeThreads --;
+    }
 }

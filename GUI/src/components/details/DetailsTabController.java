@@ -94,9 +94,7 @@ public class DetailsTabController {
     }
 
     private void addTreeSelectionListener() {
-        System.out.println("Registering tree selection listener");
         factorsTreeView.getSelectionModel().selectedItemProperty().addListener((observable, oldValue, newValue) -> {
-            System.out.println("Tree item selected");
             if (newValue != null && !newValue.equals(oldValue)) {
                 showDetails(newValue);
             }
@@ -108,11 +106,6 @@ public class DetailsTabController {
         String factor = selectedNode.getValue();
         TreeItem<String> parent = selectedNode.getParent();
         TreeItem<String> grandParent = parent != null ? parent.getParent() : null;
-
-        // Debugging statements
-        System.out.println("Selected Node: " + factor);  // Log selected node
-        System.out.println("Parent Node: " + (parent != null ? parent.getValue() : "None"));  // Log parent node
-        System.out.println("GrandParent Node: " + (grandParent != null ? grandParent.getValue() : "None"));  // Log grandparent node
 
         if (parent == null) {
             return;
@@ -128,12 +121,13 @@ public class DetailsTabController {
             }
         } else if (factor.equals("Activation")) {
             displayActivationDetail(parentValue);
-        } else if (grandParent.getValue().equals("Entities")) {
-            System.out.println("Going to call displayEntityProperty");
+        } else if (grandParent != null && grandParent.getValue().equals("Entities")) {
             displayEntityProperty(parent.getValue(), factor);
         } else if (factor.equals("Grid")) {
+            System.out.println("showing grid");
             displayGrid();
         } else if (factor.equals("Termination")) {
+            System.out.println("Showing termination");
             displayTerminationConditions();
         }
     }
@@ -160,19 +154,16 @@ public class DetailsTabController {
         }
     }
 
-    private void displayActivationDetail (String ruleName){
+    private void displayActivationDetail(String ruleName) {
         List<RuleDTO> rules = simulationInterface.getRules();
         for (RuleDTO ruleDTO : rules) {
-            if (ruleDTO.getName().equals(ruleName))
-                addActivationToFlowPane(ruleDTO);
+            if (ruleDTO.getName().equals(ruleName)) addActivationToFlowPane(ruleDTO);
         }
     }
 
     private void displayEntityProperty(String entityName, String propertyName) {
-        System.out.println("Inside displayEntityProperty: " + entityName + ", " + propertyName);
         // logic to find the PropertyDTO object based on propertyName and display its details
         List<PropertyDTO> properties = simulationInterface.getEntitiesDefinition().get(entityName).getProperties();
-        System.out.println(properties);
         for (PropertyDTO property : properties) {
             if (property.getName().equalsIgnoreCase(propertyName)) {
                 addPropertyDetailToFlowPane(property);
@@ -217,8 +208,7 @@ public class DetailsTabController {
 
         SingleDetailController singleDetailController = loadedComponent.getKey();
         Parent root = loadedComponent.getValue();
-        String activationDetails = "Activation Ticks: " + ruleDTO.getActivationTicks() +
-                " | Activation Probability: " + ruleDTO.getActivationProbability();
+        String activationDetails = "Activation Ticks: " + ruleDTO.getActivationTicks() + " | Activation Probability: " + ruleDTO.getActivationProbability();
 
         singleDetailController.getDataLabel().setText(activationDetails);
 

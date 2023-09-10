@@ -39,7 +39,7 @@ public class WorldGenerator {
         // Set Rules:
         newWorld.setRules(prototypeWorld.getRules());
         // Set termination:
-        //TODO set termination
+        newWorld.setTermination(prototypeWorld.getTermination());
         return newWorld;
     }
 
@@ -75,16 +75,16 @@ public class WorldGenerator {
         String type = prototypeProperty.getType();
         Range<?> range = prototypeProperty.getRange();
         switch (type) {
-            case "Boolean":
+            case "boolean":
                 return new PropertyBool(name, true, null);
 
-            case "Integer":
+            case "integer":
                 return new PropertyDecimal(name, true, null, (Range<Integer>) range);
 
-            case "Float":
+            case "float":
                 return new PropertyFloat(name, true, null, (Range<Float>) range);
 
-            case "String":
+            case "string":
                 return new PropertyString(name, true, null);
 
             default:
@@ -123,21 +123,25 @@ public class WorldGenerator {
         // create entity generator instance:
         EntityGenerator entityGenerator = new EntityGenerator();
         Map<String, EntitiesDefinition> entitiesDefinitionMap = new HashMap<>();
-
+        Map<String, EntitiesDefinition> prototypeEntitiesDefinitionMap = prototypeWorld.getEntitiesMap();
+        Map<String, Integer> userInputMap = userInput.getEntityPopulationMap();
         //
-        for (Map.Entry<String, Integer> entry : userInput.getEntityPopulationMap().entrySet()) {
-            String entityName = entry.getKey();
-            int population = entry.getValue();
+        for (EntitiesDefinition prototype : prototypeEntitiesDefinitionMap.values()) {
+            String entityName = prototype.getEntityName();
+            int population;
+            if (userInputMap.get(entityName) != null) {
+                population = userInputMap.get(entityName);
+            } else population = 0;
 
             EntitiesDefinition entitiesDefinition = new EntitiesDefinition(entityName, population);
 
             // get the prototype instance from the definition:
-            EntityInstance prototype = prototypeWorld.getEntitiesDefinition(entityName).getEntity(PROTOTYPE_INSTANCE);
+            EntityInstance prototypeInstance = prototypeWorld.getEntitiesDefinition(entityName).getPrototypeEntity();
 
-            entitiesDefinition.setPrototypeEntity(prototype);
+            entitiesDefinition.setPrototypeEntity(prototypeInstance);
 
             for (int i = 0; i < population; i++) {
-                EntityInstance newInstance = entityGenerator.generateNewInstance(prototype, newWorld.getGrid(), i);
+                EntityInstance newInstance = entityGenerator.generateNewInstance(prototypeInstance, newWorld.getGrid(), i);
                 entitiesDefinition.addEntity(newInstance, i);
             }
             entitiesDefinitionMap.put(entityName, entitiesDefinition);

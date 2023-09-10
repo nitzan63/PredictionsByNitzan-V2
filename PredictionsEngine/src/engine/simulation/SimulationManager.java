@@ -58,7 +58,7 @@ public class SimulationManager {
         SimulationRunMetadataDTO runMetadataDTO = new SimulationRunMetadataDTO(runID, LocalDateTime.now().toString());
         simulationsMetadataMap.put(runID, runMetadataDTO);
         // prepare data to be stored: (create new population statistics and save initials
-        prepareSimulationData(worldInstance, runID);
+        prepareSimulationData(worldInstance, runID, userInputDTO);
         // create runner and add to map
         SimulationRunner simulationRunner = new SimulationRunner(worldInstance, sharedErrorList);
         simulationRunnerMap.put(runID, simulationRunner);
@@ -68,16 +68,17 @@ public class SimulationManager {
             threadCountManager.decrementQueuedSimulations();
             simulationRunner.run();
             //gather and store run results
-            processSimulationExecutionDetails(worldInstance, runID);
+            //processSimulationExecutionDetails(worldInstance, runID);
             // set the simulation status to "completed":
             simulationExecutionDetailsMap.get(runID).setSimulationState(SimulationExecutionDetailsDTO.SimulationState.COMPLETED);
             // update thread count manager
             threadCountManager.incrementTotalSimulations();
+            threadCountManager.decrementActiveThreads();
         });
 
     }
 
-    private void prepareSimulationData(World worldInstance, String runID){
+    private void prepareSimulationData(World worldInstance, String runID, UserInputDTO userInputDTO){
         // create the slot for the results:
         SimulationExecutionDetailsDTO sedDTO = new SimulationExecutionDetailsDTO(runID, LocalDateTime.now().format(DateTimeFormatter.ofPattern("dd-MM-yyyy | HH:mm:ss")));
         // create population data map for the SED:
@@ -86,6 +87,8 @@ public class SimulationManager {
         sedDTO.setEnvironmentPropertiesValues(createEnvironmentPropertiesValuesMap(worldInstance));
         // set the simulation state to QUEUED:
         sedDTO.setSimulationState(SimulationExecutionDetailsDTO.SimulationState.QUEUED);
+        // set the userInput to the SED:
+        sedDTO.setUserInputDTO(userInputDTO);
         // put to the results map
         simulationExecutionDetailsMap.put(runID, sedDTO);
         // put the world instance in the SED map:
