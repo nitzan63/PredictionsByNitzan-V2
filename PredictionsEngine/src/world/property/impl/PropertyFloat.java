@@ -80,8 +80,12 @@ public class PropertyFloat implements EntityProperty, EnvProperty {
 
     @Override
     public void setValue(Object newValue, int currentTick) {
-        this.value = (Float) newValue;
-        this.lastChangedTick = currentTick;
+        Float newFloatValue = (Float) newValue;
+
+        if (!this.value.equals(newFloatValue)) {
+            this.value = newFloatValue;
+            this.lastChangedTick = currentTick;
+        }
     }
 
     @Override

@@ -80,11 +80,17 @@ public class PropertyDecimal implements EntityProperty, EnvProperty {
 
     @Override
     public void setValue(Object newValue, int currentTick) {
-        if (newValue instanceof Double){
-            value = ((Double) newValue).intValue();
-        }else
-            value = (Integer) newValue;
-        this.lastChangedTick = currentTick;
+        int newValueInt;
+        if (newValue instanceof Double) {
+            newValueInt = ((Double) newValue).intValue();
+        } else {
+            newValueInt = (Integer) newValue;
+        }
+
+        if (this.value != newValueInt) {
+            this.value = newValueInt;
+            this.lastChangedTick = currentTick;
+        }
     }
 
     @Override

@@ -75,8 +75,12 @@ public class PropertyString implements EntityProperty, EnvProperty {
 
     @Override
     public void setValue(Object newValue, int currentTick) {
-        this.value = (String) newValue;
-        this.lastChangedTick = currentTick;
+        String newStringValue = (String) newValue;
+
+        if (!this.value.equals(newStringValue)) {
+            this.value = newStringValue;
+            this.lastChangedTick = currentTick;
+        }
     }
 
     @Override
