@@ -24,180 +24,204 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-<ScrollPane fitToHeight="true" fitToWidth="true" xmlns="http://javafx.com/javafx/20.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="components.results.ResultsTabController">
-   <content>
-      <BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="440.0" prefWidth="890.0">
-         <top>
-            <GridPane BorderPane.alignment="CENTER">
-              <columnConstraints>
-                <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
-              </columnConstraints>
-              <rowConstraints>
-                <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
-                <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
-              </rowConstraints>
-               <children>
-                  <HBox prefHeight="100.0" prefWidth="200.0" spacing="20.0" GridPane.rowIndex="1">
-                     <children>
-                        <Label text="Progress:" />
-                        <ProgressBar fx:id="progressBar" prefHeight="20.0" prefWidth="737.0" progress="0.0" HBox.hgrow="ALWAYS" />
-                        <Label fx:id="progressPercentLabel" text="XX%" />
-                     </children>
-                     <GridPane.margin>
-                        <Insets bottom="5.0" left="10.0" right="10.0" top="5.0" />
-                     </GridPane.margin>
-                  </HBox>
-                  <HBox alignment="CENTER_LEFT" prefHeight="100.0" prefWidth="200.0" spacing="20.0">
-                     <children>
-                        <Label fx:id="simulationStatusLabel" text="Simulation Status">
-                           <font>
-                              <Font size="18.0" />
-                           </font>
-                        </Label>
-                        <Label text="Ticks Progress:" />
-                        <Label fx:id="ticksCounterLabel" text="XX/YY" />
-                        <HBox prefHeight="100.0" prefWidth="200.0" HBox.hgrow="ALWAYS" />
-                        <Label text="Time Elapsed:" />
-                        <Label fx:id="secondsCounterLabel" text="ZZ Seconds" />
-                     </children>
-                     <GridPane.margin>
-                        <Insets left="10.0" right="10.0" />
-                     </GridPane.margin>
-                  </HBox>
-               </children>
-            </GridPane>
-         </top>
-         <center>
-            <TabPane fx:id="mainTabPane" prefHeight="200.0" prefWidth="200.0" tabClosingPolicy="UNAVAILABLE" BorderPane.alignment="CENTER">
-              <tabs>
-                  <Tab fx:id="simulationDetailsTab" text="Simulation Details">
-                    <content>
-                      <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
-                           <children>
-                              <HBox layoutX="171.0" layoutY="56.0" prefHeight="312.5" prefWidth="742.0" spacing="20.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
-                                 <padding>
-                                    <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
-                                 </padding>
-                                 <children>
-                                    <VBox alignment="TOP_CENTER" prefHeight="200.0" prefWidth="100.0" spacing="10.0" HBox.hgrow="ALWAYS">
-                                       <children>
-                                          <Label text="Entities Population" />
-                                          <TableView fx:id="entitiesPopulationTable" prefHeight="200.0" prefWidth="200.0" VBox.vgrow="ALWAYS">
-                                            <columns>
-                                              <TableColumn minWidth="175.0" prefWidth="175.0" text="Entity" />
-                                              <TableColumn minWidth="176.0" prefWidth="174.0" text="Population" />
-                                            </columns>
-                                          </TableView>
-                                       </children>
-                                    </VBox>
-                                    <VBox alignment="TOP_CENTER" prefHeight="200.0" prefWidth="100.0" spacing="10.0" HBox.hgrow="ALWAYS">
-                                       <children>
-                                          <Label text="Environement Properties" />
-                                          <TableView fx:id="environmentPropertiesTable" prefHeight="200.0" prefWidth="200.0" VBox.vgrow="ALWAYS">
-                                            <columns>
-                                              <TableColumn minWidth="176.0" prefWidth="75.0" text="Property" />
-                                              <TableColumn minWidth="175.0" prefWidth="75.0" text="Value" />
-                                            </columns>
-                                          </TableView>
-                                       </children>
-                                    </VBox>
-                                 </children>
-                              </HBox>
-                           </children>
-                        </AnchorPane>
-                    </content>
-                  </Tab>
-                <Tab fx:id="populationStatisticsTab" disable="true" text="Entities Population Statistics">
-                  <content>
-                    <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
-                           <children>
-                              <VBox layoutX="291.0" layoutY="10.0" prefHeight="318.5" prefWidth="742.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
-                                 <children>
-                                    <HBox alignment="CENTER_LEFT" prefHeight="36.0" prefWidth="742.0" spacing="20.0">
-                                       <children>
-                                          <Label text="Choose Entity" />
-                                          <ChoiceBox fx:id="populationStatsEntityChooser" prefWidth="150.0" />
-                                       </children>
-                                       <padding>
-                                          <Insets bottom="5.0" left="20.0" top="5.0" />
-                                       </padding>
-                                    </HBox>
-                                    <LineChart fx:id="populationLineChart">
-                                      <xAxis>
-                                        <CategoryAxis side="BOTTOM" />
-                                      </xAxis>
-                                      <yAxis>
-                                        <NumberAxis side="LEFT" />
-                                      </yAxis>
-                                    </LineChart>
-                                 </children>
-                              </VBox>
-                           </children>
-                        </AnchorPane>
-                  </content>
-                </Tab>
-                <Tab fx:id="propertyHistogramTab" disable="true" text="Property Histogram">
-                  <content>
-                    <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
-                           <children>
-                              <VBox layoutX="297.0" layoutY="10.0" prefHeight="318.5" prefWidth="742.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
-                                 <children>
-                                    <HBox alignment="CENTER_LEFT" prefHeight="100.0" prefWidth="200.0" spacing="20.0">
-                                       <children>
-                                          <Label text="Choose Entity" />
-                                          <ChoiceBox fx:id="propertyEntitiesChooser" prefWidth="150.0" />
-                                          <Label text="Choose Property" />
-                                          <ChoiceBox fx:id="propertyChooser" prefWidth="150.0" />
-                                       </children>
-                                       <padding>
-                                          <Insets bottom="5.0" left="20.0" top="5.0" />
-                                       </padding>
-                                    </HBox>
-                                    <BarChart fx:id="propertyHistogramBarChart">
-                                      <xAxis>
-                                        <CategoryAxis side="BOTTOM" />
-                                      </xAxis>
-                                      <yAxis>
-                                        <NumberAxis side="LEFT" />
-                                      </yAxis>
-                                    </BarChart>
-                                 </children>
-                              </VBox>
-                           </children>
-                        </AnchorPane>
-                  </content>
-                </Tab>
-              </tabs>
-            </TabPane>
-         </center>
-         <left>
-            <VBox alignment="TOP_CENTER" prefHeight="350.0" prefWidth="148.0" spacing="10.0" BorderPane.alignment="CENTER">
-               <children>
-                  <Label text="Simulations" />
-                  <ListView fx:id="simulationList" prefHeight="200.0" prefWidth="200.0" VBox.vgrow="ALWAYS">
-                     <VBox.margin>
-                        <Insets bottom="10.0" left="5.0" right="5.0" />
-                     </VBox.margin>
-                  </ListView>
-               </children>
-               <BorderPane.margin>
-                  <Insets top="10.0" />
-               </BorderPane.margin>
-            </VBox>
-         </left>
-         <bottom>
-            <HBox prefHeight="32.0" prefWidth="890.0" spacing="30.0" BorderPane.alignment="CENTER">
-               <children>
-                  <Button fx:id="stopButton" mnemonicParsing="false" onAction="#onStopButtonClicked" text="Stop" />
-                  <HBox prefHeight="100.0" prefWidth="200.0" HBox.hgrow="ALWAYS" />
-                  <Button fx:id="pauseButton" mnemonicParsing="false" onAction="#onPauseButtonClicked" text="Pause" />
-                  <Button fx:id="resumeButton" mnemonicParsing="false" onAction="#onResumeButtonClicked" text="Resume" />
-               </children>
-               <padding>
-                  <Insets bottom="5.0" left="30.0" right="30.0" top="5.0" />
-               </padding>
-            </HBox>
-         </bottom>
-      </BorderPane>
-   </content>
+<ScrollPane fitToHeight="true" fitToWidth="true" xmlns="http://javafx.com/javafx/20.0.1"
+            xmlns:fx="http://javafx.com/fxml/1" fx:controller="components.results.ResultsTabController">
+    <content>
+        <BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity"
+                    prefHeight="440.0" prefWidth="890.0">
+            <top>
+                <GridPane BorderPane.alignment="CENTER">
+                    <columnConstraints>
+                        <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0"/>
+                    </columnConstraints>
+                    <rowConstraints>
+                        <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES"/>
+                        <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES"/>
+                    </rowConstraints>
+                    <children>
+                        <HBox prefHeight="100.0" prefWidth="200.0" spacing="20.0" GridPane.rowIndex="1">
+                            <children>
+                                <Label text="Progress:"/>
+                                <ProgressBar fx:id="progressBar" prefHeight="20.0" prefWidth="737.0" progress="0.0"
+                                             HBox.hgrow="ALWAYS"/>
+                                <Label fx:id="progressPercentLabel" text="XX%"/>
+                            </children>
+                            <GridPane.margin>
+                                <Insets bottom="5.0" left="10.0" right="10.0" top="5.0"/>
+                            </GridPane.margin>
+                        </HBox>
+                        <HBox alignment="CENTER_LEFT" prefHeight="100.0" prefWidth="200.0" spacing="20.0">
+                            <children>
+                                <Label fx:id="simulationStatusLabel" text="Simulation Status">
+                                    <font>
+                                        <Font size="18.0"/>
+                                    </font>
+                                </Label>
+                                <Label text="Ticks Progress:"/>
+                                <Label fx:id="ticksCounterLabel" text="XX/YY"/>
+                                <HBox prefHeight="100.0" prefWidth="200.0" HBox.hgrow="ALWAYS"/>
+                                <Label text="Time Elapsed:"/>
+                                <Label fx:id="secondsCounterLabel" text="ZZ Seconds"/>
+                            </children>
+                            <GridPane.margin>
+                                <Insets left="10.0" right="10.0"/>
+                            </GridPane.margin>
+                        </HBox>
+                    </children>
+                </GridPane>
+            </top>
+            <center>
+                <TabPane fx:id="mainTabPane" prefHeight="200.0" prefWidth="200.0" tabClosingPolicy="UNAVAILABLE"
+                         BorderPane.alignment="CENTER">
+                    <tabs>
+                        <Tab fx:id="simulationDetailsTab" text="Simulation Details">
+                            <content>
+                                <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
+                                    <children>
+                                        <HBox layoutX="171.0" layoutY="56.0" prefHeight="312.5" prefWidth="742.0"
+                                              spacing="20.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0"
+                                              AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+                                            <padding>
+                                                <Insets bottom="10.0" left="10.0" right="10.0" top="10.0"/>
+                                            </padding>
+                                            <children>
+                                                <VBox alignment="TOP_CENTER" prefHeight="200.0" prefWidth="100.0"
+                                                      spacing="10.0" HBox.hgrow="ALWAYS">
+                                                    <children>
+                                                        <Label text="Entities Population"/>
+                                                        <TableView fx:id="entitiesPopulationTable" prefHeight="200.0"
+                                                                   prefWidth="200.0" VBox.vgrow="ALWAYS">
+                                                            <columns>
+                                                                <TableColumn minWidth="175.0" prefWidth="175.0"
+                                                                             text="Entity"/>
+                                                                <TableColumn minWidth="176.0" prefWidth="174.0"
+                                                                             text="Population"/>
+                                                            </columns>
+                                                        </TableView>
+                                                    </children>
+                                                </VBox>
+                                                <VBox alignment="TOP_CENTER" prefHeight="200.0" prefWidth="100.0"
+                                                      spacing="10.0" HBox.hgrow="ALWAYS">
+                                                    <children>
+                                                        <Label text="Environement Properties"/>
+                                                        <TableView fx:id="environmentPropertiesTable" prefHeight="200.0"
+                                                                   prefWidth="200.0" VBox.vgrow="ALWAYS">
+                                                            <columns>
+                                                                <TableColumn minWidth="176.0" prefWidth="75.0"
+                                                                             text="Property"/>
+                                                                <TableColumn minWidth="175.0" prefWidth="75.0"
+                                                                             text="Value"/>
+                                                            </columns>
+                                                        </TableView>
+                                                    </children>
+                                                </VBox>
+                                            </children>
+                                        </HBox>
+                                    </children>
+                                </AnchorPane>
+                            </content>
+                        </Tab>
+                        <Tab fx:id="populationStatisticsTab" disable="true" text="Entities Population Statistics">
+                            <content>
+                                <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
+                                    <children>
+                                        <VBox layoutX="291.0" layoutY="10.0" prefHeight="318.5" prefWidth="742.0"
+                                              AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0"
+                                              AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+                                            <children>
+                                                <HBox alignment="CENTER_LEFT" prefHeight="36.0" prefWidth="742.0"
+                                                      spacing="20.0">
+                                                    <children>
+                                                        <Label text="Choose Entity"/>
+                                                        <ChoiceBox fx:id="populationStatsEntityChooser"
+                                                                   prefWidth="150.0"/>
+                                                    </children>
+                                                    <padding>
+                                                        <Insets bottom="5.0" left="20.0" top="5.0"/>
+                                                    </padding>
+                                                </HBox>
+                                                <LineChart fx:id="populationLineChart">
+                                                    <xAxis>
+                                                        <NumberAxis side="BOTTOM"/>
+                                                    </xAxis>
+                                                    <yAxis>
+                                                        <NumberAxis side="LEFT"/>
+                                                    </yAxis>
+                                                </LineChart>
+                                            </children>
+                                        </VBox>
+                                    </children>
+                                </AnchorPane>
+                            </content>
+                        </Tab>
+                        <Tab fx:id="propertyHistogramTab" disable="true" text="Property Histogram">
+                            <content>
+                                <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
+                                    <children>
+                                        <VBox layoutX="297.0" layoutY="10.0" prefHeight="318.5" prefWidth="742.0"
+                                              AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0"
+                                              AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+                                            <children>
+                                                <HBox alignment="CENTER_LEFT" prefHeight="100.0" prefWidth="200.0"
+                                                      spacing="20.0">
+                                                    <children>
+                                                        <Label text="Choose Entity"/>
+                                                        <ChoiceBox fx:id="propertyEntitiesChooser" prefWidth="150.0"/>
+                                                        <Label text="Choose Property"/>
+                                                        <ChoiceBox fx:id="propertyChooser" prefWidth="150.0"/>
+                                                    </children>
+                                                    <padding>
+                                                        <Insets bottom="5.0" left="20.0" top="5.0"/>
+                                                    </padding>
+                                                </HBox>
+                                                <BarChart fx:id="propertyHistogramBarChart">
+                                                    <xAxis>
+                                                        <CategoryAxis side="BOTTOM"/>
+                                                    </xAxis>
+                                                    <yAxis>
+                                                        <NumberAxis side="LEFT"/>
+                                                    </yAxis>
+                                                </BarChart>
+                                            </children>
+                                        </VBox>
+                                    </children>
+                                </AnchorPane>
+                            </content>
+                        </Tab>
+                    </tabs>
+                </TabPane>
+            </center>
+            <left>
+                <VBox alignment="TOP_CENTER" prefHeight="350.0" prefWidth="148.0" spacing="10.0"
+                      BorderPane.alignment="CENTER">
+                    <children>
+                        <Label text="Simulations"/>
+                        <ListView fx:id="simulationList" prefHeight="200.0" prefWidth="200.0" VBox.vgrow="ALWAYS">
+                            <VBox.margin>
+                                <Insets bottom="10.0" left="5.0" right="5.0"/>
+                            </VBox.margin>
+                        </ListView>
+                    </children>
+                    <BorderPane.margin>
+                        <Insets top="10.0"/>
+                    </BorderPane.margin>
+                </VBox>
+            </left>
+            <bottom>
+                <HBox prefHeight="32.0" prefWidth="890.0" spacing="30.0" BorderPane.alignment="CENTER">
+                    <children>
+                        <Button fx:id="stopButton" mnemonicParsing="false" onAction="#onStopButtonClicked" text="Stop"/>
+                        <HBox prefHeight="100.0" prefWidth="200.0" HBox.hgrow="ALWAYS"/>
+                        <Button fx:id="pauseButton" mnemonicParsing="false" onAction="#onPauseButtonClicked"
+                                text="Pause"/>
+                        <Button fx:id="resumeButton" mnemonicParsing="false" onAction="#onResumeButtonClicked"
+                                text="Resume"/>
+                    </children>
+                    <padding>
+                        <Insets bottom="5.0" left="30.0" right="30.0" top="5.0"/>
+                    </padding>
+                </HBox>
+            </bottom>
+        </BorderPane>
+    </content>
 </ScrollPane>

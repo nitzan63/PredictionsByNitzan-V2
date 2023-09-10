@@ -27,7 +27,7 @@ public class ExpressionEvaluator {
                 return AuxiliaryMethods.evaluateAuxMethod(argument, entityInstance, actionContext);
             case "percent":
                 return AuxiliaryMethods.percentAuxMethod(argument, entityInstance, actionContext);
-            case "tick":
+            case "ticks":
                 return AuxiliaryMethods.tickAuxMethod(argument, entityInstance, actionContext);
             default:
                 throw new IllegalArgumentException("Unknown Auxiliary Method: " + argument);

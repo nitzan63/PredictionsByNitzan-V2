@@ -45,7 +45,7 @@ public class SimulationRunner implements Runnable {
                 world.simulateThisTick(tickNumber);
                 world.setSecondsElapsed(elapsedSeconds);
             } catch (Exception e) {
-                logError(e);
+                System.out.println("exception in simulation runner, tick: " + tickNumber + "\nMessage: " + e.getMessage());
             }
         }
     }

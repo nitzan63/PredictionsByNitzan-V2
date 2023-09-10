@@ -6,7 +6,7 @@ import java.util.List;
 import java.util.Map;
 
 public class PopulationStatisticsDTO {
-    private Map<Integer, Integer> ticksToPopulationMap = new HashMap<>();
+    private Map<Integer, Integer> ticksToPopulationMap;
     private String EntityName;
 
     public PopulationStatisticsDTO(String entityName , Map<Integer, Integer> ticksToPopulationMap) {

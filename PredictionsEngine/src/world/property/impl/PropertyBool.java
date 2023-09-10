@@ -82,8 +82,10 @@ public class PropertyBool implements EntityProperty, EnvProperty {
 
     @Override
     public void setValue(Object newValue, int currentTick) {
-        this.value = (boolean) newValue;
-        this.lastChangeTick = currentTick;
+        if (this.value != (boolean) newValue) {
+            this.value = (boolean) newValue;
+            this.lastChangeTick = currentTick;
+        }
     }
 
     @Override

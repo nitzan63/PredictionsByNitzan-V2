@@ -2,10 +2,7 @@ package components.results;
 
 import api.DTOUIInterface;
 import components.SharedResources;
-import dto.PropertyDTO;
-import dto.PropertyHistogramDTO;
-import dto.SimulationExecutionDetailsDTO;
-import dto.TerminationDTO;
+import dto.*;
 import javafx.application.Platform;
 import javafx.beans.property.ReadOnlyObjectWrapper;
 import javafx.beans.property.ReadOnlyStringWrapper;
@@ -18,6 +15,8 @@ import javafx.scene.chart.LineChart;
 import javafx.scene.chart.XYChart;
 import javafx.scene.control.*;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Map;
 import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;
@@ -83,7 +82,6 @@ public class ResultsTabController {
 
         // Initialize the listeners for the simulation list and property chooser
         initSimulationListListeners();
-        initPropertyChooserListener();
 
         // Initialize tabs
         initSimulationDetailsTab();
@@ -107,15 +105,6 @@ public class ResultsTabController {
         });
     }
 
-    // Initialize listeners for the property chooser
-    private void initPropertyChooserListener() {
-        propertyChooser.getSelectionModel().selectedItemProperty().addListener((obs, oldVal, newVal) -> {
-            if (newVal != null) {
-                String runIdentifier = simulationList.getSelectionModel().getSelectedItem();
-                updateHistogramChart(runIdentifier, newVal.toString());  // Update the chart
-            }
-        });
-    }
 
     // Handle simulation selection logic
     private void handleSimulationSelection(String newValue) {
@@ -127,11 +116,11 @@ public class ResultsTabController {
             SimulationExecutionDetailsDTO details = allResults.get(newValue); // Assuming allResults is a Map keyed by simulation IDs
             // Update the progress section based on the selected simulation
             updateProgressSection(details);
-            // Load properties related to the selected simulation
-            loadPropertyChoices(newValue);
             // Populate Environment Properties Table
             populateEnvironmentPropertiesTable(newValue);
-
+            // Initialize population statistics and property histogram tabs here.
+            initPopulationStatisticsTab(newValue);
+            initPropertyHistogramTab(newValue);
             if (isSimulationLive(newValue)) {
                 // The simulation is currently live (running)
                 disablePropertyAndPopulationTabs();
@@ -369,6 +358,115 @@ public class ResultsTabController {
 
     }
 
+    private void initPopulationStatisticsTab(String runID) {
+        if (runID == null || allResults.get(runID) == null) {
+            // Data is not ready; return or disable the tab.
+            populationStatisticsTab.setDisable(true);
+            return;
+        }
+        // Populate ChoiceBox with Entity Names (This assumes you can get entity names from simulationInterface)
+        List<String> entityNames = new ArrayList<>(simulationInterface.getEntitiesDefinition().keySet());
+        populationStatsEntityChooser.getItems().setAll(entityNames);
+
+        // Set a Listener to update the chart when an entity is chosen
+        populationStatsEntityChooser.getSelectionModel().selectedItemProperty().addListener((obs, oldVal, newVal) -> {
+            if (newVal != null) {
+                String runIdentifier = simulationList.getSelectionModel().getSelectedItem();
+                updatePopulationLineChart(runIdentifier, newVal.toString());  // Update the chart
+            }
+        });
+    }
+
+    private void updatePopulationLineChart(String runIdentifier, String selectedEntity) {
+        // Get the SimulationExecutionDetailsDTO based on the selected simulation
+        SimulationExecutionDetailsDTO details = allResults.get(runIdentifier);
+
+        // Fetch the PopulationStatisticsDTO based on the selected entity
+        PopulationStatisticsDTO populationStats = details.getPopulationStatisticsDTOMap().get(selectedEntity);
+
+        // Clear the old data
+        populationLineChart.getData().clear();
+
+        // Initialize new data series
+        XYChart.Series<Integer, Integer> series = new XYChart.Series<>();
+
+        // Populate new data series
+        for (Map.Entry<Integer, Integer> entry : populationStats.getTicksToPopulationMap().entrySet()) {
+            int tick = entry.getKey();
+            int population = entry.getValue();
+            series.getData().add(new XYChart.Data<>(tick, population));
+        }
+
+        // Set the name for this series
+        series.setName(selectedEntity);
+
+        // Update the chart
+        populationLineChart.getData().add(series);
+    }
+
+    private void initPropertyHistogramTab(String runID) {
+        if (runID == null || allResults.get(runID) == null) {
+            // Data is not ready; return or disable the tab.
+            propertyHistogramTab.setDisable(true);
+            return;
+        }
+
+        // Populate ChoiceBox with Entity Names
+        List<String> entityNames = new ArrayList<>(allResults.get(runID).getEntityPropertiesHistogramDTOMap().keySet());
+        propertyEntitiesChooser.getItems().setAll(entityNames);
+
+        // Set a Listener to update the Property ChoiceBox when an entity is chosen
+        propertyEntitiesChooser.getSelectionModel().selectedItemProperty().addListener((obs, oldVal, newVal) -> {
+            if (newVal != null) {
+                String runIdentifier = simulationList.getSelectionModel().getSelectedItem();
+                updatePropertyChoiceBox(runIdentifier, newVal.toString());
+            }
+        });
+    }
+
+    private void updatePropertyChoiceBox(String runIdentifier, String selectedEntity) {
+        SimulationExecutionDetailsDTO details = allResults.get(runIdentifier);
+        EntityPropertiesHistogramDTO entityHistogram = details.getEntityPropertiesHistogramDTOMap().get(selectedEntity);
+
+        // Clear the old data
+        propertyChooser.getItems().clear();
+
+        // Populate new data
+        List<String> propertyNames = new ArrayList<>(entityHistogram.getPropertyHistograms().keySet());
+        propertyChooser.getItems().setAll(propertyNames);
+
+        // Set Listener to update Histogram when a property is chosen
+        propertyChooser.getSelectionModel().selectedItemProperty().addListener((obs, oldVal, newVal) -> {
+            if (newVal != null) {
+                updatePropertyHistogramBarChart(runIdentifier, selectedEntity, newVal.toString());
+            }
+        });
+    }
+
+    private void updatePropertyHistogramBarChart(String runIdentifier, String entity, String property) {
+        // Get the SimulationExecutionDetailsDTO based on the selected simulation
+        SimulationExecutionDetailsDTO details = allResults.get(runIdentifier);
+
+        // Fetch the PropertyHistogramDTO based on the selected entity and property
+        PropertyHistogramDTO propertyHistogram = details.getEntityPropertiesHistogramDTOMap().get(entity).getPropertyHistograms().get(property);
+
+        // Clear the old data
+        propertyHistogramBarChart.getData().clear();
+
+        // Initialize new data series
+        XYChart.Series<String, Number> series = new XYChart.Series<>();
+
+        // Populate new data series
+        for (Map.Entry<String, Integer> entry : propertyHistogram.getHistogram().entrySet()) {
+            series.getData().add(new XYChart.Data<>(entry.getKey(), entry.getValue()));
+        }
+
+        // Update the chart
+        propertyHistogramBarChart.getData().add(series);
+    }
+
+
+
     private void updateEntitiesPopulationTable(Map<String, Integer> entitiesPopulationMap) {
         ObservableList<Map.Entry<String, Integer>> items = FXCollections.observableArrayList(entitiesPopulationMap.entrySet());
         entitiesPopulationTable.setItems(items);
@@ -404,31 +502,4 @@ public class ResultsTabController {
 
 
 
-    private void updateHistogramChart(String runIdentifier, String propertyName) {
-/*        SimulationExecutionDetailsDTO selectedRun = simulationInterface.getSimulationResults(runIdentifier);
-        if (selectedRun != null) {
-            PropertyHistogramDTO histogram = selectedRun.getPropertyHistograms().get(propertyName);
-            if (histogram != null) {
-                // Clear old data
-                propertyHistogramBarChart.getData().clear();
-
-                // Create new series
-                XYChart.Series<String, Number> series = new XYChart.Series<>();
-                for (Map.Entry<String, Integer> entry : histogram.getHistogram().entrySet()) {
-                    series.getData().add(new XYChart.Data<>(entry.getKey(), entry.getValue()));
-                }
-
-                // Add series to chart
-                propertyHistogramBarChart.getData().add(series);
-            }
-        }*/
-    }
-
-    private void loadPropertyChoices(String runIdentifier) {
-        SimulationExecutionDetailsDTO selectedRun = simulationInterface.getSimulationResults(runIdentifier);
-/*        if (selectedRun != null) {
-            ObservableList<String> propertyNames = FXCollections.observableArrayList(selectedRun.getPropertyHistograms().keySet());
-            propertyChooser.setItems(propertyNames);
-        }*/
-    }
 }

@@ -76,8 +76,7 @@ public class ReplaceAction extends AbstractAction{
         newInstance.setSerialNumber(newSerialNumber);
 
         // Step 3: Add the new entity instance to the entities and add to the grid:
-        entitiesDefinitionToCreate.addEntity(newInstance, newInstance.getSerialNumber());
-        entitiesDefinitionToCreate.setPopulation(entitiesDefinitionToCreate.getPopulation() + 1);
+        entitiesDefinitionToCreate.addEntity(newInstance, newInstance.getSerialNumber(), actionContext.getTick());
         grid.addEntityToGrid(newInstance);
 
 

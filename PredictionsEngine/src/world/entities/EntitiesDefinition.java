@@ -28,6 +28,18 @@ public class EntitiesDefinition {
         entities.put(number, entity);
     }
 
+    public void addEntity (EntityInstance entity, int number, int tick){
+        entities.put(number, entity);
+        population ++;
+        // update ticks and population map:
+        if (ticksToPopulationMap.get(tick) == null) {
+            ticksToPopulationMap.put(tick, population);
+        } else {
+            ticksToPopulationMap.remove(tick);
+            ticksToPopulationMap.put(tick, population);
+        }
+    }
+
     public EntityInstance getEntity (int serialNumber){
         return entities.get(serialNumber);
     }
