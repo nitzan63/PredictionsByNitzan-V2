@@ -1,0 +1,111 @@
+/* Default */
+.root {
+    -fx-base: #1E1E1E;
+    -fx-background: #1E1E1E;
+    -fx-text-fill: #D1D1D1;
+}
+
+/* Label */
+.label {
+    -fx-text-fill: #D1D1D1;
+}
+
+/* Button */
+.button {
+    -fx-background-color: #3A3A3A;
+    -fx-text-fill: #D1D1D1;
+}
+
+.button:hover {
+    -fx-background-color: #4A4A4A;
+}
+
+/* Tabs */
+.tab-pane {
+    -fx-background-color: #2A2A2A;
+}
+
+.tab {
+    -fx-background-color: #2A2A2A;
+}
+
+/* TextField */
+.text-field {
+    -fx-background-color: #3A3A3A;
+    -fx-text-fill: #D1D1D1;
+}
+
+/* ScrollPane */
+.scroll-pane {
+    -fx-background-color: #1E1E1E;
+}
+
+/* ChoiceBox */
+.choice-box {
+    -fx-background-color: #3A3A3A;
+    -fx-mark-color: #D1D1D1;
+}
+
+/* TreeView */
+.tree-view {
+    -fx-background-color: #2A2A2A;
+}
+
+/* BarChart */
+.bar-chart {
+    -fx-background-color: #2A2A2A;
+    -fx-bar-fill: #6A6A6A;
+}
+
+/* LineChart */
+.line-chart {
+    -fx-background-color: #2A2A2A;
+    -fx-chart-series-line: #6A6A6A;
+}
+
+/* ListView */
+.list-view {
+    -fx-background-color: #2A2A2A;
+    -fx-border-color: #3A3A3A;
+}
+
+.list-cell {
+    -fx-padding: 10px;
+    -fx-border-color: #3A3A3A;
+    -fx-text-fill: #D1D1D1;
+}
+
+.list-cell:filled:selected {
+    -fx-background-color: #4A4A4A;
+    -fx-text-fill: #FFFFFF;
+}
+
+/* TableView */
+.table-view {
+    -fx-background-color: #2A2A2A;
+    -fx-table-cell-border-color: #3A3A3A;
+    -fx-border-color: #3A3A3A;
+}
+
+.table-row-cell {
+    -fx-border-color: #3A3A3A;
+    -fx-text-fill: #D1D1D1;
+}
+
+.table-row-cell:filled:selected {
+    -fx-background-color: #4A4A4A;
+    -fx-text-fill: #FFFFFF;
+}
+
+.table-column {
+    -fx-alignment: CENTER;
+    -fx-text-fill: #D1D1D1;
+}
+
+/* Column Headers */
+.table-view .column-header,
+.table-view .filler {
+    -fx-background-color: #3A3A3A;
+    -fx-border-color: transparent transparent #4A4A4A transparent;
+    -fx-padding: 10px;
+}

@@ -1,0 +1,116 @@
+/* Default */
+.root {
+    -fx-base: #C0C0C0;
+    -fx-background: #C0C0C0;
+    -fx-text-fill: black;
+}
+
+/* Label */
+.label {
+    -fx-text-fill: black;
+}
+
+/* Button */
+.button {
+    -fx-background-color: #C0C0C0;
+    -fx-border-color: black white white black;
+    -fx-border-width: 2px;
+    -fx-text-fill: black;
+}
+
+.button:hover {
+    -fx-background-color: #A0A0A0;
+}
+
+/* Tabs */
+.tab-pane {
+    -fx-background-color: #C0C0C0;
+}
+
+.tab {
+    -fx-background-color: #C0C0C0;
+}
+
+/* TextField */
+.text-field {
+    -fx-background-color: white;
+    -fx-border-color: black;
+    -fx-text-fill: black;
+}
+
+/* ScrollPane */
+.scroll-pane {
+    -fx-background-color: #C0C0C0;
+}
+
+/* ChoiceBox */
+.choice-box {
+    -fx-background-color: white;
+    -fx-border-color: black;
+    -fx-mark-color: black;
+}
+
+/* TreeView */
+.tree-view {
+    -fx-background-color: #C0C0C0;
+}
+
+/* BarChart */
+.bar-chart {
+    -fx-background-color: #C0C0C0;
+    -fx-bar-fill: #008000;
+}
+
+/* LineChart */
+.line-chart {
+    -fx-background-color: #C0C0C0;
+    -fx-chart-series-line: #0000FF;
+}
+
+/* ListView */
+.list-view {
+    -fx-background-color: white;
+    -fx-border-color: black;
+}
+
+.list-cell {
+    -fx-padding: 10px;
+    -fx-border-color: black;
+    -fx-border-width: 0 0 1px 0;
+}
+
+.list-cell:filled:selected {
+    -fx-background-color: #000080;
+    -fx-text-fill: white;
+}
+
+/* TableView */
+.table-view {
+    -fx-background-color: white;
+    -fx-table-cell-border-color: black;
+    -fx-border-color: black;
+}
+
+.table-row-cell {
+    -fx-border-color: black;
+    -fx-border-width: 0 0 1px 0;
+}
+
+.table-row-cell:filled:selected {
+    -fx-background-color: #000080;
+    -fx-text-fill: white;
+}
+
+.table-column {
+    -fx-alignment: CENTER;
+    -fx-text-fill: black;
+}
+
+/* Column Headers */
+.table-view .column-header,
+.table-view .filler {
+    -fx-background-color: #C0C0C0;
+    -fx-border-color: black black white white;
+    -fx-border-width: 2px;
+    -fx-padding: 10px;
+}

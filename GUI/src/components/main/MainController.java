@@ -22,6 +22,8 @@ import java.io.File;
 public class MainController {
     // FXML elements:
     @FXML
+    private ChoiceBox<String> themeChoiceBox;
+    @FXML
     private Text activeThreadsView;
     @FXML
     private Tab detailsTabTitle;
@@ -80,6 +82,15 @@ public class MainController {
         activeThreadsLabel.textProperty().bind(activeThreadCount);
         simulationsEndedLabel.textProperty().bind(simulationsEndedAndQueuedCount);
 
+        // Initialize the choice box
+        themeChoiceBox.getItems().addAll("Default", "Dark Mode", "Windows 98 Retro", "Star Wars");
+        themeChoiceBox.getSelectionModel().select(0);  // set default theme
+
+        // Add a listener to handle theme changes
+        themeChoiceBox.getSelectionModel().selectedItemProperty().addListener((observable, oldValue, newValue) -> {
+            switchTheme(newValue);
+        });
+
         // Start updating thread information when a file is selected
         isFileSelected.addListener((observable, oldValue, newValue) -> {
             if (newValue) {
@@ -93,6 +104,27 @@ public class MainController {
         });
 
         SharedResources.getInstance().setMainController(this);
+    }
+
+    private void switchTheme(String theme) {
+        String cssFile;
+        switch (theme) {
+            case "Dark Mode":
+                cssFile = "components/main/css/macOSdarkMode.css";
+                break;
+            case "Windows 98 Retro":
+                cssFile = "components/main/css/retroTheme.css";
+                break;
+            case "Star Wars":
+                cssFile = "components/main/css/StarWarsTheme.css";
+                break;
+            default:
+                cssFile = "components/main/css/default.css";
+        }
+
+        // Apply the new stylesheet, removing the old one
+        primaryStage.getScene().getStylesheets().clear();
+        primaryStage.getScene().getStylesheets().add(cssFile);
     }
 
     public void setPrimaryStage(Stage primaryStage) {

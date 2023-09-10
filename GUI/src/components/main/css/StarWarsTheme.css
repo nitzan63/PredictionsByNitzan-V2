@@ -1,0 +1,107 @@
+/* Star Wars Theme */
+
+/* Root */
+.root {
+    -fx-base: #1C1C1C;
+    -fx-background: url('starsWallpaper.jpg');
+    -fx-text-fill: #FFFF00;
+}
+
+/* Label */
+.label {
+    -fx-text-fill: #FFFF00;
+}
+
+/* Button */
+.button {
+    -fx-background-color: #333333;
+    -fx-text-fill: #FFFF00;
+}
+
+.button:hover {
+    -fx-background-color: #535353;
+}
+
+/* Tabs */
+.tab-pane {
+    -fx-background-color: #2C2C2C;
+}
+
+.tab {
+    -fx-background-color: #2C2C2C;
+}
+
+/* TextField */
+.text-field {
+    -fx-background-color: #535353;
+}
+
+/* ScrollPane */
+.scroll-pane {
+    -fx-background-color: #1C1C1C;
+}
+
+/* ChoiceBox */
+.choice-box {
+    -fx-background-color: #333333;
+    -fx-mark-color: #FFFF00;
+}
+
+/* TreeView */
+.tree-view {
+    -fx-background-color: #535353;
+}
+
+/* BarChart */
+.bar-chart {
+    -fx-background-color: #2C2C2C;
+    -fx-bar-fill: #FFFF00;
+}
+
+/* LineChart */
+.line-chart {
+    -fx-background-color: #2C2C2C;
+    -fx-chart-series-line: #FFFF00;
+}
+
+/* ListView */
+.list-view {
+    -fx-background-color: #333333;
+    -fx-border-color: #535353;
+}
+
+.list-cell {
+    -fx-padding: 10px;
+    -fx-border-color: #535353;
+}
+
+.list-cell:filled:selected {
+    -fx-background-color: #2C2C2C;
+    -fx-text-fill: #FFFF00;
+}
+
+/* TableView */
+.table-view {
+    -fx-background-color: #333333;
+    -fx-table-cell-border-color: #535353;
+}
+
+.table-row-cell {
+    -fx-border-color: #535353;
+}
+
+.table-row-cell:filled:selected {
+    -fx-background-color: #2C2C2C;
+    -fx-text-fill: #FFFF00;
+}
+
+.table-column {
+    -fx-alignment: CENTER;
+}
+
+/* Column Headers */
+.table-view .column-header,
+.table-view .filler {
+    -fx-background-color: #535353;
+    -fx-border-color: transparent transparent #FFFF00 transparent;
+}

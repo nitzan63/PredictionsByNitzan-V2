@@ -126,7 +126,12 @@ public class SimulationEngine implements DTOEngineInterface {
         EnvironmentDTO environmentDTO = new EnvironmentDTO();
         EnvProperties properties = prototypeWorld.getEnvironment().getProperties();
         for (EnvProperty property : properties.getProperties()) {
-            PropertyDTO propertyDTO = new PropertyDTO(property.getName(), property.getType(), property.getRange().getFromDouble(), property.getRange().getToDouble(), false, property.getValue());
+            PropertyDTO propertyDTO;
+            if (property.getType().equals("float") || property.getType().equals("decimal")) {
+                propertyDTO = new PropertyDTO(property.getName(), property.getType(), property.getRange().getFromDouble(), property.getRange().getToDouble(), false, property.getValue());
+            } else {
+                propertyDTO = new PropertyDTO(property.getName(), property.getValue());
+            }
             environmentDTO.addEnvironmentProperty(property.getName(), propertyDTO);
         }
         return environmentDTO;

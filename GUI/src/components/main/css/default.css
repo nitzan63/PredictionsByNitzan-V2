@@ -1,0 +1,119 @@
+/* Default */
+.root {
+    -fx-base: #ffffff;
+    -fx-background: #ffffff;
+    -fx-text-fill: black;
+}
+
+/* Label */
+.label {
+    -fx-text-fill: black;
+}
+
+/* Button */
+.button {
+    -fx-background-color: #B0C4DE;
+    -fx-text-fill: black;
+}
+
+.button:hover {
+    -fx-background-color: #ADD8E6;
+}
+
+/* Tabs */
+.tab-pane {
+    -fx-background-color: #F0F8FF;
+}
+
+.tab {
+    -fx-background-color: #F0F8FF;
+}
+
+/* TextField */
+.text-field {
+    -fx-background-color: #F5F5F5;
+}
+
+/* ScrollPane */
+.scroll-pane {
+    -fx-background-color: #ffffff;
+}
+
+/* ChoiceBox */
+.choice-box {
+    -fx-background-color: #B0C4DE;
+    -fx-mark-color: black;
+}
+
+
+/* TreeView */
+.tree-view {
+    -fx-background-color: #F5F5F5;
+}
+
+/* BarChart */
+.bar-chart {
+    -fx-background-color: #F5F5F5;
+    -fx-bar-fill: #B0C4DE;
+}
+
+/* LineChart */
+.line-chart {
+    -fx-background-color: #F5F5F5;
+    -fx-chart-series-line: #B0C4DE;
+}
+
+
+/* ListView */
+.list-view {
+    -fx-background-color: #FAFAFA;
+    -fx-border-color: #E0E0E0;
+    -fx-border-width: 1px;
+    -fx-border-radius: 4px;
+    -fx-background-radius: 4px;
+}
+
+.list-cell {
+    -fx-padding: 10px;
+    -fx-border-color: #E0E0E0;
+    -fx-border-width: 0 0 1px 0;
+}
+
+.list-cell:filled:selected {
+    -fx-background-color: #B0C4DE;
+    -fx-text-fill: white;
+}
+
+/* TableView */
+.table-view {
+    -fx-background-color: #FAFAFA;
+    -fx-table-cell-border-color: #E0E0E0;
+    -fx-border-color: #E0E0E0;
+    -fx-border-width: 1px;
+    -fx-border-radius: 4px;
+    -fx-background-radius: 4px;
+}
+
+.table-row-cell {
+    -fx-border-color: #E0E0E0;
+    -fx-border-width: 0 0 1px 0;
+}
+
+.table-row-cell:filled:selected {
+    -fx-background-color: #B0C4DE;
+    -fx-text-fill: white;
+}
+
+.table-column {
+    -fx-alignment: CENTER;
+}
+
+/* Column Headers */
+.table-view .column-header,
+.table-view .filler {
+    -fx-background-color: #E0E0E0;
+    -fx-border-color: transparent transparent #B0C4DE transparent;
+    -fx-border-width: 0 0 2px 0;
+    -fx-padding: 10px;
+}
+

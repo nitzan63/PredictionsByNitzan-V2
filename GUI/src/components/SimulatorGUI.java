@@ -27,9 +27,14 @@ public class SimulatorGUI extends Application {
         // Set Stage:
         primaryStage.setTitle("Predictions By Nitzan");
         Scene scene = new Scene(root, 900, 600);
+
+        // Add CSS
+        scene.getStylesheets().add(getClass().getResource("/components/main/css/default.css").toExternalForm());
+
         primaryStage.setScene(scene);
         primaryStage.show();
     }
+
 
     public static void main(String[] args) {
         launch(args);
