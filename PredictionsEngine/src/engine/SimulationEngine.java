@@ -13,6 +13,9 @@ import world.entities.entity.properties.property.api.EntityProperty;
 import world.environment.properties.EnvProperties;
 import world.environment.properties.property.api.EnvProperty;
 import world.rules.rule.action.api.Action;
+import world.rules.rule.action.api.ActionType;
+import world.rules.rule.action.api.CalculationAction;
+import world.rules.rule.action.impl.*;
 import world.rules.rule.api.Rule;
 import world.termination.api.Termination;
 import world.termination.impl.TerminationByTicks;
@@ -85,21 +88,86 @@ public class SimulationEngine implements DTOEngineInterface {
 
     @Override
     public List<RuleDTO> getRules() {
+        // Initialize the list to hold RuleDTO objects
         List<RuleDTO> ruleDTOList = new ArrayList<>();
+
+        // Check if the prototypeWorld or its rules are null
+        if (prototypeWorld == null || prototypeWorld.getRules() == null) {
+            return ruleDTOList;
+        }
+
+        // Loop through each Rule object in the prototype world
         for (Rule rule : prototypeWorld.getRules().getRules()) {
+            // Null check for each rule
+            if (rule == null) continue;
+
+            // Retrieve rule details
             String name = rule.getName();
             int ticks = rule.getActivation().getTicksToActivate();
             double probability = rule.getActivation().getProbability();
 
-            List<String> actionNames = new ArrayList<>();
+            // Initialize the list to hold ActionDTO objects
+            List<ActionDTO> actionDTOList = new ArrayList<>();
+
+            // Loop through each Action object for this rule
             for (Action action : rule.getActionsToPerform()) {
-                actionNames.add(action.getActionType().name());
+                // Null check for each action
+                if (action == null) continue;
+
+                // Create an ActionDTO and add it to the list
+                ActionDTO actionDTO = createActionDTO(action);
+                actionDTOList.add(actionDTO);
             }
 
-            int numberOfActions = actionNames.size();
-            ruleDTOList.add(new RuleDTO(name, ticks, probability, numberOfActions, actionNames));
+            // Create a RuleDTO and add it to the list
+            ruleDTOList.add(new RuleDTO(name, ticks, probability, actionDTOList));
         }
+
         return ruleDTOList;
+    }
+
+    private ActionDTO createActionDTO (Action action){
+        ActionDTO actionDTO = new ActionDTO(action.getActionType().name(), action.getEntityName());
+        if (action.getSecondaryEntityName() != null)
+            actionDTO.addAdditionalDetails("Secondary Entity ", action.getSecondaryEntityName());
+        ActionType actionType = action.getActionType();
+        switch (actionType){
+            case CONDITION:
+                ConditionAction conditionAction = (ConditionAction) action;
+                actionDTO.addAdditionalDetails("Number of Then actions " , String.valueOf(conditionAction.getNumberOfThenActions()));
+                actionDTO.addAdditionalDetails("Number of Else actions " , String.valueOf(conditionAction.getNumberOfElseActions()));
+                actionDTO.addAdditionalDetails("Conditions \n ----------- \n ", conditionAction.getMainConditionData());
+                break;
+            case PROXIMITY:
+                ProximityAction proximityAction = (ProximityAction) action;
+                actionDTO.addAdditionalDetails("Target Entity ", proximityAction.getTargetEntityName());
+                actionDTO.addAdditionalDetails("Proximity ", proximityAction.getByExpression());
+                actionDTO.addAdditionalDetails("Number of Actions ", String.valueOf(proximityAction.getProximityNumberOfActions()));
+                break;
+            case DECREASE:
+            case INCREASE:
+            case SET:
+                actionDTO.addAdditionalDetails("Property ", action.getPropertyName());
+                actionDTO.addAdditionalDetails("By ", action.getByExpression());
+                break;
+            case CALCULATION:
+                CalculationAction calculationAction = (CalculationAction) action;
+                if (calculationAction instanceof MultiplyAction)
+                    actionDTO.addAdditionalDetails("Calculation type ", "Multiply");
+                else actionDTO.addAdditionalDetails("Calculation type ", "Divide");
+                actionDTO.addAdditionalDetails("Argument 1 ", calculationAction.getArgs1());
+                actionDTO.addAdditionalDetails("Argument 2 ", calculationAction.getArgs2());
+                actionDTO.addAdditionalDetails("Result Property ", calculationAction.getPropertyName());
+                break;
+            case REPLACE:
+                assert action instanceof ReplaceAction;
+                ReplaceAction replaceAction = (ReplaceAction) action;
+                actionDTO.addAdditionalDetails("Entity to Kill ", replaceAction.getKillEntityName());
+                actionDTO.addAdditionalDetails("Entity to Create ", replaceAction.getCreateEntityName());
+                actionDTO.addAdditionalDetails("Mode ", replaceAction.getMode());
+                break;
+        }
+        return actionDTO;
     }
 
     @Override

@@ -1,20 +1,27 @@
 package dto;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class RuleDTO {
     private String name;
     private int activationTicks;
     private double activationProbability;
-    private int numberOfActions;
-    private List<String> actionNames;
+    private List<ActionDTO> actionsList;
 
-    public RuleDTO(String name, int activationTicks, double activationProbability, int numberOfActions, List<String> actionNames) {
+    private List<String> actionsNames;
+
+    public RuleDTO(String name, int activationTicks, double activationProbability, List<ActionDTO> actionsList) {
         this.name = name;
         this.activationTicks = activationTicks;
         this.activationProbability = activationProbability;
-        this.numberOfActions = numberOfActions;
-        this.actionNames = actionNames;
+        this.actionsList = actionsList;
+
+        this.actionsNames = new ArrayList<>();
+
+        for (ActionDTO actionDTO : actionsList){
+            actionsNames.add(actionDTO.getType());
+        }
     }
 
     public String getName() {
@@ -29,11 +36,11 @@ public class RuleDTO {
         return activationProbability;
     }
 
-    public int getNumberOfActions() {
-        return numberOfActions;
+    public List<ActionDTO> getActionsList() {
+        return actionsList;
     }
 
     public List<String> getActionNames() {
-        return actionNames;
+        return actionsNames;
     }
 }

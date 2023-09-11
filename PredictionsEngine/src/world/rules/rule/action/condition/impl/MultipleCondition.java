@@ -46,6 +46,14 @@ public class MultipleCondition implements Condition {
 
     }
 
+    public LogicalOperator getLogicalOperator() {
+        return logicalOperator;
+    }
+
+    public int getNumberOfNestedConditions(){
+        return conditionList.size();
+    }
+
     @Override
     public String toString() {
         return "MultipleCondition{" +

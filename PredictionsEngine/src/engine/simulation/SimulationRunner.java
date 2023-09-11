@@ -15,6 +15,8 @@ public class SimulationRunner implements Runnable {
     private volatile boolean shouldPause = false;
     private volatile boolean shouldStop = false;
     private final Object lock = new Object();
+    private long pauseTime;
+
 
 
     public SimulationRunner(World world, List<ErrorDTO> sharedErrorList) {
@@ -81,12 +83,14 @@ public class SimulationRunner implements Runnable {
     public void pause() {
         synchronized (lock) {
             shouldPause = true;
+            pauseTime = System.currentTimeMillis();
         }
     }
 
     public void resume() {
         synchronized (lock) {
             shouldPause = false;
+            startTime += (System.currentTimeMillis() - pauseTime);
             lock.notifyAll();
         }
     }

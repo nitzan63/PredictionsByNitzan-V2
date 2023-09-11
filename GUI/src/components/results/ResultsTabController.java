@@ -2,6 +2,7 @@ package components.results;
 
 import api.DTOUIInterface;
 import components.SharedResources;
+import components.main.MainController;
 import dto.*;
 import javafx.application.Platform;
 import javafx.beans.property.ReadOnlyObjectWrapper;
@@ -26,6 +27,8 @@ public class ResultsTabController {
 
     @FXML
     private ChoiceBox<String> populationStatsEntityChooser;
+    @FXML
+    private Button reRunButton;
     @FXML
     private ChoiceBox<String> propertyEntitiesChooser;
     @FXML
@@ -80,6 +83,9 @@ public class ResultsTabController {
         // Initialize shared resources and DTO interface
         initResources();
 
+        // Initialize Buttons:
+        initButtons();
+
         // Initialize the listeners for the simulation list and property chooser
         initSimulationListListeners();
 
@@ -96,6 +102,13 @@ public class ResultsTabController {
                 initializeSimulationList();
             }
         });
+    }
+
+    private void initButtons(){
+        pauseButton.setDisable(true);
+        stopButton.setDisable(true);
+        resumeButton.setDisable(true);
+        reRunButton.setDisable(true);
     }
 
     // Initialize listeners for the simulation list
@@ -127,6 +140,7 @@ public class ResultsTabController {
                 pauseButton.setDisable(false);
                 resumeButton.setDisable(true);
                 stopButton.setDisable(false);
+                reRunButton.setDisable(true);
                 // Start updating the UI to reflect the live simulation data
                 startPolling(newValue);
             } else if (isSimulationPaused(newValue)) {
@@ -135,6 +149,7 @@ public class ResultsTabController {
                 pauseButton.setDisable(true);
                 resumeButton.setDisable(false);
                 stopButton.setDisable(false);
+                reRunButton.setDisable(true);
                 // Update UI with current data but don't continue polling
                 updateEntitiesPopulationTable(newValue);
             } else if (isSimulationQueued(newValue)){
@@ -142,6 +157,7 @@ public class ResultsTabController {
                 pauseButton.setDisable(true);
                 resumeButton.setDisable(true);
                 stopButton.setDisable(true);
+                reRunButton.setDisable(true);
                 disablePropertyAndPopulationTabs();
                 updateEntitiesPopulationTable(newValue);
             }
@@ -152,6 +168,7 @@ public class ResultsTabController {
                 pauseButton.setDisable(true);
                 resumeButton.setDisable(true);
                 stopButton.setDisable(true);
+                reRunButton.setDisable(false);
                 // Stop updating the UI and populate entities table with final data
                 stopPolling();
                 updateEntitiesPopulationTable(newValue);
@@ -176,7 +193,6 @@ public class ResultsTabController {
     private void disableTabs() {
         propertyHistogramTab.setDisable(true);
         populationStatisticsTab.setDisable(true);
-        simulationDetailsTab.setDisable(true);
     }
 
     // Check if the simulation is live (you'll need to implement this based on your data)
@@ -213,10 +229,8 @@ public class ResultsTabController {
 
 
     private void initializeSimulationList() {
-        System.out.println("Initializing past simulations list...");
         // fetch simulation results:
         allResults = simulationInterface.getAllSimulationResults();
-        System.out.println("All Results: " + allResults);
         // Create an ObservableList for the ListView
         ObservableList<String> pastSimulationsObservable = FXCollections.observableArrayList();
         // Populate the ObservableList with simulation IDs
@@ -304,6 +318,8 @@ public class ResultsTabController {
             // Stop updating the UI for the paused simulation but update UI with current data
             stopPolling();
             updateEntitiesPopulationTable(selectedSimulation);
+            enableTabs();
+            updateProgressSection(simulationInterface.getLiveSimulationExecutionDetails(selectedSimulation));
         }
     }
 
@@ -318,6 +334,8 @@ public class ResultsTabController {
             stopButton.setDisable(false);
             // Restart updating the UI to reflect the live simulation data
             startPolling(selectedSimulation);
+            updateProgressSection(simulationInterface.getLiveSimulationExecutionDetails(selectedSimulation));
+            disableTabs();
         }
     }
 
@@ -334,6 +352,21 @@ public class ResultsTabController {
             pauseButton.setDisable(true);
             resumeButton.setDisable(true);
             stopButton.setDisable(true);
+            reRunButton.setDisable(false);
+            updateProgressSection(allResults.get(selectedSimulation));
+            enableTabs();
+        }
+    }
+    @FXML
+    public void onReRunButtonAction() {
+        String selectedSimulation = simulationList.getSelectionModel().getSelectedItem();
+        SimulationExecutionDetailsDTO simulationDetails = allResults.get(selectedSimulation);
+        UserInputDTO userInputDTO = simulationDetails.getUserInputDTO();
+
+        SharedResources.getInstance().setLastSelectedSimulation(userInputDTO);
+        MainController mainController = SharedResources.getInstance().getMainController();
+        if (mainController != null) {
+            mainController.switchToExecutionTab();
         }
     }
 
@@ -499,6 +532,7 @@ public class ResultsTabController {
         populationStatisticsTab.setDisable(true);
         simulationDetailsTab.setDisable(false);
     }
+
 
 
 

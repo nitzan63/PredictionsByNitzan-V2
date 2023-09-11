@@ -141,8 +141,9 @@ public class DetailsTabController {
     }
 
     private void displayActionDetail(String ruleName, String type, String factor) {
-        // Here you can call the appropriate method to get the RuleDTO object
+        // Fetch the rules from the interface
         List<RuleDTO> rules = simulationInterface.getRules();
+
         for (RuleDTO ruleDTO : rules) {
             if (ruleDTO.getName().equals(ruleName)) {
                 if ("Actions".equals(type)) {
@@ -216,19 +217,32 @@ public class DetailsTabController {
     }
 
     private void addActionToFlowPane(RuleDTO ruleDTO) {
-        // Initialize the controller and FXML loader here
-        Pair<SingleDetailController, Parent> loadedComponent = loadFXMLComponent("SingleDetailComponent.fxml");
-        if (loadedComponent == null) {
-            return;
+        for (ActionDTO actionDTO : ruleDTO.getActionsList()) {
+            // Initialize the controller and FXML loader here
+            Pair<SingleDetailController, Parent> loadedComponent = loadFXMLComponent("SingleDetailComponent.fxml");
+
+            // If the loaded component is null, continue to the next iteration
+            if (loadedComponent == null) {
+                continue;
+            }
+
+            SingleDetailController singleDetailController = loadedComponent.getKey();
+            Parent root = loadedComponent.getValue();
+
+            // Build the details string using the ActionDTO fields
+            StringBuilder sb = new StringBuilder();
+            sb.append("Type: ").append(actionDTO.getType()).append("\n");
+            sb.append("Entity: ").append(actionDTO.getMainEntity()).append("\n");
+
+            // Loop through the additional details map and add them to the string
+            for (Map.Entry<String, String> entry : actionDTO.getAdditionalDetails().entrySet()) {
+                sb.append(entry.getKey()).append(": ").append(entry.getValue()).append("\n");
+            }
+
+            singleDetailController.getDataLabel().setText(sb.toString());
+
+            detailsFlowPane.getChildren().add(root);
         }
-
-        SingleDetailController singleDetailController = loadedComponent.getKey();
-        Parent root = loadedComponent.getValue();
-        String actionDetails = "Action information to be implemented....";
-
-        singleDetailController.getDataLabel().setText(actionDetails);
-
-        detailsFlowPane.getChildren().add(root);
     }
 
     public void displayTerminationConditions() {
@@ -270,6 +284,11 @@ public class DetailsTabController {
     }
 
     private void addPropertyDetailToFlowPane(PropertyDTO property) {
+        if (property == null) {
+            System.err.println("Property is null!");
+            return;
+        }
+
         // Initialize the controller and FXML loader here
         Pair<SingleDetailController, Parent> loadedComponent = loadFXMLComponent("SingleDetailComponent.fxml");
         if (loadedComponent == null) {
@@ -279,13 +298,13 @@ public class DetailsTabController {
         SingleDetailController singleDetailController = loadedComponent.getKey();
         Parent root = loadedComponent.getValue();
 
-
         // Build the custom string
         StringBuilder sb = new StringBuilder();
         sb.append("Property Name: ").append(property.getName());
-        sb.append(" | Type: ").append(property.getType()).append("\n");
+        sb.append(" | Type: ").append(property.getType() != null ? property.getType() : "Unknown").append("\n");
 
-        if (property.getType().equalsIgnoreCase("decimal") || property.getType().equalsIgnoreCase("float")) {
+        String type = property.getType();
+        if (type != null && (type.equalsIgnoreCase("decimal") || type.equalsIgnoreCase("float"))) {
             sb.append("Range: ").append(property.getRangeFrom()).append(" -> ").append(property.getRangeTo()).append("\n");
         }
 
@@ -297,6 +316,7 @@ public class DetailsTabController {
         // Add the pane to the FlowPane
         detailsFlowPane.getChildren().add(root);
     }
+
 
     private <T> Pair<T, Parent> loadFXMLComponent(String fxmlPath) {
         FXMLLoader loader = new FXMLLoader(getClass().getResource(fxmlPath));

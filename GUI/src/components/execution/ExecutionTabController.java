@@ -58,6 +58,12 @@ public class ExecutionTabController {
         instance = this;
         this.simulationInterface = SharedResources.getInstance().getDTOUIInterface();
 
+        UserInputDTO userInputDTO = SharedResources.getInstance().getLastSelectedSimulation();
+        if (userInputDTO != null) {
+            populateEntitiesTableWithUserInput(userInputDTO);
+            populateEnvPropertiesTableWithUserInput(userInputDTO);
+        }
+
         // Listen to changes on isFileSelected property
         SharedResources.getInstance().getIsFileSelected().addListener((observable, oldValue, newValue) -> {
             if (newValue) {
@@ -77,6 +83,37 @@ public class ExecutionTabController {
             initializeEnvironmentTable();
             setGridSize();
         }
+    }
+
+    private void populateEntitiesTableWithUserInput(UserInputDTO userInputDTO){
+        Map<String, Integer> entityPopulations = userInputDTO.getEntityPopulationMap();
+
+        // Clear the table before populating
+        entitiesTable.getItems().clear();
+
+        for (Map.Entry<String, Integer> entry : entityPopulations.entrySet()) {
+            EntitiesDefinitionDTO entity = new EntitiesDefinitionDTO(entry.getKey(), entry.getValue() , null);
+            entitiesTable.getItems().add(entity);
+        }
+        // Refresh the table to show the new data
+        entitiesTable.refresh();
+    }
+
+    private void populateEnvPropertiesTableWithUserInput(UserInputDTO userInputDTO){
+        Map<String, String> envProps = userInputDTO.getEnvironmertPropMap();
+
+        // Clear the table before populating
+        envPropertiesTable.getItems().clear();
+
+        for (Map.Entry<String, String> entry : envProps.entrySet()) {
+            // Here, I'm assuming that you have a constructor or setter methods in your
+            // PropertyDTO class to set these properties
+            PropertyDTO property = new PropertyDTO(entry.getKey() , entry.getValue());
+
+            envPropertiesTable.getItems().add(property);
+        }
+        // Refresh the table to show the new data
+        envPropertiesTable.refresh();
     }
 
     private void setGridSize(){

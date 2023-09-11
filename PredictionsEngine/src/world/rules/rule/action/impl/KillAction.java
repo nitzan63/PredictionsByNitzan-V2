@@ -18,13 +18,13 @@ public class KillAction extends AbstractAction {
     @Override
     public void invoke(EntityInstance entityInstance, ActionContext actionContext) {
         // check if there is a secondary entity:
-        if (secondaryEntity != null){
+        if (secondaryEntity != null) {
             // if yes, check if the intended action is in the context of the secondary entity:
-            if (secondaryEntity.getDefinitionEntityName().equals(entityName)){
+            if (secondaryEntity.getDefinitionEntityName().equals(entityName)) {
                 // if yes, get the map of the selected entities:
                 Map<Integer, EntityInstance> secondaryEntities = secondaryEntity.getSelectedSecondaryInstancesMap(actionContext);
                 // iterate over them and perform actions
-                for (EntityInstance secondaryEntity : secondaryEntities.values()){
+                for (EntityInstance secondaryEntity : secondaryEntities.values()) {
                     performAction(secondaryEntity, actionContext);
                 }
                 // if there is a secondary entity, but the action is performed on the primary entity:
@@ -33,19 +33,21 @@ public class KillAction extends AbstractAction {
         } else performAction(entityInstance, actionContext);
     }
 
-    private void performAction (EntityInstance entityInstance, ActionContext actionContext){
+    private void performAction(EntityInstance entityInstance, ActionContext actionContext) {
         // get objects from context:
         Grid grid = actionContext.getGrid();
         Map<String, EntitiesDefinition> allEntitiesDefinitionMap = actionContext.getEntitiesMap();
 
         // get the relevant entities definition
         EntitiesDefinition entityDefinitionToKill = allEntitiesDefinitionMap.get(entityName);
-
+        if (entityDefinitionToKill.getPopulation() == 0)
+            return;
+        // remove from grid:
+        grid.removeEntityFromGrid(entityInstance);
         // remove entity instance from instances:
         entityDefinitionToKill.removeEntityInstance(entityInstance.getSerialNumber(), actionContext.getTick());
 
-        // remove from grid:
-        grid.removeEntityFromGrid(entityInstance);
+
     }
 
     @Override

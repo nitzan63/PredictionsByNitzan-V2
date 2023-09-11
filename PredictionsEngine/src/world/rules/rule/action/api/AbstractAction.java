@@ -16,7 +16,6 @@ public abstract class AbstractAction implements Action {
     protected final SecondaryEntity secondaryEntity;
 
 
-
     protected AbstractAction(ActionType actionType, String entityName, SecondaryEntity secondaryEntity) {
         this.actionType = actionType;
         this.entityName = entityName;
@@ -36,6 +35,12 @@ public abstract class AbstractAction implements Action {
         return entityName;
     }
 
+    @Override
+    public String getSecondaryEntityName() {
+        if (secondaryEntity != null)
+            return secondaryEntity.getDefinitionEntityName();
+        else return null;
+    }
 
     @Override
     public String toString() {

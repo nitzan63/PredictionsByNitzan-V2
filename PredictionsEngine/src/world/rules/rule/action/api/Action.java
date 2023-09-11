@@ -11,4 +11,6 @@ public interface Action {
     public String getPropertyName();
 
     public String getByExpression();
+
+    public String getSecondaryEntityName();
 }

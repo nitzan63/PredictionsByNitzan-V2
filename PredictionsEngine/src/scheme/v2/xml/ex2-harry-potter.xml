@@ -1,0 +1,78 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<PRD-world xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="../xsd/predictions-v2.xsd">
+    <PRD-thread-count>1</PRD-thread-count>
+    <PRD-environment>
+        <PRD-env-property type="decimal">
+            <PRD-name>MagicalFieldLevel</PRD-name>
+            <PRD-range from="1" to="5"/>
+        </PRD-env-property>
+        <PRD-env-property type="decimal">
+            <PRD-name>DarkPresence</PRD-name>
+            <PRD-range from="1" to="5"/>
+        </PRD-env-property>
+    </PRD-environment>
+    <PRD-grid rows="100" columns="100"/>
+    <PRD-entities>
+        <PRD-entity name="Wizard">
+            <PRD-properties>
+                <PRD-property type="decimal">
+                    <PRD-name>ManaLevel</PRD-name>
+                    <PRD-range from="0" to="100"/>
+                    <PRD-value random-initialize="true"/>
+                </PRD-property>
+                <PRD-property type="decimal">
+                    <PRD-name>Intelligence</PRD-name>
+                    <PRD-range from="50" to="100"/>
+                    <PRD-value random-initialize="true"/>
+                </PRD-property>
+                <PRD-property type="boolean">
+                    <PRD-name>Wand</PRD-name>
+                    <PRD-value random-initialize="true"/>
+                </PRD-property>
+            </PRD-properties>
+        </PRD-entity>
+        <PRD-entity name="DarkCreature">
+            <PRD-properties>
+                <PRD-property type="decimal">
+                    <PRD-name>ManaLevel</PRD-name>
+                    <PRD-range from="0" to="100"/>
+                    <PRD-value random-initialize="true"/>
+                </PRD-property>
+                <PRD-property type="decimal">
+                    <PRD-name>Evilness</PRD-name>
+                    <PRD-range from="50" to="100"/>
+                    <PRD-value random-initialize="true"/>
+                </PRD-property>
+            </PRD-properties>
+        </PRD-entity>
+    </PRD-entities>
+    <PRD-rules>
+        <PRD-rule name="MagicalBoost">
+            <PRD-actions>
+                <PRD-action type="increase" entity="Wizard" property="ManaLevel" by="environment(MagicalFieldLevel)"/>
+            </PRD-actions>
+            <PRD-activation ticks="200" probability="0.1"/>
+        </PRD-rule>
+        <PRD-rule name="DarkPresenceBoost">
+            <PRD-actions>
+                <PRD-action type="increase" entity="DarkCreature" property="ManaLevel" by="environment(DarkPresence)"/>
+            </PRD-actions>
+            <PRD-activation ticks="200" probability="0.1"/>
+        </PRD-rule>
+        <PRD-rule name="ConvertToDark">
+            <PRD-actions>
+                <PRD-action type="proximity">
+                    <PRD-between source-entity="Wizard" target-entity="DarkCreature"/>
+                    <PRD-env-depth of="environment(DarkPresence)"/>
+                    <PRD-actions>
+                        <PRD-action type="replace" kill="Wizard" create="DarkCreature" mode="derived"/>
+                    </PRD-actions>
+                </PRD-action>
+            </PRD-actions>
+            <PRD-activation ticks="1000" probability="0.05"/>
+        </PRD-rule>
+    </PRD-rules>
+    <PRD-termination>
+        <PRD-by-second count="10"/>
+    </PRD-termination>
+</PRD-world>

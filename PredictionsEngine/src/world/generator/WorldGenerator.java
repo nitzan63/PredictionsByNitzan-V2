@@ -78,7 +78,7 @@ public class WorldGenerator {
             case "boolean":
                 return new PropertyBool(name, true, null);
 
-            case "integer":
+            case "decimal":
                 return new PropertyDecimal(name, true, null, (Range<Integer>) range);
 
             case "float":

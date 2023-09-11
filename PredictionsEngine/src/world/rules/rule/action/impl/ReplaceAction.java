@@ -82,6 +82,18 @@ public class ReplaceAction extends AbstractAction{
 
     }
 
+    public String getKillEntityName() {
+        return killEntityName;
+    }
+
+    public String getCreateEntityName() {
+        return createEntityName;
+    }
+
+    public String getMode() {
+        return mode;
+    }
+
     @Override
     public String getPropertyName() {
         return null;

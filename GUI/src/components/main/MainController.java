@@ -188,4 +188,8 @@ public class MainController {
         mainTabPane.getSelectionModel().select(resultsTabTitle); // use the ID of the Results tab
     }
 
+    public void switchToExecutionTab(){
+        mainTabPane.getSelectionModel().select(executionTabTitle);
+    }
+
 }

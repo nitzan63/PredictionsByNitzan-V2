@@ -67,8 +67,6 @@ public class SimulationManager {
             simulationExecutionDetailsMap.get(runID).setSimulationState(SimulationExecutionDetailsDTO.SimulationState.LIVE);
             threadCountManager.decrementQueuedSimulations();
             simulationRunner.run();
-            //gather and store run results
-            //processSimulationExecutionDetails(worldInstance, runID);
             // set the simulation status to "completed":
             simulationExecutionDetailsMap.get(runID).setSimulationState(SimulationExecutionDetailsDTO.SimulationState.COMPLETED);
             // update thread count manager
@@ -216,6 +214,7 @@ public class SimulationManager {
         SimulationRunner runner = simulationRunnerMap.get(runID);
         if (runner != null) {
             runner.stop();
+            simulationRunnerMap.remove(runID);
             simulationExecutionDetailsMap.get(runID).setSimulationState(SimulationExecutionDetailsDTO.SimulationState.COMPLETED);
         }
     }

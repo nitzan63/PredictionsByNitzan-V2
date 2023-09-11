@@ -89,6 +89,6 @@
 
     </PRD-rules>
     <PRD-termination>
-        <PRD-by-ticks count="100" />
+        <PRD-by-user/>
     </PRD-termination>
 </PRD-world>

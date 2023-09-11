@@ -40,7 +40,7 @@ public class EnvironmentInputValidator {
 
     public static Object parseValue(String stringValue, String expectedType) throws NumberFormatException {
         if (expectedType.equals("decimal")) {
-            return Double.parseDouble(stringValue);
+            return Integer.parseInt(stringValue);
         } else if (expectedType.equals("float")) {
             return Float.parseFloat(stringValue);
         } else if (expectedType.equals("string")) {

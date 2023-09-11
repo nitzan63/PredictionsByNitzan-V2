@@ -7,6 +7,8 @@ import world.rules.rule.action.api.AbstractAction;
 import world.rules.rule.action.api.Action;
 import world.rules.rule.action.api.ActionType;
 import world.rules.rule.action.condition.api.Condition;
+import world.rules.rule.action.condition.impl.MultipleCondition;
+import world.rules.rule.action.condition.impl.SingleCondition;
 import world.rules.rule.action.secondary.SecondaryEntity;
 
 import java.util.List;
@@ -71,6 +73,31 @@ public class ConditionAction extends AbstractAction {
 
     public List<Action> getElseActions() {
         return elseActions;
+    }
+
+    public int getNumberOfElseActions () {return elseActions.size(); }
+    public int getNumberOfThenActions () {return thenActions.size(); }
+
+    public String getMainConditionData () {
+        StringBuilder sb = new StringBuilder();
+
+        if (condition == null) {
+            return "Condition is null";
+        }
+
+        if (condition instanceof SingleCondition) {
+            SingleCondition singleCondition = (SingleCondition) condition;
+            sb.append("Single Condition.");
+            sb.append("\nProperty: ").append(singleCondition.getPropertyName());
+            sb.append("\nOperator: ").append(singleCondition.getOperator().name());
+            sb.append("\nValue: ").append(singleCondition.getRawValue());
+        } else {
+            MultipleCondition multipleCondition = (MultipleCondition) condition;
+            sb.append("Multiple Condition.");
+            sb.append("\nLogical Operator: ").append(multipleCondition.getLogicalOperator().name());
+            sb.append("\nNumber of nested Conditions: ").append(multipleCondition.getNumberOfNestedConditions());
+        }
+        return sb.toString();
     }
 
     @Override

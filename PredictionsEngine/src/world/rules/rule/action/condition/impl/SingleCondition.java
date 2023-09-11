@@ -82,7 +82,21 @@ public class SingleCondition implements Condition {
         }
     }
 
+    public String getPropertyName() {
+        return propertyName;
+    }
 
+    public Operator getOperator() {
+        return operator;
+    }
+
+    public String getRawValue() {
+        return rawValue;
+    }
+
+    public String getEntityName() {
+        return entityName;
+    }
 
     @Override
     public String toString() {

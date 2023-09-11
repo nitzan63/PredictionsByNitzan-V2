@@ -101,4 +101,12 @@ public class ProximityAction extends AbstractAction {
     public String getByExpression() {
         return ofExpression;
     }
+
+    public int getProximityNumberOfActions() {
+        return actionsToPerform.size();
+    }
+
+    public String getTargetEntityName() {
+        return targetEntityName;
+    }
 }
