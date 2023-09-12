@@ -148,6 +148,7 @@
                                                         <ChoiceBox fx:id="propertyEntitiesChooser" prefWidth="150.0" />
                                                         <Label text="Choose Property" />
                                                         <ChoiceBox fx:id="propertyChooser" prefWidth="150.0" />
+                                          <Label fx:id="averageValueLabel" text="XXX" />
                                                     </children>
                                                     <padding>
                                                         <Insets bottom="5.0" left="20.0" top="5.0" />

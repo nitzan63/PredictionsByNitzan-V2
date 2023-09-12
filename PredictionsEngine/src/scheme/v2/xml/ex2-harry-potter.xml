@@ -50,6 +50,7 @@
         <PRD-rule name="MagicalBoost">
             <PRD-actions>
                 <PRD-action type="increase" entity="Wizard" property="ManaLevel" by="environment(MagicalFieldLevel)"/>
+                <PRD-action type="set" entity="Wizard" property="Wand" value="true"/>
             </PRD-actions>
             <PRD-activation ticks="200" probability="0.1"/>
         </PRD-rule>

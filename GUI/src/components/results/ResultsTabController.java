@@ -21,10 +21,13 @@ import java.util.List;
 import java.util.Map;
 import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;
+import java.util.concurrent.ScheduledFuture;
 import java.util.concurrent.TimeUnit;
 
 public class ResultsTabController {
 
+    @FXML
+    private Label averageValueLabel;
     @FXML
     private ChoiceBox<String> populationStatsEntityChooser;
     @FXML
@@ -77,6 +80,7 @@ public class ResultsTabController {
     private DTOUIInterface simulationInterface;
     private Map<String, SimulationExecutionDetailsDTO> allResults;
     private ScheduledExecutorService scheduler = Executors.newScheduledThreadPool(1);
+    private ScheduledFuture<?> pollingTask;
 
 
     public void initialize() {
@@ -217,8 +221,13 @@ public class ResultsTabController {
     }
 
     public void startPolling(String simulationId) {
+        // Cancel the previous task if it's running
+        if (pollingTask != null) {
+            pollingTask.cancel(false);
+        }
+
         final Runnable updater = () -> updateSimulationDetails(simulationId);
-        scheduler.scheduleAtFixedRate(updater, 0, 200, TimeUnit.MILLISECONDS);
+        pollingTask = scheduler.scheduleAtFixedRate(updater, 0, 200, TimeUnit.MILLISECONDS);
     }
 
     // Stop polling
@@ -445,7 +454,7 @@ public class ResultsTabController {
         }
 
         // Populate ChoiceBox with Entity Names
-        List<String> entityNames = new ArrayList<>(allResults.get(runID).getEntityPropertiesHistogramDTOMap().keySet());
+        List<String> entityNames = new ArrayList<>(simulationInterface.getEntitiesDefinition().keySet());
         propertyEntitiesChooser.getItems().setAll(entityNames);
 
         // Set a Listener to update the Property ChoiceBox when an entity is chosen
@@ -490,12 +499,54 @@ public class ResultsTabController {
         XYChart.Series<String, Number> series = new XYChart.Series<>();
 
         // Populate new data series
+        int populationLeft = 0;
         for (Map.Entry<String, Integer> entry : propertyHistogram.getHistogram().entrySet()) {
             series.getData().add(new XYChart.Data<>(entry.getKey(), entry.getValue()));
+            populationLeft += entry.getValue();
         }
 
         // Update the chart
         propertyHistogramBarChart.getData().add(series);
+
+        Double average = calculateAverageProperty(propertyHistogram);
+
+        if (populationLeft == 0) {
+            averageValueLabel.setText("");  // If no population left, show nothing
+        } else if (average == null) {
+            averageValueLabel.setText("");  // If property is not a number, show nothing
+        } else {
+            averageValueLabel.setText("Average: " + String.format("%.2f", average));
+        }
+    }
+
+    private Double calculateAverageProperty(PropertyHistogramDTO propertyHistogramDTO){
+        if (propertyHistogramDTO == null || propertyHistogramDTO.getHistogram() == null) {
+            return null;
+        }
+
+        Map<String, Integer> histogram = propertyHistogramDTO.getHistogram();
+
+        double totalValue = 0.0;
+        int totalCount = 0;
+
+        for (Map.Entry<String, Integer> entry : histogram.entrySet()) {
+            String valueString = entry.getKey();
+            Integer frequency = entry.getValue();
+
+            try {
+                double value = Double.parseDouble(valueString);
+                totalValue += value * frequency;  // Weighting each value by its frequency
+                totalCount += frequency;  // Increment the total frequency count
+            } catch (NumberFormatException e) {
+                // The valueString was not a number; skip this entry
+            }
+        }
+
+        if (totalCount == 0) {
+            return null;  // Prevent division by zero
+        }
+
+        return totalValue / totalCount;
     }
 
 
