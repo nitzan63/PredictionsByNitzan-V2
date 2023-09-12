@@ -5,12 +5,15 @@ import components.SharedResources;
 import components.execution.ExecutionTabController;
 import dto.ThreadInfoDTO;
 import engine.SimulationEngine;
+import javafx.animation.FadeTransition;
 import javafx.animation.KeyFrame;
+import javafx.animation.RotateTransition;
 import javafx.animation.Timeline;
 import javafx.beans.property.SimpleBooleanProperty;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.fxml.FXML;
 import javafx.scene.control.*;
+import javafx.scene.shape.Arc;
 import javafx.scene.text.Text;
 import javafx.stage.FileChooser;
 import javafx.stage.Stage;
@@ -23,6 +26,8 @@ public class MainController {
     // FXML elements:
     @FXML
     private ChoiceBox<String> themeChoiceBox;
+    @FXML
+    private Arc rotatingArc;
     @FXML
     private Text activeThreadsView;
     @FXML
@@ -41,6 +46,8 @@ public class MainController {
     private Label simulationsEndedLabel;
     @FXML
     private TabPane mainTabPane;
+    @FXML
+    private Label fileLoadedLabel;
 
 
     // DTO Interface:
@@ -103,6 +110,8 @@ public class MainController {
             }
         });
 
+        fileLoadedLabel.setOpacity(0);
+
         SharedResources.getInstance().setMainController(this);
     }
 
@@ -164,6 +173,8 @@ public class MainController {
             isFileSelected.set(true);
             SharedResources.getInstance().setIsFileSelected(true);
             updateThreadInfo();
+            fadeFileLoadedLabel();
+            startRotatingArc();
 
         } catch (Exception e) {
             System.out.println("Execption " + e.getMessage());
@@ -188,8 +199,30 @@ public class MainController {
         mainTabPane.getSelectionModel().select(resultsTabTitle); // use the ID of the Results tab
     }
 
-    public void switchToExecutionTab(){
+    public void switchToExecutionTab() {
         mainTabPane.getSelectionModel().select(executionTabTitle);
     }
 
+    private void fadeFileLoadedLabel() {
+        FadeTransition fade = new FadeTransition();
+        fileLoadedLabel.setStyle("-fx-background-color: green ");
+        fade.setNode(fileLoadedLabel);
+        fade.setFromValue(0); // from invisible
+        fade.setToValue(1);   // to fully visible
+        fade.setCycleCount(2); // one fade in and one fade out
+        fade.setAutoReverse(true); // reverse fade
+        fade.setDuration(Duration.seconds(2)); // for 2 second
+        fade.play();
+    }
+
+    private void startRotatingArc() {
+        rotatingArc.setVisible(true);
+
+        RotateTransition rotate = new RotateTransition();
+        rotate.setNode(rotatingArc);
+        rotate.setByAngle(360);
+        rotate.setCycleCount(1);
+        rotate.setDuration(Duration.seconds(2));
+        rotate.play();
+    }
 }

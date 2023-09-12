@@ -14,6 +14,7 @@
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.RowConstraints?>
 <?import javafx.scene.layout.VBox?>
+<?import javafx.scene.shape.Arc?>
 
 <ScrollPane fitToHeight="true" fitToWidth="true" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" prefHeight="600.0" prefWidth="900.0" xmlns="http://javafx.com/javafx/20.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="components.main.MainController">
    <content>
@@ -86,7 +87,9 @@
                            <children>
                               <HBox alignment="CENTER" prefHeight="100.0" prefWidth="200.0" spacing="10.0">
                                  <children>
+                                    <Arc fx:id="rotatingArc" fill="#fff91f" length="270.0" radiusX="12.0" radiusY="12.0" startAngle="45.0" stroke="BLACK" strokeType="INSIDE" type="ROUND" />
                                     <Label text="Predictions V2 by Nitzan" />
+                                    <Label fx:id="fileLoadedLabel" text="File has Loaded!" textFill="#319a43" />
                                     <HBox prefHeight="100.0" prefWidth="200.0" HBox.hgrow="ALWAYS" />
                                     <Label text="App Theme:" />
                                     <ChoiceBox fx:id="themeChoiceBox" prefWidth="150.0" />
