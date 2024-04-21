@@ -1,0 +1,1 @@
+https://github.com/nitzan63/PredictionsByNitzan-V2/blob/8fc28d380ea4fe481a0e5a0efb1c79e46ea79059/PredictionsV2ReadMe.pdf
