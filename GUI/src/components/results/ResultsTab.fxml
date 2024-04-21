@@ -148,7 +148,7 @@
                                                         <ChoiceBox fx:id="propertyEntitiesChooser" prefWidth="150.0" />
                                                         <Label text="Choose Property" />
                                                         <ChoiceBox fx:id="propertyChooser" prefWidth="150.0" />
-                                          <Label fx:id="averageValueLabel" text="XXX" />
+                                          <Label fx:id="averageValueLabel" />
                                                     </children>
                                                     <padding>
                                                         <Insets bottom="5.0" left="20.0" top="5.0" />
@@ -192,6 +192,7 @@
                         <Button fx:id="stopButton" mnemonicParsing="false" onAction="#onStopButtonClicked" text="Stop" />
                   <Button fx:id="reRunButton" mnemonicParsing="false" onAction="#onReRunButtonAction" text="Re-Run" />
                         <HBox prefHeight="100.0" prefWidth="200.0" HBox.hgrow="ALWAYS" />
+                  <Button fx:id="progressTickButton" mnemonicParsing="false" onAction="#onSimulateTickAction" text="Simulate Tick" />
                         <Button fx:id="pauseButton" mnemonicParsing="false" onAction="#onPauseButtonClicked" text="Pause" />
                         <Button fx:id="resumeButton" mnemonicParsing="false" onAction="#onResumeButtonClicked" text="Resume" />
                     </children>

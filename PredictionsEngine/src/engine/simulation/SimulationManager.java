@@ -219,6 +219,14 @@ public class SimulationManager {
         }
     }
 
+    public void progressOneTick(String runID) {
+        SimulationRunner runner = simulationRunnerMap.get(runID);
+        if (runner != null) {
+            runner.progressOneTick();
+            // Update other necessary details here, like the GUI or state.
+        }
+    }
+
 
 
     public SimulationExecutionDetailsDTO getResultsByID(String runIdentifier) {

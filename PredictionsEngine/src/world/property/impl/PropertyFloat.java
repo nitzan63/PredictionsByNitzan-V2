@@ -60,7 +60,9 @@ public class PropertyFloat implements EntityProperty, EnvProperty {
 
     @Override
     public boolean isRandomInitialize() {
-        return isRandom;
+        if (isRandom != null)
+            return isRandom;
+        else return false;
     }
 
     @Override

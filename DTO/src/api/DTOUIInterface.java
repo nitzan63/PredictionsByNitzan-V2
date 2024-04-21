@@ -102,5 +102,9 @@ public class DTOUIInterface {
         engineInterface.stopSimulation(runID);
     }
 
+    public void progressOneTick(String runID){
+        engineInterface.progressOneTick(runID);
+    }
+
 
 }

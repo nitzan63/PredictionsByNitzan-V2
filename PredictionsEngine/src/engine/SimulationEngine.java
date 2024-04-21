@@ -135,7 +135,8 @@ public class SimulationEngine implements DTOEngineInterface {
             case CONDITION:
                 ConditionAction conditionAction = (ConditionAction) action;
                 actionDTO.addAdditionalDetails("Number of Then actions " , String.valueOf(conditionAction.getNumberOfThenActions()));
-                actionDTO.addAdditionalDetails("Number of Else actions " , String.valueOf(conditionAction.getNumberOfElseActions()));
+                if (conditionAction.getElseActions() != null)
+                    actionDTO.addAdditionalDetails("Number of Else actions " , String.valueOf(conditionAction.getNumberOfElseActions()));
                 actionDTO.addAdditionalDetails("Conditions \n ----------- \n ", conditionAction.getMainConditionData());
                 break;
             case PROXIMITY:
@@ -292,6 +293,10 @@ public class SimulationEngine implements DTOEngineInterface {
     @Override
     public void stopSimulation(String runID) {
         simulationManager.stopSimulation(runID);
+    }
+
+    public void progressOneTick(String runID){
+        simulationManager.progressOneTick(runID);
     }
 
 

@@ -75,7 +75,9 @@ public class ConditionAction extends AbstractAction {
         return elseActions;
     }
 
-    public int getNumberOfElseActions () {return elseActions.size(); }
+    public int getNumberOfElseActions () {
+        return elseActions.size();
+    }
     public int getNumberOfThenActions () {return thenActions.size(); }
 
     public String getMainConditionData () {

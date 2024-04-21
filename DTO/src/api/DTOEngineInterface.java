@@ -24,4 +24,5 @@ public interface DTOEngineInterface {
     void pauseSimulation(String runID);
     void stopSimulation(String runID);
     void exit();
+    void progressOneTick(String runID);
 }

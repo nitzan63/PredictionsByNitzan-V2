@@ -76,6 +76,8 @@ public class ResultsTabController {
     private TableColumn<Map.Entry<String, Integer>, String> entityColumn;
     @FXML
     private TableColumn<Map.Entry<String, Integer>, Integer> populationColumn;
+    @FXML
+    private Button progressTickButton;
     // DTO - UI interface:
     private DTOUIInterface simulationInterface;
     private Map<String, SimulationExecutionDetailsDTO> allResults;
@@ -113,6 +115,7 @@ public class ResultsTabController {
         stopButton.setDisable(true);
         resumeButton.setDisable(true);
         reRunButton.setDisable(true);
+        progressTickButton.setDisable(true);
     }
 
     // Initialize listeners for the simulation list
@@ -145,6 +148,7 @@ public class ResultsTabController {
                 resumeButton.setDisable(true);
                 stopButton.setDisable(false);
                 reRunButton.setDisable(true);
+                progressTickButton.setDisable(true);
                 // Start updating the UI to reflect the live simulation data
                 startPolling(newValue);
             } else if (isSimulationPaused(newValue)) {
@@ -154,6 +158,7 @@ public class ResultsTabController {
                 resumeButton.setDisable(false);
                 stopButton.setDisable(false);
                 reRunButton.setDisable(true);
+                progressTickButton.setDisable(false);
                 // Update UI with current data but don't continue polling
                 updateEntitiesPopulationTable(newValue);
             } else if (isSimulationQueued(newValue)){
@@ -162,6 +167,7 @@ public class ResultsTabController {
                 resumeButton.setDisable(true);
                 stopButton.setDisable(true);
                 reRunButton.setDisable(true);
+                progressTickButton.setDisable(true);
                 disablePropertyAndPopulationTabs();
                 updateEntitiesPopulationTable(newValue);
             }
@@ -173,6 +179,7 @@ public class ResultsTabController {
                 resumeButton.setDisable(true);
                 stopButton.setDisable(true);
                 reRunButton.setDisable(false);
+                progressTickButton.setDisable(true);
                 // Stop updating the UI and populate entities table with final data
                 stopPolling();
                 updateEntitiesPopulationTable(newValue);
@@ -183,6 +190,7 @@ public class ResultsTabController {
             pauseButton.setDisable(true);
             resumeButton.setDisable(true);
             stopButton.setDisable(true);
+            progressTickButton.setDisable(true);
         }
     }
 
@@ -324,6 +332,7 @@ public class ResultsTabController {
             pauseButton.setDisable(true);
             resumeButton.setDisable(false);
             stopButton.setDisable(false);
+            progressTickButton.setDisable(false);
             // Stop updating the UI for the paused simulation but update UI with current data
             stopPolling();
             updateEntitiesPopulationTable(selectedSimulation);
@@ -341,6 +350,7 @@ public class ResultsTabController {
             pauseButton.setDisable(false);
             resumeButton.setDisable(true);
             stopButton.setDisable(false);
+            progressTickButton.setDisable(true);
             // Restart updating the UI to reflect the live simulation data
             startPolling(selectedSimulation);
             updateProgressSection(simulationInterface.getLiveSimulationExecutionDetails(selectedSimulation));
@@ -362,6 +372,7 @@ public class ResultsTabController {
             resumeButton.setDisable(true);
             stopButton.setDisable(true);
             reRunButton.setDisable(false);
+            progressTickButton.setDisable(true);
             updateProgressSection(allResults.get(selectedSimulation));
             enableTabs();
         }
@@ -378,6 +389,24 @@ public class ResultsTabController {
             mainController.switchToExecutionTab();
         }
     }
+    @FXML
+    private void onSimulateTickAction(){
+        // Get the currently selected simulation from the simulation list
+        String selectedSimulation = simulationList.getSelectionModel().getSelectedItem();
+        // Check if a simulation is actually selected
+        if (selectedSimulation != null) {
+            // Use the DTOUIInterface to advance the selected simulation by one tick
+            simulationInterface.progressOneTick(selectedSimulation);
+
+            // Update the UI to reflect the new simulation state
+            SimulationExecutionDetailsDTO details = simulationInterface.getLiveSimulationExecutionDetails(selectedSimulation);
+            updateProgressSection(details);
+            updateEntitiesPopulationTable(details.getEntitiesPopulationMap());
+        }
+    }
+
+
+
 
     private void initSimulationDetailsTab(){
         // for the entities table:

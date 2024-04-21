@@ -102,4 +102,20 @@ public class SimulationRunner implements Runnable {
         }
     }
 
+    public void progressOneTick() {
+        synchronized (lock) {
+            if (shouldPause) {
+                tickNumber++;
+                int elapsedSeconds = getElapsedSeconds();
+                try {
+                    world.simulateThisTick(tickNumber);
+                    world.setSecondsElapsed(elapsedSeconds);
+                } catch (Exception e) {
+                    logError(e);
+                }
+            }
+        }
+    }
+
+
 }

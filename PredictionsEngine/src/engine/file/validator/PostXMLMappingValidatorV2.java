@@ -69,6 +69,9 @@ public class PostXMLMappingValidatorV2 {
     // Validate a single rule
     private static void validateRule(Rule rule, Map<String, EntitiesDefinition> entitiesDefinitionMap, ActionContext actionContext) throws ValidationException {
         for (Action action : rule.getActionsToPerform()) {
+            if (action.getSecondaryEntityName() != null)
+                actionContext.setSecondaryEntityInContext(entitiesDefinitionMap.get(action.getSecondaryEntityName()).getPrototypeEntity());
+            else actionContext.setSecondaryEntityInContext(null);
             validateAction(action, entitiesDefinitionMap, actionContext);
         }
     }
